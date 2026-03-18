@@ -20,10 +20,24 @@ const navLinks = [
 export function Navbar() {
   const t = useTranslations("nav");
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 10);
+      // Only hide/show on mobile (< 768px)
+      if (window.innerWidth < 768) {
+        if (y > lastY && y > 60) {
+          setHidden(true);
+        } else {
+          setHidden(false);
+        }
+      }
+      lastY = y;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -36,6 +50,7 @@ export function Navbar() {
           scrolled
             ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border-light"
             : "bg-transparent",
+          hidden && "-translate-y-full",
         )}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
