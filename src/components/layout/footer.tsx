@@ -17,7 +17,7 @@ export function Footer() {
               alt="WebMori"
               width={220}
               height={60}
-              className="h-14 w-auto"
+              className="h-20 w-auto"
             />
             <p className="mt-3 text-sm text-white/60">
               {t("footer.description")}

@@ -45,7 +45,7 @@ export function Navbar() {
               alt="WebMori"
               width={220}
               height={60}
-              className="h-14 w-auto"
+              className="h-20 w-auto"
               priority
             />
           </Link>
