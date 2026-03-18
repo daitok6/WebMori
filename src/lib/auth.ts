@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Resend from "next-auth/providers/resend";
+import { Resend as ResendClient } from "resend";
 import { prisma } from "./prisma";
 
 function magicLinkHtml(url: string): string {
@@ -58,8 +59,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       from: process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>",
       apiKey: process.env.RESEND_API_KEY,
       sendVerificationRequest: async ({ identifier, url, provider }) => {
-        const { Resend: ResendClient } = await import("resend");
-        const resend = new ResendClient(provider.apiKey);
+        const resend = new ResendClient(provider.apiKey as string);
         await resend.emails.send({
           from: provider.from as string,
           to: [identifier],
