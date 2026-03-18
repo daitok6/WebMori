@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Send, Loader2 } from "lucide-react";
+import { useUnreadCount } from "@/contexts/unread-count-context";
 
 interface Message {
   id: string;
@@ -20,6 +21,7 @@ export default function MessagesPage() {
   const [content, setContent] = useState("");
   const [sending, setSending] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const { refreshUnread } = useUnreadCount();
 
   useEffect(() => {
     fetchMessages();
@@ -37,8 +39,10 @@ export default function MessagesPage() {
       .then((data) => {
         if (Array.isArray(data)) {
           setMessages(data);
-          // Mark operator messages as read
-          fetch("/api/dashboard/messages/read", { method: "POST" }).catch(() => {});
+          // Mark operator messages as read and refresh nav badge
+          fetch("/api/dashboard/messages/read", { method: "POST" })
+            .then(() => refreshUnread())
+            .catch(() => {});
         }
       })
       .finally(() => setLoading(false));

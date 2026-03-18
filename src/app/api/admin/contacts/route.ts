@@ -9,7 +9,17 @@ export async function GET() {
 
   const contacts = await prisma.contactRequest.findMany({
     orderBy: { createdAt: "desc" },
+    include: {
+      organization: {
+        include: { users: { select: { id: true }, take: 1 } },
+      },
+    },
   });
 
-  return NextResponse.json(contacts);
+  return NextResponse.json(
+    contacts.map((c) => ({
+      ...c,
+      userId: c.organization?.users[0]?.id ?? null,
+    })),
+  );
 }

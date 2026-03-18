@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Loader2, Mail, Globe, ChevronDown, MessageSquare, Upload } from "lucide-react";
 
 interface Contact {
@@ -16,6 +15,7 @@ interface Contact {
   status: "PENDING" | "REVIEWING" | "COMPLETED" | "REJECTED";
   notes: string | null;
   organizationId: string | null;
+  userId: string | null;
   createdAt: string;
 }
 
@@ -150,7 +150,13 @@ export default function AdminContactsPage() {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-semibold text-navy-dark">{c.name}</p>
+                    {c.userId ? (
+                      <Link href={`/admin/users/${c.userId}`} className="font-semibold text-navy-dark hover:text-gold transition-colors">
+                        {c.name}
+                      </Link>
+                    ) : (
+                      <p className="font-semibold text-navy-dark">{c.name}</p>
+                    )}
                     {c.stack && (
                       <span className="rounded-full bg-bg-cream px-2 py-0.5 text-xs text-text-muted">
                         {c.stack}

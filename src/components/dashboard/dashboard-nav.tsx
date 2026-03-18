@@ -14,7 +14,8 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useUnreadCount } from "@/contexts/unread-count-context";
 
 const navItems = [
   { href: "/dashboard", key: "overview", icon: LayoutDashboard, exact: true },
@@ -30,19 +31,7 @@ export function DashboardNav() {
   const t = useTranslations("dashboard.nav");
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
-
-  useEffect(() => {
-    function fetchUnread() {
-      fetch("/api/dashboard/unread")
-        .then((r) => (r.ok ? r.json() : { count: 0 }))
-        .then((d: { count: number }) => setUnreadCount(d.count))
-        .catch(() => {});
-    }
-    fetchUnread();
-    const interval = setInterval(fetchUnread, 30000);
-    return () => clearInterval(interval);
-  }, []);
+  const { unreadCount } = useUnreadCount();
 
   function isActive(href: string, exact?: boolean) {
     if (exact) return pathname === href;
