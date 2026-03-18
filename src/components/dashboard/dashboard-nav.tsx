@@ -13,8 +13,11 @@ import {
   User,
   Menu,
   X,
+  Sparkles,
+  LogOut,
 } from "lucide-react";
 import { useState } from "react";
+import { signOut } from "next-auth/react";
 import { useUnreadCount } from "@/contexts/unread-count-context";
 
 const navItems = [
@@ -23,6 +26,7 @@ const navItems = [
   { href: "/dashboard/repos", key: "repos", icon: GitBranch },
   { href: "/dashboard/billing", key: "billing", icon: CreditCard },
   { href: "/dashboard/messages", key: "messages", icon: MessageSquare },
+  { href: "/dashboard/free-eval", key: "freeEval", icon: Sparkles },
   { href: "/dashboard/profile", key: "profile", icon: User },
   { href: "/dashboard/settings", key: "settings", icon: Settings },
 ] as const;
@@ -78,6 +82,15 @@ export function DashboardNav() {
           </Link>
         </div>
         <nav className="flex-1 overflow-y-auto p-4">{navContent}</nav>
+        <div className="border-t border-border-light p-4">
+          <button
+            onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-text-muted hover:bg-bg-cream hover:text-text-body transition-colors"
+          >
+            <LogOut className="h-5 w-5" />
+            ログアウト
+          </button>
+        </div>
       </aside>
 
       {/* Mobile header */}
@@ -98,6 +111,15 @@ export function DashboardNav() {
       {mobileOpen && (
         <div className="border-b border-border-light bg-white p-4 md:hidden">
           {navContent}
+          <div className="mt-2 border-t border-border-light pt-2">
+            <button
+              onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-text-muted hover:bg-bg-cream transition-colors"
+            >
+              <LogOut className="h-5 w-5" />
+              ログアウト
+            </button>
+          </div>
         </div>
       )}
     </>
