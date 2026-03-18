@@ -61,10 +61,11 @@ export async function POST(request: NextRequest) {
   // Email notification to client
   const org = await prisma.organization.findUnique({
     where: { id: orgId },
-    include: { users: { select: { email: true } } },
+    include: { users: { select: { email: true, emailNotifications: true } } },
   });
 
-  const clientEmail = org?.users[0]?.email;
+  const clientUser = org?.users[0];
+  const clientEmail = clientUser?.emailNotifications !== false ? clientUser?.email : null;
   if (clientEmail && process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";

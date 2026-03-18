@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, User, GitBranch, FileText } from "lucide-react";
+import { Loader2, Search, User, GitBranch, FileText, MessageSquare } from "lucide-react";
 
 interface UserSummary {
   id: string;
@@ -91,8 +91,9 @@ export default function AdminUsersPage() {
       ) : (
         <div className="mt-6 space-y-3">
           {users.map((u) => (
-            <Link key={u.id} href={`/admin/users/${u.id}`}>
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <div key={u.id} className="relative">
+            <Link href={`/admin/users/${u.id}`}>
+              <Card className="hover:shadow-md transition-shadow cursor-pointer pr-12">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-navy-dark/10 text-navy-dark font-semibold text-sm">
@@ -140,6 +141,17 @@ export default function AdminUsersPage() {
                 )}
               </Card>
             </Link>
+            {u.org && (
+              <Link
+                href={`/admin/messages?orgId=${u.org.id}`}
+                className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:bg-bg-cream hover:text-navy-dark transition-colors"
+                title="Open chat"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MessageSquare className="h-4 w-4" />
+              </Link>
+            )}
+            </div>
           ))}
         </div>
       )}

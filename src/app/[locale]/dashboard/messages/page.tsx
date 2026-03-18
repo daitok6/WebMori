@@ -35,7 +35,11 @@ export default function MessagesPage() {
     fetch("/api/dashboard/messages")
       .then((r) => r.json())
       .then((data) => {
-        if (Array.isArray(data)) setMessages(data);
+        if (Array.isArray(data)) {
+          setMessages(data);
+          // Mark operator messages as read
+          fetch("/api/dashboard/messages/read", { method: "POST" }).catch(() => {});
+        }
       })
       .finally(() => setLoading(false));
   }

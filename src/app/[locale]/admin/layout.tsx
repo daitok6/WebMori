@@ -2,11 +2,12 @@ import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin";
 import { Link } from "@/i18n/navigation";
 import { MessageSquare, Users, ClipboardList, LogOut } from "lucide-react";
+import { AdminUnreadBadge } from "@/components/admin/admin-unread-badge";
 
 const navItems = [
-  { href: "/admin", label: "Free Evals", icon: ClipboardList, exact: true },
-  { href: "/admin/users", label: "Users", icon: Users },
-  { href: "/admin/messages", label: "Messages", icon: MessageSquare },
+  { href: "/admin", label: "Free Evals", icon: ClipboardList, exact: true, badge: false },
+  { href: "/admin/users", label: "Users", icon: Users, badge: false },
+  { href: "/admin/messages", label: "Messages", icon: MessageSquare, badge: true },
 ];
 
 export default async function AdminLayout({
@@ -38,6 +39,7 @@ export default async function AdminLayout({
             >
               <item.icon className="h-4 w-4" />
               {item.label}
+              {item.badge && <AdminUnreadBadge />}
             </Link>
           ))}
         </nav>

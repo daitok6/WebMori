@@ -14,7 +14,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navItems = [
   { href: "/dashboard", key: "overview", icon: LayoutDashboard, exact: true },
@@ -30,6 +30,19 @@ export function DashboardNav() {
   const t = useTranslations("dashboard.nav");
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    function fetchUnread() {
+      fetch("/api/dashboard/unread")
+        .then((r) => (r.ok ? r.json() : { count: 0 }))
+        .then((d: { count: number }) => setUnreadCount(d.count))
+        .catch(() => {});
+    }
+    fetchUnread();
+    const interval = setInterval(fetchUnread, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   function isActive(href: string, exact?: boolean) {
     if (exact) return pathname === href;
@@ -54,6 +67,11 @@ export function DashboardNav() {
             >
               <item.icon className="h-5 w-5" />
               {t(item.key)}
+              {item.key === "messages" && unreadCount > 0 && (
+                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
             </Link>
           </li>
         );

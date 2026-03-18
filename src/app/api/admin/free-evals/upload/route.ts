@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
   const form = await request.formData();
   const orgId = form.get("orgId") as string;
   const siteUrl = (form.get("siteUrl") as string) || null;
+  const contactId = (form.get("contactId") as string) || null;
   const file = form.get("file") as File | null;
 
   if (!orgId || !file) {
@@ -42,13 +43,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `DB保存失敗: ${e instanceof Error ? e.message : String(e)}` }, { status: 500 });
   }
 
+  // Auto-complete the contact request if contactId provided
+  if (contactId) {
+    await prisma.contactRequest.update({
+      where: { id: contactId },
+      data: { status: "COMPLETED" },
+    }).catch(() => {/* non-fatal if contact not found */});
+  }
+
   // Email the client
   const org = await prisma.organization.findUnique({
     where: { id: orgId },
-    include: { users: { select: { email: true } } },
+    include: { users: { select: { email: true, emailNotifications: true } } },
   });
 
-  const clientEmail = org?.users[0]?.email;
+  const clientUser = org?.users[0];
+  const clientEmail = clientUser?.emailNotifications !== false ? clientUser?.email : null;
   if (clientEmail && process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";

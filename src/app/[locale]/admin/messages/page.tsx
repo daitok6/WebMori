@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,19 +25,34 @@ interface Message {
 }
 
 export default function AdminMessagesPage() {
+  const searchParams = useSearchParams();
   const [orgs, setOrgs] = useState<OrgSummary[]>([]);
   const [selectedOrg, setSelectedOrg] = useState<OrgSummary | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/admin/messages")
       .then((r) => (r.ok ? r.json() : []))
-      .then(setOrgs)
+      .then((data: OrgSummary[]) => {
+        setOrgs(data);
+        // Auto-select org from URL param
+        const orgId = searchParams.get("orgId");
+        if (orgId) {
+          const target = data.find((o) => o.id === orgId);
+          if (target) selectOrg(target);
+        }
+      })
       .finally(() => setLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   async function selectOrg(org: OrgSummary) {
     setSelectedOrg(org);
@@ -44,7 +60,6 @@ export default function AdminMessagesPage() {
       r.ok ? r.json() : [],
     );
     setMessages(msgs);
-    // Mark as read
     if (org.unreadCount > 0) {
       await fetch(`/api/admin/messages/${org.id}/read`, { method: "POST" });
       setOrgs((prev) =>
@@ -69,7 +84,6 @@ export default function AdminMessagesPage() {
           (r) => (r.ok ? r.json() : []),
         );
         setMessages(msgs);
-        // Refresh org list (don't reset selection)
         fetch("/api/admin/messages")
           .then((r) => r.json())
           .then((updated: OrgSummary[]) =>
@@ -192,6 +206,7 @@ export default function AdminMessagesPage() {
                   </div>
                 ))
               )}
+              <div ref={bottomRef} />
             </div>
 
             <form

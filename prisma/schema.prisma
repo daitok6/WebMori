@@ -20,6 +20,7 @@ model User {
   phone         String?
   bio           String?
   locale        String    @default("ja")
+  emailNotifications Boolean @default(true)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -180,6 +181,7 @@ model Message {
   fromOperator     Boolean  @default(false)
   content          String
   readByOperator   Boolean  @default(false)
+  readByClient     Boolean  @default(false)
   createdAt        DateTime @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)

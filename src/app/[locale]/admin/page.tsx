@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Mail, Globe, ChevronDown } from "lucide-react";
+import { Loader2, Mail, Globe, ChevronDown, MessageSquare, Upload } from "lucide-react";
 
 interface Contact {
   id: string;
@@ -14,6 +15,7 @@ interface Contact {
   message: string | null;
   status: "PENDING" | "REVIEWING" | "COMPLETED" | "REJECTED";
   notes: string | null;
+  organizationId: string | null;
   createdAt: string;
 }
 
@@ -32,6 +34,8 @@ export default function AdminContactsPage() {
   const [filter, setFilter] = useState<string>("ALL");
   const [editingNotes, setEditingNotes] = useState<string | null>(null);
   const [notesDraft, setNotesDraft] = useState("");
+  const [uploading, setUploading] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/contacts")
@@ -61,6 +65,32 @@ export default function AdminContactsPage() {
       prev.map((c) => (c.id === id ? { ...c, notes: notesDraft } : c)),
     );
     setEditingNotes(null);
+  }
+
+  async function handleUpload(contact: Contact, file: File) {
+    if (!contact.organizationId) return;
+    setUploading(contact.id);
+    setUploadError(null);
+    try {
+      const form = new FormData();
+      form.append("orgId", contact.organizationId);
+      form.append("contactId", contact.id);
+      if (contact.url) form.append("siteUrl", contact.url);
+      form.append("file", file);
+      const res = await fetch("/api/admin/free-evals/upload", { method: "POST", body: form });
+      if (res.ok) {
+        setContacts((prev) =>
+          prev.map((c) => (c.id === contact.id ? { ...c, status: "COMPLETED" } : c)),
+        );
+      } else {
+        const body = await res.json().catch(() => ({}));
+        setUploadError(body.error ?? `エラー (${res.status})`);
+      }
+    } catch (e) {
+      setUploadError(e instanceof Error ? e.message : "ネットワークエラー");
+    } finally {
+      setUploading(null);
+    }
   }
 
   const filtered =
@@ -103,6 +133,10 @@ export default function AdminContactsPage() {
           ))}
         </div>
       </div>
+
+      {uploadError && (
+        <p className="mt-3 text-sm text-red-600">✗ {uploadError}</p>
+      )}
 
       {filtered.length === 0 ? (
         <Card className="mt-6 py-12 text-center">
@@ -171,6 +205,42 @@ export default function AdminContactsPage() {
                       </button>
                     )}
                   </div>
+
+                  {/* Upload PDF + Chat actions */}
+                  {c.organizationId && (
+                    <div className="mt-3 flex items-center gap-3">
+                      <label className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                        uploading === c.id
+                          ? "border-border text-text-muted opacity-50"
+                          : "border-gold/50 text-navy-dark hover:border-gold hover:bg-gold/5"
+                      }`}>
+                        {uploading === c.id ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Upload className="h-3.5 w-3.5" />
+                        )}
+                        {uploading === c.id ? "アップロード中..." : "レポートを送信"}
+                        <input
+                          type="file"
+                          accept=".pdf"
+                          className="sr-only"
+                          disabled={uploading === c.id}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleUpload(c, file);
+                            e.target.value = "";
+                          }}
+                        />
+                      </label>
+                      <Link
+                        href={`/admin/messages?orgId=${c.organizationId}`}
+                        className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-muted hover:border-navy-dark hover:text-navy-dark transition-colors"
+                      >
+                        <MessageSquare className="h-3.5 w-3.5" />
+                        チャット
+                      </Link>
+                    </div>
+                  )}
                 </div>
 
                 {/* Status selector */}
