@@ -43,9 +43,9 @@ export function Navbar() {
             <Image
               src="/logo-on-light.png"
               alt="WebMori"
-              width={180}
-              height={48}
-              className="h-11 w-auto"
+              width={220}
+              height={60}
+              className="h-14 w-auto"
               priority
             />
           </Link>
