@@ -68,16 +68,12 @@ export default function AdminContactsPage() {
   }
 
   async function handleUpload(contact: Contact, file: File) {
-    if (!contact.organizationId) return;
     setUploading(contact.id);
     setUploadError(null);
     try {
       const form = new FormData();
-      form.append("orgId", contact.organizationId);
-      form.append("contactId", contact.id);
-      if (contact.url) form.append("siteUrl", contact.url);
       form.append("file", file);
-      const res = await fetch("/api/admin/free-evals/upload", { method: "POST", body: form });
+      const res = await fetch(`/api/admin/contacts/${contact.id}/send-report`, { method: "POST", body: form });
       if (res.ok) {
         setContacts((prev) =>
           prev.map((c) => (c.id === contact.id ? { ...c, status: "COMPLETED" } : c)),
@@ -213,31 +209,31 @@ export default function AdminContactsPage() {
                   </div>
 
                   {/* Upload PDF + Chat actions */}
-                  {c.organizationId && (
-                    <div className="mt-3 flex items-center gap-3">
-                      <label className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
-                        uploading === c.id
-                          ? "border-border text-text-muted opacity-50"
-                          : "border-gold/50 text-navy-dark hover:border-gold hover:bg-gold/5"
-                      }`}>
-                        {uploading === c.id ? (
-                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                        ) : (
-                          <Upload className="h-3.5 w-3.5" />
-                        )}
-                        {uploading === c.id ? "アップロード中..." : "レポートを送信"}
-                        <input
-                          type="file"
-                          accept=".pdf"
-                          className="sr-only"
-                          disabled={uploading === c.id}
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) handleUpload(c, file);
-                            e.target.value = "";
-                          }}
-                        />
-                      </label>
+                  <div className="mt-3 flex items-center gap-3">
+                    <label className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                      uploading === c.id
+                        ? "border-border text-text-muted opacity-50"
+                        : "border-gold/50 text-navy-dark hover:border-gold hover:bg-gold/5"
+                    }`}>
+                      {uploading === c.id ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Upload className="h-3.5 w-3.5" />
+                      )}
+                      {uploading === c.id ? "送信中..." : "レポートを送信"}
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        className="sr-only"
+                        disabled={uploading === c.id}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleUpload(c, file);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                    {c.organizationId && (
                       <Link
                         href={`/admin/messages?orgId=${c.organizationId}`}
                         className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-muted hover:border-navy-dark hover:text-navy-dark transition-colors"
@@ -245,8 +241,8 @@ export default function AdminContactsPage() {
                         <MessageSquare className="h-3.5 w-3.5" />
                         チャット
                       </Link>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
 
                 {/* Status selector */}
