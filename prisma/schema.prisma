@@ -17,6 +17,8 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  phone         String?
+  bio           String?
   locale        String    @default("ja")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -73,6 +75,8 @@ model VerificationToken {
 model Organization {
   id        String   @id @default(cuid())
   name      String
+  website   String?
+  phone     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -170,24 +174,28 @@ model Finding {
 }
 
 model Message {
-  id             String   @id @default(cuid())
-  organizationId String
-  fromOperator   Boolean  @default(false)
-  content        String
-  createdAt      DateTime @default(now())
+  id               String   @id @default(cuid())
+  organizationId   String
+  fromOperator     Boolean  @default(false)
+  content          String
+  readByOperator   Boolean  @default(false)
+  createdAt        DateTime @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }
 
 model ContactRequest {
-  id             String   @id @default(cuid())
+  id             String      @id @default(cuid())
   name           String
   email          String
   url            String?
   stack          String?
   message        String?
+  status         EvalStatus  @default(PENDING)
+  notes          String?
   organizationId String?
-  createdAt      DateTime @default(now())
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 
   organization Organization? @relation(fields: [organizationId], references: [id])
 }
@@ -241,4 +249,11 @@ enum Effort {
   QUICK_WIN
   MODERATE
   LARGE
+}
+
+enum EvalStatus {
+  PENDING
+  REVIEWING
+  COMPLETED
+  REJECTED
 }

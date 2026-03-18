@@ -7,8 +7,9 @@ import { Footer } from "./footer";
 export function MarketingShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDashboard = pathname.includes("/dashboard");
+  const isAdmin = pathname.includes("/admin");
 
-  if (isDashboard) {
+  if (isDashboard || isAdmin) {
     return <>{children}</>;
   }
 

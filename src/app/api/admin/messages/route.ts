@@ -10,20 +10,32 @@ export async function GET() {
 
   const orgs = await prisma.organization.findMany({
     include: {
-      users: { select: { email: true, name: true } },
+      users: { select: { id: true, email: true, name: true } },
       messages: { orderBy: { createdAt: "desc" }, take: 1 },
       _count: { select: { messages: true } },
     },
     orderBy: { updatedAt: "desc" },
   });
 
+  // Count unread (from client, not yet read by operator) per org
+  const unreadCounts = await prisma.message.groupBy({
+    by: ["organizationId"],
+    where: { fromOperator: false, readByOperator: false },
+    _count: { id: true },
+  });
+  const unreadMap = Object.fromEntries(
+    unreadCounts.map((r) => [r.organizationId, r._count.id]),
+  );
+
   return NextResponse.json(
     orgs.map((org) => ({
       id: org.id,
       name: org.name,
       email: org.users[0]?.email ?? null,
+      userId: org.users[0]?.id ?? null,
       lastMessage: org.messages[0] ?? null,
       messageCount: org._count.messages,
+      unreadCount: unreadMap[org.id] ?? 0,
     })),
   );
 }

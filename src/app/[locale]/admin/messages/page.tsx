@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, MessageSquare, Send, ChevronLeft } from "lucide-react";
@@ -9,8 +10,10 @@ interface OrgSummary {
   id: string;
   name: string;
   email: string | null;
+  userId: string | null;
   lastMessage: { content: string; fromOperator: boolean; createdAt: string } | null;
   messageCount: number;
+  unreadCount: number;
 }
 
 interface Message {
@@ -27,7 +30,6 @@ export default function AdminMessagesPage() {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/admin/messages")
@@ -36,19 +38,19 @@ export default function AdminMessagesPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    if (!selectedOrg) return;
-    fetchMessages(selectedOrg.id);
-  }, [selectedOrg]);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  function fetchMessages(orgId: string) {
-    fetch(`/api/admin/messages/${orgId}`)
-      .then((r) => (r.ok ? r.json() : []))
-      .then(setMessages);
+  async function selectOrg(org: OrgSummary) {
+    setSelectedOrg(org);
+    const msgs = await fetch(`/api/admin/messages/${org.id}`).then((r) =>
+      r.ok ? r.json() : [],
+    );
+    setMessages(msgs);
+    // Mark as read
+    if (org.unreadCount > 0) {
+      await fetch(`/api/admin/messages/${org.id}/read`, { method: "POST" });
+      setOrgs((prev) =>
+        prev.map((o) => (o.id === org.id ? { ...o, unreadCount: 0 } : o)),
+      );
+    }
   }
 
   async function handleSend(e: React.FormEvent) {
@@ -63,11 +65,18 @@ export default function AdminMessagesPage() {
       });
       if (res.ok) {
         setContent("");
-        fetchMessages(selectedOrg.id);
-        // Refresh org list
+        const msgs = await fetch(`/api/admin/messages/${selectedOrg.id}`).then(
+          (r) => (r.ok ? r.json() : []),
+        );
+        setMessages(msgs);
+        // Refresh org list (don't reset selection)
         fetch("/api/admin/messages")
           .then((r) => r.json())
-          .then(setOrgs);
+          .then((updated: OrgSummary[]) =>
+            setOrgs(updated.map((o) =>
+              o.id === selectedOrg.id ? { ...o, unreadCount: 0 } : o,
+            )),
+          );
       }
     } finally {
       setSending(false);
@@ -98,25 +107,29 @@ export default function AdminMessagesPage() {
             orgs.map((org) => (
               <button
                 key={org.id}
-                onClick={() => setSelectedOrg(org)}
+                onClick={() => selectOrg(org)}
                 className={`w-full text-left rounded-lg border p-3 transition-colors ${
                   selectedOrg?.id === org.id
                     ? "border-gold bg-gold/5"
                     : "border-border bg-white hover:border-gold/50"
                 }`}
               >
-                <p className="font-medium text-navy-dark text-sm">{org.name}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-medium text-navy-dark text-sm truncate">{org.name}</p>
+                  {org.unreadCount > 0 && (
+                    <span className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold">
+                      {org.unreadCount > 9 ? "9+" : org.unreadCount}
+                    </span>
+                  )}
+                </div>
                 {org.email && (
                   <p className="text-xs text-text-muted mt-0.5 truncate">{org.email}</p>
                 )}
                 {org.lastMessage && (
-                  <p className="text-xs text-text-muted mt-1 truncate">
+                  <p className={`text-xs mt-1 truncate ${org.unreadCount > 0 && !org.lastMessage.fromOperator ? "text-navy-dark font-medium" : "text-text-muted"}`}>
                     {org.lastMessage.fromOperator ? "You: " : ""}
                     {org.lastMessage.content}
                   </p>
-                )}
-                {org.messageCount > 0 && (
-                  <span className="text-xs text-text-muted">{org.messageCount} messages</span>
                 )}
               </button>
             ))
@@ -134,7 +147,16 @@ export default function AdminMessagesPage() {
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <div>
-                <p className="font-semibold text-navy-dark">{selectedOrg.name}</p>
+                {selectedOrg.userId ? (
+                  <Link
+                    href={`/admin/users/${selectedOrg.userId}`}
+                    className="font-semibold text-navy-dark hover:text-gold transition-colors"
+                  >
+                    {selectedOrg.name}
+                  </Link>
+                ) : (
+                  <p className="font-semibold text-navy-dark">{selectedOrg.name}</p>
+                )}
                 {selectedOrg.email && (
                   <p className="text-xs text-text-muted">{selectedOrg.email}</p>
                 )}
@@ -170,7 +192,6 @@ export default function AdminMessagesPage() {
                   </div>
                 ))
               )}
-              <div ref={bottomRef} />
             </div>
 
             <form

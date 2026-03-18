@@ -312,7 +312,8 @@
       "repos": "Repositories",
       "billing": "Billing",
       "messages": "Messages",
-      "settings": "Settings"
+      "settings": "Settings",
+      "profile": "Profile"
     },
     "overview": {
       "title": "Dashboard",

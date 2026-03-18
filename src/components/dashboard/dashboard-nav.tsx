@@ -10,6 +10,7 @@ import {
   CreditCard,
   MessageSquare,
   Settings,
+  User,
   Menu,
   X,
 } from "lucide-react";
@@ -21,6 +22,7 @@ const navItems = [
   { href: "/dashboard/repos", key: "repos", icon: GitBranch },
   { href: "/dashboard/billing", key: "billing", icon: CreditCard },
   { href: "/dashboard/messages", key: "messages", icon: MessageSquare },
+  { href: "/dashboard/profile", key: "profile", icon: User },
   { href: "/dashboard/settings", key: "settings", icon: Settings },
 ] as const;
 
