@@ -13,9 +13,9 @@ export const metadata: Metadata = {
   description:
     "Tokyo-based web security audit service for freelancers and SMBs. Monthly audits covering security, performance, LINE API, i18n, and maintainability.",
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
-    apple: "/favicon.png",
+    icon: "/favicon_clean.png",
+    shortcut: "/favicon_clean.png",
+    apple: "/favicon_clean.png",
   },
 };
 
