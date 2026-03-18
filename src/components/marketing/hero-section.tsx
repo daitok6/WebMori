@@ -11,9 +11,9 @@ export function HeroSection() {
   const t = useTranslations("hero");
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-bg-cream to-white pt-32 pb-20">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+    <section className="relative overflow-hidden bg-gradient-to-b from-bg-cream to-white pt-24 sm:pt-32 pb-14 sm:pb-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="grid items-center gap-10 sm:gap-12 md:grid-cols-2">
           {/* Text */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -21,7 +21,7 @@ export function HeroSection() {
             transition={{ duration: 0.6 }}
           >
             <Badge className="mb-4">{t("badge")}</Badge>
-            <h1 className="text-4xl font-bold leading-tight text-navy-dark sm:text-5xl lg:text-6xl">
+            <h1 className="text-3xl font-bold leading-tight text-navy-dark sm:text-4xl lg:text-6xl">
               {t("title")}
               <span className="text-gold">{t("titleHighlight")}</span>
             </h1>

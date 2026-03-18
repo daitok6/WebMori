@@ -9,8 +9,8 @@ export function CTASection() {
   const t = useTranslations("cta");
 
   return (
-    <section className="bg-navy-dark py-20">
-      <div className="mx-auto max-w-3xl px-6 text-center">
+    <section className="bg-navy-dark py-12 sm:py-20">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
         <ScrollReveal>
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
             {t("title")}

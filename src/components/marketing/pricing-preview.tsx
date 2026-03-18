@@ -20,8 +20,8 @@ export function PricingPreview() {
   const t = useTranslations("pricing");
 
   return (
-    <section className="bg-bg-warm py-20">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-bg-warm py-12 sm:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <ScrollReveal>
           <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
             {t("title")}
@@ -39,7 +39,7 @@ export function PricingPreview() {
                 <Card
                   className={cn(
                     "relative flex flex-col h-full",
-                    highlighted && "border-gold ring-2 ring-gold/20 shadow-lg scale-105",
+                    highlighted && "border-gold ring-2 ring-gold/20 shadow-lg md:scale-105",
                   )}
                 >
                   {highlighted && (

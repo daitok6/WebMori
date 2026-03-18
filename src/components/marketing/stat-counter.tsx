@@ -15,8 +15,8 @@ export function StatCounter() {
   ];
 
   return (
-    <section className="bg-navy-dark py-16">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-navy-dark py-10 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {items.map((item, i) => (
             <ScrollReveal key={i} delay={i * 0.1}>

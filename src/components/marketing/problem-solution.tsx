@@ -15,8 +15,8 @@ export function ProblemSolution() {
   return (
     <>
       {/* Problem */}
-      <section className="bg-bg-cream py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-bg-cream py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <ScrollReveal>
             <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
               {tProblem("title")}
@@ -46,8 +46,8 @@ export function ProblemSolution() {
       </section>
 
       {/* Solution */}
-      <section className="bg-white py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-white py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <ScrollReveal>
             <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
               {tSolution("title")}

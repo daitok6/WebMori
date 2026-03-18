@@ -9,13 +9,13 @@ export function TrustLogos() {
   const t = useTranslations("trust");
 
   return (
-    <section className="border-y border-border-light bg-white py-12">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="border-y border-border-light bg-white py-8 sm:py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <ScrollReveal>
           <p className="text-center text-sm font-medium uppercase tracking-wider text-text-muted">
             {t("title")}
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-12">
+          <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-12">
             {platforms.map((name) => (
               <span
                 key={name}

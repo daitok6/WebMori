@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { useUnreadCount } from "@/contexts/unread-count-context";
+import Image from "next/image";
 
 const navItems = [
   { href: "/dashboard", key: "overview", icon: LayoutDashboard, exact: true },
@@ -77,8 +78,8 @@ export function DashboardNav() {
       {/* Desktop sidebar */}
       <aside className="hidden md:flex md:w-60 md:shrink-0 md:flex-col md:border-r md:border-border-light md:bg-white">
         <div className="flex h-16 items-center border-b border-border-light px-6">
-          <Link href="/" className="text-lg font-bold text-navy-dark">
-            Web<span className="text-gold">Mori</span>
+          <Link href="/">
+            <Image src="/logo-dark.svg" alt="WebMori" width={120} height={32} className="h-7 w-auto" />
           </Link>
         </div>
         <nav className="flex-1 overflow-y-auto p-4">{navContent}</nav>
@@ -94,9 +95,9 @@ export function DashboardNav() {
       </aside>
 
       {/* Mobile header */}
-      <div className="flex h-14 items-center justify-between border-b border-border-light bg-white px-4 md:hidden">
-        <Link href="/" className="text-lg font-bold text-navy-dark">
-          Web<span className="text-gold">Mori</span>
+      <div className="flex w-full h-14 items-center justify-between border-b border-border-light bg-white px-4 md:hidden">
+        <Link href="/">
+          <Image src="/logo-dark.svg" alt="WebMori" width={120} height={32} className="h-7 w-auto" />
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -109,7 +110,7 @@ export function DashboardNav() {
 
       {/* Mobile nav dropdown */}
       {mobileOpen && (
-        <div className="border-b border-border-light bg-white p-4 md:hidden">
+        <div className="w-full border-b border-border-light bg-white p-4 md:hidden">
           {navContent}
           <div className="mt-2 border-t border-border-light pt-2">
             <button

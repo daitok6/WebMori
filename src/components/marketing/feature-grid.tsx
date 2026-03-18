@@ -19,8 +19,8 @@ export function FeatureGrid() {
   const t = useTranslations("features");
 
   return (
-    <section className="bg-white py-20">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-white py-12 sm:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <ScrollReveal>
           <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
             {t("title")}

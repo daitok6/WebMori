@@ -4,7 +4,7 @@ import { routing } from "./i18n/routing";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
-const protectedPaths = ["/dashboard"];
+const protectedPaths = ["/dashboard", "/admin"];
 
 function isProtectedPath(pathname: string): boolean {
   // Strip locale prefix to check the actual path
