@@ -49,7 +49,7 @@ export function AdminNav() {
       <aside className="hidden md:flex w-56 shrink-0 bg-navy-dark text-white flex-col">
         <div className="px-6 py-5 border-b border-white/10">
           <Link href="/" className="block">
-            <Image src="/logo-on-dark.png" alt="WebMori" width={260} height={72} className="h-20 w-auto" />
+            <Image src="/logo-on-dark.png" alt="WebMori" width={260} height={72} className="h-[120px] w-auto" />
           </Link>
           <span className="text-xs text-white/40">Admin Panel</span>
         </div>
@@ -59,7 +59,7 @@ export function AdminNav() {
       {/* Mobile header */}
       <div className="flex md:hidden w-full h-14 items-center justify-between bg-navy-dark text-white px-4 border-b border-white/10">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo-on-dark.png" alt="WebMori" width={240} height={64} className="h-16 w-auto" />
+          <Image src="/logo-on-dark.png" alt="WebMori" width={240} height={64} className="h-[120px] w-auto" />
           <span className="text-xs text-white/40 ml-1">Admin</span>
         </Link>
         <button

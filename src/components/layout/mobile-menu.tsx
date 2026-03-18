@@ -53,7 +53,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 alt="WebMori"
                 width={220}
                 height={60}
-                className="h-20 w-auto"
+                className="h-[120px] w-auto"
               />
               <button onClick={onClose} className="p-2 text-text-muted" aria-label="Close menu">
                 <X className="h-5 w-5" />
