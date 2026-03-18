@@ -25,11 +25,22 @@ export async function POST(request: NextRequest) {
   const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const pdfKey = `free-evals/${orgId}/${id}.pdf`;
 
-  await uploadPdf(pdfKey, buffer);
+  try {
+    await uploadPdf(pdfKey, buffer);
+  } catch (e) {
+    console.error("[free-evals/upload] R2 upload failed:", e);
+    return NextResponse.json({ error: `R2アップロード失敗: ${e instanceof Error ? e.message : String(e)}` }, { status: 500 });
+  }
 
-  const report = await prisma.freeEvalReport.create({
-    data: { id, organizationId: orgId, siteUrl, pdfKey },
-  });
+  let report;
+  try {
+    report = await prisma.freeEvalReport.create({
+      data: { id, organizationId: orgId, siteUrl, pdfKey },
+    });
+  } catch (e) {
+    console.error("[free-evals/upload] DB create failed:", e);
+    return NextResponse.json({ error: `DB保存失敗: ${e instanceof Error ? e.message : String(e)}` }, { status: 500 });
+  }
 
   // Email the client
   const org = await prisma.organization.findUnique({
@@ -42,11 +53,12 @@ export async function POST(request: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";
     const siteLabel = siteUrl ?? "あなたのサイト";
-    await resend.emails.send({
-      from,
-      to: [clientEmail],
-      subject: "【WebMori】無料診断レポートが届いています",
-      html: `
+    try {
+      await resend.emails.send({
+        from,
+        to: [clientEmail],
+        subject: "【WebMori】無料診断レポートが届いています",
+        html: `
 <body style="background:#FDFBF7;font-family:-apple-system,sans-serif;padding:20px;">
   <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:auto;">
     <tr><td style="background:#0F1923;padding:24px 32px;border-radius:8px 8px 0 0;">
@@ -65,8 +77,13 @@ export async function POST(request: NextRequest) {
     </td></tr>
   </table>
 </body>
-      `,
-    });
+        `,
+      });
+    } catch (e) {
+      console.error("[free-evals/upload] Email send failed:", e);
+      // Don't fail the whole request — report was saved, just email didn't send
+      return NextResponse.json({ ...report, emailError: `メール送信失敗: ${e instanceof Error ? e.message : String(e)}` }, { status: 201 });
+    }
   }
 
   return NextResponse.json(report, { status: 201 });
