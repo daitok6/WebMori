@@ -36,6 +36,7 @@ export default function BillingPage() {
   }, []);
 
   async function openPortal() {
+    if (!data?.plan) return;
     setPortalLoading(true);
     try {
       const res = await fetch("/api/stripe/portal", { method: "POST" });
@@ -101,7 +102,8 @@ export default function BillingPage() {
             variant="secondary"
             size="sm"
             onClick={openPortal}
-            disabled={portalLoading}
+            disabled={portalLoading || !data?.plan}
+            title={!data?.plan ? "No active subscription" : undefined}
           >
             {portalLoading ? (
               <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />

@@ -82,4 +82,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
+  events: {
+    async createUser({ user }) {
+      // Auto-create an organization for every new user
+      const org = await prisma.organization.create({
+        data: {
+          name: user.email?.split("@")[0] ?? "My Organization",
+        },
+      });
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { organizationId: org.id },
+      });
+    },
+  },
 });
