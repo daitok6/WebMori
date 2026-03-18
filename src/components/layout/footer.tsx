@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export function Footer() {
   const t = useTranslations();
@@ -11,9 +12,13 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
-            <span className="text-xl font-bold">
-              Web<span className="text-gold">Mori</span>
-            </span>
+            <Image
+              src="/logo-light.svg"
+              alt="WebMori"
+              width={148}
+              height={40}
+              className="h-8 w-auto"
+            />
             <p className="mt-3 text-sm text-white/60">
               {t("footer.description")}
             </p>

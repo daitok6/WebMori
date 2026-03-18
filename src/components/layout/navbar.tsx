@@ -8,6 +8,7 @@ import { LanguageToggle } from "./language-toggle";
 import { MobileMenu } from "./mobile-menu";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const navLinks = [
   { href: "/features", key: "features" },
@@ -38,10 +39,15 @@ export function Navbar() {
         )}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-navy-dark">
-              Web<span className="text-gold">Mori</span>
-            </span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo-dark.svg"
+              alt="WebMori"
+              width={148}
+              height={40}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
 
           <div className="hidden items-center gap-8 md:flex">

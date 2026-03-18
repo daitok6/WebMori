@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./language-toggle";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const navLinks = [
   { href: "/features", key: "features" },
@@ -41,9 +42,13 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         )}
       >
         <div className="flex items-center justify-between border-b border-border-light px-6 py-4">
-          <span className="text-lg font-bold text-navy-dark">
-            Web<span className="text-gold">Mori</span>
-          </span>
+          <Image
+            src="/logo-dark.svg"
+            alt="WebMori"
+            width={148}
+            height={40}
+            className="h-7 w-auto"
+          />
           <button onClick={onClose} className="p-2 text-text-muted" aria-label="Close menu">
             <X className="h-5 w-5" />
           </button>
