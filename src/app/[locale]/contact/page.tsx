@@ -5,13 +5,40 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import { Send, Clock } from "lucide-react";
+import { Send, Clock, Loader2 } from "lucide-react";
 
 const stacks = ["Shopify", "WordPress", "Next.js", "LINE Mini App", "Other"];
 
 export default function ContactPage() {
   const t = useTranslations("contactPage");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    url: "",
+    stack: "",
+    message: "",
+  });
+
+  function set(field: string, value: string) {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <section className="bg-gradient-to-b from-bg-cream to-white pt-32 pb-20">
@@ -35,25 +62,20 @@ export default function ContactPage() {
                 <h2 className="text-xl font-semibold text-navy-dark">
                   {t("successTitle")}
                 </h2>
-                <p className="mt-2 text-text-muted">
-                  {t("successMessage")}
-                </p>
+                <p className="mt-2 text-text-muted">{t("successMessage")}</p>
               </div>
             ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSubmitted(true);
-                }}
-                className="space-y-6"
-              >
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-navy-dark mb-1.5">
-                    {t("name")} <span className="text-severity-critical">{t("required")}</span>
+                    {t("name")}{" "}
+                    <span className="text-severity-critical">{t("required")}</span>
                   </label>
                   <input
                     type="text"
                     required
+                    value={form.name}
+                    onChange={(e) => set("name", e.target.value)}
                     className="w-full rounded-lg border border-border px-4 py-2.5 text-sm focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none"
                     placeholder={t("namePlaceholder")}
                   />
@@ -61,11 +83,14 @@ export default function ContactPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-navy-dark mb-1.5">
-                    {t("email")} <span className="text-severity-critical">{t("required")}</span>
+                    {t("email")}{" "}
+                    <span className="text-severity-critical">{t("required")}</span>
                   </label>
                   <input
                     type="email"
                     required
+                    value={form.email}
+                    onChange={(e) => set("email", e.target.value)}
                     className="w-full rounded-lg border border-border px-4 py-2.5 text-sm focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none"
                     placeholder={t("emailPlaceholder")}
                   />
@@ -77,6 +102,8 @@ export default function ContactPage() {
                   </label>
                   <input
                     type="url"
+                    value={form.url}
+                    onChange={(e) => set("url", e.target.value)}
                     className="w-full rounded-lg border border-border px-4 py-2.5 text-sm focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none"
                     placeholder={t("urlPlaceholder")}
                   />
@@ -86,11 +113,15 @@ export default function ContactPage() {
                   <label className="block text-sm font-medium text-navy-dark mb-1.5">
                     {t("stack")}
                   </label>
-                  <select className="w-full rounded-lg border border-border px-4 py-2.5 text-sm text-text-body focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none">
+                  <select
+                    value={form.stack}
+                    onChange={(e) => set("stack", e.target.value)}
+                    className="w-full rounded-lg border border-border px-4 py-2.5 text-sm text-text-body focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none"
+                  >
                     <option value="">{t("stackPlaceholder")}</option>
-                    {stacks.map((stack) => (
-                      <option key={stack} value={stack}>
-                        {stack}
+                    {stacks.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
                       </option>
                     ))}
                   </select>
@@ -102,12 +133,17 @@ export default function ContactPage() {
                   </label>
                   <textarea
                     rows={4}
+                    value={form.message}
+                    onChange={(e) => set("message", e.target.value)}
                     className="w-full rounded-lg border border-border px-4 py-2.5 text-sm focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none resize-none"
                     placeholder={t("messagePlaceholder")}
                   />
                 </div>
 
-                <Button type="submit" size="lg" className="w-full">
+                <Button type="submit" size="lg" className="w-full" disabled={loading}>
+                  {loading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : null}
                   {t("submit")}
                 </Button>
 
