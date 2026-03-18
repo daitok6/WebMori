@@ -15,9 +15,9 @@ export function Footer() {
             <Image
               src="/logo-on-dark.png"
               alt="WebMori"
-              width={148}
-              height={40}
-              className="h-8 w-auto"
+              width={180}
+              height={48}
+              className="h-11 w-auto"
             />
             <p className="mt-3 text-sm text-white/60">
               {t("footer.description")}
