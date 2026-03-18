@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
@@ -10,13 +11,15 @@ import { Mail } from "lucide-react";
 
 export default function SignInPage() {
   const t = useTranslations("auth");
+  const params = useParams();
+  const locale = (params.locale as string) ?? "ja";
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    await signIn("resend", { email, callbackUrl: "/dashboard" });
+    await signIn("resend", { email, callbackUrl: `/${locale}/dashboard` });
     setLoading(false);
   }
 
