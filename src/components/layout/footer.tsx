@@ -64,13 +64,19 @@ export function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <span className="text-sm text-white/60">{t("footer.privacy")}</span>
+                <Link href="/legal/privacy" className="text-sm text-white/60 hover:text-white transition-colors">
+                  {t("footer.privacy")}
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-white/60">{t("footer.terms")}</span>
+                <Link href="/legal/terms" className="text-sm text-white/60 hover:text-white transition-colors">
+                  {t("footer.terms")}
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-white/60">{t("footer.tokushoho")}</span>
+                <Link href="/legal/tokushoho" className="text-sm text-white/60 hover:text-white transition-colors">
+                  {t("footer.tokushoho")}
+                </Link>
               </li>
             </ul>
           </div>
