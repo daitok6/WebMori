@@ -40,6 +40,33 @@ export default function AdminUserDetailPage() {
   const params = useParams();
   const [user, setUser] = useState<UserDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploadSiteUrl, setUploadSiteUrl] = useState("");
+  const [uploadLoading, setUploadLoading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+
+  async function handleUpload() {
+    if (!user?.org?.id || !uploadFile) return;
+    setUploadLoading(true);
+    try {
+      const form = new FormData();
+      form.append("orgId", user.org.id);
+      form.append("siteUrl", uploadSiteUrl);
+      form.append("file", uploadFile);
+      const res = await fetch("/api/admin/free-evals/upload", {
+        method: "POST",
+        body: form,
+      });
+      if (res.ok) {
+        setUploadSuccess(true);
+        setUploadFile(null);
+        setUploadSiteUrl("");
+        setTimeout(() => setUploadSuccess(false), 4000);
+      }
+    } finally {
+      setUploadLoading(false);
+    }
+  }
 
   useEffect(() => {
     fetch(`/api/admin/users/${params.id}`)
@@ -185,6 +212,48 @@ export default function AdminUserDetailPage() {
                 <AuditStatusBadge status={a.status} />
               </div>
             ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Send Free Eval PDF */}
+      {user.org && (
+        <Card className="mt-4">
+          <h2 className="text-sm font-semibold text-navy-dark mb-3">無料診断レポートを送信</h2>
+          <div className="space-y-3">
+            <div>
+              <label className="block text-xs text-text-muted mb-1">サイトURL（任意）</label>
+              <input
+                type="url"
+                value={uploadSiteUrl}
+                onChange={(e) => setUploadSiteUrl(e.target.value)}
+                placeholder="https://example.com"
+                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-gold focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-text-muted mb-1">PDFファイル</label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(e) => setUploadFile(e.target.files?.[0] ?? null)}
+                className="block text-sm text-text-muted file:mr-3 file:rounded file:border-0 file:bg-gold/10 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-navy-dark hover:file:bg-gold/20"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleUpload}
+                disabled={!uploadFile || uploadLoading}
+                className="rounded-lg bg-gold px-4 py-2 text-sm font-medium text-navy-dark hover:bg-gold/90 disabled:opacity-50 transition-colors"
+              >
+                {uploadLoading ? "送信中..." : "アップロード & 通知"}
+              </button>
+              {uploadSuccess && (
+                <span className="text-sm text-green-600 flex items-center gap-1">
+                  ✓ 送信しました
+                </span>
+              )}
+            </div>
           </div>
         </Card>
       )}

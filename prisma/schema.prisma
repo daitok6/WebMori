@@ -85,7 +85,8 @@ model Organization {
   repos          Repo[]
   audits         Audit[]
   messages       Message[]
-  contactRequest ContactRequest[]
+  contactRequest  ContactRequest[]
+  freeEvalReports FreeEvalReport[]
 }
 
 model Subscription {
@@ -198,6 +199,16 @@ model ContactRequest {
   updatedAt      DateTime    @default(now()) @updatedAt
 
   organization Organization? @relation(fields: [organizationId], references: [id])
+}
+
+model FreeEvalReport {
+  id             String   @id @default(cuid())
+  organizationId String
+  siteUrl        String?
+  pdfKey         String
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }
 
 // ──────────────────────────────────────────────

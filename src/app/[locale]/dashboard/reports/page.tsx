@@ -23,16 +23,27 @@ interface AuditSummary {
   prCount: number;
 }
 
+interface FreeEvalReport {
+  id: string;
+  siteUrl: string | null;
+  date: string;
+}
+
 export default function ReportsPage() {
   const t = useTranslations("dashboard.reports");
   const [audits, setAudits] = useState<AuditSummary[]>([]);
+  const [freeEvals, setFreeEvals] = useState<FreeEvalReport[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/dashboard/reports")
-      .then((r) => (r.ok ? r.json() : []))
-      .then(setAudits)
-      .finally(() => setLoading(false));
+    Promise.all([
+      fetch("/api/dashboard/reports")
+        .then((r) => (r.ok ? r.json() : []))
+        .then(setAudits),
+      fetch("/api/dashboard/reports/free-evals")
+        .then((r) => (r.ok ? r.json() : []))
+        .then(setFreeEvals),
+    ]).finally(() => setLoading(false));
   }, []);
 
   if (loading) {
@@ -47,7 +58,38 @@ export default function ReportsPage() {
     <>
       <h1 className="text-2xl font-bold text-navy-dark">{t("title")}</h1>
 
-      {audits.length === 0 ? (
+      {freeEvals.length > 0 && (
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold text-navy-dark mb-3">無料診断レポート</h2>
+          <div className="space-y-3">
+            {freeEvals.map((r) => (
+              <Card key={r.id} className="border-l-4 border-l-gold">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="default">無料診断</Badge>
+                      {r.siteUrl && (
+                        <span className="text-sm text-text-muted">{r.siteUrl}</span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-xs text-text-muted">
+                      {new Date(r.date).toLocaleDateString("ja-JP")}
+                    </p>
+                  </div>
+                  <a href={`/api/dashboard/reports/free-evals/${r.id}/pdf`}>
+                    <Button variant="secondary" size="sm">
+                      <Download className="mr-1 h-4 w-4" />
+                      PDF
+                    </Button>
+                  </a>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {audits.length === 0 && freeEvals.length === 0 ? (
         <Card className="mt-6 text-center py-12">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-bg-cream">
             <FileText className="h-7 w-7 text-text-muted" />
@@ -55,8 +97,12 @@ export default function ReportsPage() {
           <p className="font-medium text-navy-dark">{t("noReports")}</p>
           <p className="mt-1 text-sm text-text-muted">{t("noReportsDesc")}</p>
         </Card>
-      ) : (
-        <div className="mt-6 space-y-4">
+      ) : audits.length > 0 ? (
+        <>
+          {(audits.length > 0 || freeEvals.length > 0) && (
+            <h2 className="text-lg font-semibold text-navy-dark mt-6 mb-3">監査レポート</h2>
+          )}
+        <div className="mt-0 space-y-4">
           {audits.map((audit) => (
             <Card key={audit.id} className="hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between">
@@ -119,7 +165,8 @@ export default function ReportsPage() {
             </Card>
           ))}
         </div>
-      )}
+        </>
+      ) : null}
     </>
   );
 }
