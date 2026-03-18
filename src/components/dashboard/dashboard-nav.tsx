@@ -79,7 +79,7 @@ export function DashboardNav() {
       <aside className="hidden md:flex md:w-60 md:shrink-0 md:flex-col md:border-r md:border-border-light md:bg-white">
         <div className="flex h-16 items-center border-b border-border-light px-6">
           <Link href="/">
-            <Image src="/logo-dark.svg" alt="WebMori" width={120} height={32} className="h-7 w-auto" />
+            <Image src="/logo-on-light.png" alt="WebMori" width={120} height={32} className="h-7 w-auto" />
           </Link>
         </div>
         <nav className="flex-1 overflow-y-auto p-4">{navContent}</nav>
@@ -97,7 +97,7 @@ export function DashboardNav() {
       {/* Mobile header */}
       <div className="flex w-full h-14 items-center justify-between border-b border-border-light bg-white px-4 md:hidden">
         <Link href="/">
-          <Image src="/logo-dark.svg" alt="WebMori" width={120} height={32} className="h-7 w-auto" />
+          <Image src="/logo-on-light.png" alt="WebMori" width={120} height={32} className="h-7 w-auto" />
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}

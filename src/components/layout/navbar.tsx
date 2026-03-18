@@ -41,7 +41,7 @@ export function Navbar() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center">
             <Image
-              src="/logo-dark.svg"
+              src="/logo-on-light.png"
               alt="WebMori"
               width={148}
               height={40}

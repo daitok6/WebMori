@@ -94,20 +94,20 @@ export default function AdminUsersPage() {
             <div key={u.id} className="relative">
             <Link href={`/admin/users/${u.id}`}>
               <Card className="hover:shadow-md transition-shadow cursor-pointer pr-12">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-navy-dark/10 text-navy-dark font-semibold text-sm">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-dark/10 text-navy-dark font-semibold text-sm">
                       {(u.name ?? u.email)[0].toUpperCase()}
                     </div>
-                    <div>
-                      <p className="font-medium text-navy-dark">
+                    <div className="min-w-0">
+                      <p className="font-medium text-navy-dark truncate">
                         {u.name ?? "—"}
                       </p>
-                      <p className="text-xs text-text-muted">{u.email}</p>
+                      <p className="text-xs text-text-muted truncate">{u.email}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-sm text-text-muted">
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-text-muted pl-13 sm:pl-0">
                     {u.org?.plan ? (
                       <Badge variant={planVariant[u.org.plan] ?? "default"}>
                         {u.org.plan}

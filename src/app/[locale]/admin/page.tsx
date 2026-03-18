@@ -102,13 +102,13 @@ export default function AdminContactsPage() {
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-navy-dark">Free Evaluation Requests</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-navy-dark">Free Evaluation Requests</h1>
           <p className="mt-1 text-sm text-text-muted">{contacts.length} total</p>
         </div>
         {/* Filter */}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {["ALL", "PENDING", "REVIEWING", "COMPLETED", "REJECTED"].map((s) => (
             <button
               key={s}
@@ -143,7 +143,7 @@ export default function AdminContactsPage() {
         <div className="mt-6 space-y-4">
           {filtered.map((c) => (
             <Card key={c.id}>
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     {c.userId ? (

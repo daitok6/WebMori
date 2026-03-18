@@ -13,7 +13,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Image
-              src="/logo-light.svg"
+              src="/logo-on-dark.png"
               alt="WebMori"
               width={148}
               height={40}
