@@ -1,0 +1,85 @@
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+
+export function Footer() {
+  const t = useTranslations();
+
+  return (
+    <footer className="bg-navy-dark text-white">
+      <div className="h-1 bg-gradient-to-r from-gold to-gold-light" />
+      <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
+          {/* Brand */}
+          <div className="md:col-span-1">
+            <span className="text-xl font-bold">
+              Web<span className="text-gold">Mori</span>
+            </span>
+            <p className="mt-3 text-sm text-white/60">
+              {t("footer.description")}
+            </p>
+          </div>
+
+          {/* Product */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white/40">
+              {t("footer.product")}
+            </h3>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <Link href="/features" className="text-sm text-white/60 hover:text-white transition-colors">
+                  {t("nav.features")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/pricing" className="text-sm text-white/60 hover:text-white transition-colors">
+                  {t("nav.pricing")}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white/40">
+              {t("footer.company")}
+            </h3>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <Link href="/about" className="text-sm text-white/60 hover:text-white transition-colors">
+                  {t("nav.about")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-sm text-white/60 hover:text-white transition-colors">
+                  {t("nav.contact")}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white/40">
+              {t("footer.legal")}
+            </h3>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <span className="text-sm text-white/60">{t("footer.privacy")}</span>
+              </li>
+              <li>
+                <span className="text-sm text-white/60">{t("footer.terms")}</span>
+              </li>
+              <li>
+                <span className="text-sm text-white/60">{t("footer.tokushoho")}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/40">
+          &copy; {new Date().getFullYear()} {t("footer.copyright")}
+        </div>
+      </div>
+    </footer>
+  );
+}

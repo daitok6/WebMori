@@ -1,0 +1,88 @@
+---
+title: "環境変数の管理ベストプラクティス"
+excerpt: "APIキーやシークレットの安全な管理方法と、よくある漏洩パターンを解説します。"
+date: "2026-02-28"
+category: "セキュリティ"
+locale: "ja"
+---
+
+## なぜ環境変数の管理が重要なのか
+
+ウェブアプリケーションの脆弱性の中で、**シークレットの漏洩**は最も深刻な問題の一つです。APIキー、データベースの認証情報、OAuthシークレットがソースコードに含まれていると、リポジトリにアクセスできる誰もがこれらの情報を取得できます。
+
+GitHubの調査によると、パブリックリポジトリの**約10%に何らかのシークレットが含まれている**とされています。
+
+## よくある漏洩パターン
+
+### 1. ソースコードへのハードコード
+
+```javascript
+// 絶対にやってはいけない
+const stripe = new Stripe('sk_live_abc123def456...');
+const dbUrl = 'postgresql://user:password@host:5432/db';
+```
+
+### 2. .envファイルのGitコミット
+
+`.gitignore`に`.env`を追加し忘れるケースが非常に多いです。
+
+```gitignore
+# .gitignoreに必ず追加
+.env
+.env.local
+.env.production
+```
+
+### 3. Next.jsのNEXT_PUBLIC_の誤用
+
+`NEXT_PUBLIC_`プレフィックスを付けた環境変数は、**クライアントサイドのJavaScriptバンドルに含まれます**。
+
+```bash
+# 危険 — クライアントに露出する
+NEXT_PUBLIC_STRIPE_SECRET_KEY=sk_live_...
+
+# 正しい使い方
+STRIPE_SECRET_KEY=sk_live_...              # サーバーサイドのみ
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...  # 公開可能なキー
+```
+
+### 4. ログへの出力
+
+デバッグ目的で環境変数をログに出力し、そのまま本番環境に残してしまうことがあります。
+
+## ベストプラクティス
+
+### 環境変数の分類
+
+| 種類 | 例 | 管理方法 |
+|------|-----|---------|
+| 公開可能 | サイトURL、公開APIキー | `NEXT_PUBLIC_`使用可 |
+| サーバー限定 | DBパスワード、Stripeシークレット | サーバーサイドのみ |
+| 高機密 | マスターキー、暗号化キー | シークレット管理サービス |
+
+### 推奨ツール
+
+- **Vercel Environment Variables** — Vercelデプロイ時の管理
+- **dotenv** — ローカル開発用
+- **1Password / AWS Secrets Manager** — 高機密情報の管理
+
+### バリデーション
+
+アプリケーション起動時に必須の環境変数を検証しましょう。
+
+```typescript
+import { z } from 'zod';
+
+const envSchema = z.object({
+  DATABASE_URL: z.string().url(),
+  STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
+  LINE_CHANNEL_SECRET: z.string().min(1),
+});
+
+// 起動時に検証 — 不足があれば即座にエラー
+envSchema.parse(process.env);
+```
+
+## WebMoriのセキュリティ監査
+
+WebMoriでは、コードベース全体をスキャンし、ハードコードされたシークレット、誤った`NEXT_PUBLIC_`の使用、`.gitignore`の設定漏れを自動検出します。検出された問題には、具体的な修正手順とプルリクエストをお届けします。

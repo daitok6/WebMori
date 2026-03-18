@@ -1,0 +1,54 @@
+---
+title: "OWASP Top 10 Every Small Business Should Know"
+excerpt: "Understand the most critical web security risks and learn which vulnerabilities to prioritize."
+date: "2026-03-15"
+category: "Security"
+locale: "en"
+---
+
+## What is OWASP Top 10?
+
+OWASP (Open Worldwide Application Security Project) is a global nonprofit focused on web application security. The OWASP Top 10 is a regularly updated list of the most critical web application security risks.
+
+For SMBs and freelance developers, implementing every security measure at once isn't realistic. But understanding the OWASP Top 10 lets you **prioritize the highest-impact risks first**.
+
+## 3 Risks That Deserve Your Attention
+
+### 1. Injection Attacks
+
+SQL injection and command injection occur when user input is passed directly to database queries or system commands.
+
+```javascript
+// Dangerous
+const query = `SELECT * FROM users WHERE email = '${email}'`;
+
+// Safe
+const query = 'SELECT * FROM users WHERE email = $1';
+const result = await db.query(query, [email]);
+```
+
+**Fix:** Use parameterized queries and always sanitize user input.
+
+### 2. Broken Authentication
+
+Session management flaws, weak password policies, and improper token storage lead to account takeover.
+
+**Checklist:**
+- Are session timeouts properly configured?
+- Are passwords hashed with secure algorithms like bcrypt?
+- Are JWT tokens properly validated?
+
+### 3. Sensitive Data Exposure
+
+API keys and database credentials hardcoded in source code is a surprisingly common problem.
+
+**Fix:**
+- Use environment variables
+- Exclude `.env` files from Git tracking
+- Use a secrets management service
+
+## How WebMori Helps
+
+WebMori's security audit performs comprehensive checks based on the OWASP Top 10. We automatically scan your codebase and deliver a report with specific fix recommendations.
+
+Issues are prioritized by severity with business impact explained clearly. Safe fixes are auto-created as pull requests — just review and merge.

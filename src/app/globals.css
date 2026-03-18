@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Backgrounds */
+  --color-bg-white: #FFFFFF;
+  --color-bg-cream: #FDFBF7;
+  --color-bg-warm: #F8F5EE;
+
+  /* Navy */
+  --color-navy-dark: #0F1923;
+  --color-navy: #1C2B3A;
+  --color-navy-light: #2C3E50;
+
+  /* Gold */
+  --color-gold: #C9A84C;
+  --color-gold-light: #E8C97A;
+
+  /* Text */
+  --color-text-body: #1A1A1A;
+  --color-text-muted: #5A6478;
+
+  /* Borders */
+  --color-border: #DDD8CF;
+  --color-border-light: #EDE9E3;
+
+  /* Severity */
+  --color-severity-critical: #C0392B;
+  --color-severity-high: #D35400;
+  --color-severity-medium: #B7770D;
+  --color-severity-low: #1A6EA8;
+  --color-severity-good: #1A7A4A;
+
+  /* Typography */
+  --font-sans: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', 'Meiryo', -apple-system, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+body {
+  background: var(--color-bg-white);
+  color: var(--color-text-body);
+}

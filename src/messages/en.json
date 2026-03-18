@@ -1,0 +1,464 @@
+{
+  "nav": {
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "blog": "Blog",
+    "login": "Log in",
+    "getStarted": "Get Free Audit"
+  },
+  "hero": {
+    "badge": "For Tokyo-based freelancers & SMBs",
+    "title": "We protect your",
+    "titleHighlight": "website",
+    "subtitle": "Security, performance, LINE API, i18n, and maintainability. We audit your site monthly from 5 angles and deliver actionable improvements.",
+    "cta": "Get Free Audit",
+    "ctaSecondary": "Learn more"
+  },
+  "trust": {
+    "title": "Supported Platforms"
+  },
+  "problem": {
+    "title": "Sound familiar?",
+    "items": [
+      {
+        "title": "Security concerns",
+        "description": "Worried about vulnerabilities and data leaks, but lack the expertise to check"
+      },
+      {
+        "title": "Slow site speed",
+        "description": "Pages load slowly and users are bouncing before they convert"
+      },
+      {
+        "title": "Don't know what to fix first",
+        "description": "You know there are issues, but can't prioritize what matters most"
+      }
+    ]
+  },
+  "solution": {
+    "title": "WebMori solves this",
+    "items": [
+      {
+        "title": "5-angle comprehensive audit",
+        "description": "Security, performance, LINE API, i18n, and maintainability — all covered"
+      },
+      {
+        "title": "Actionable fix proposals",
+        "description": "Not just problems — we deliver pull requests with ready-to-merge code fixes"
+      },
+      {
+        "title": "Clear Japanese reports",
+        "description": "Technical findings explained in business terms, in easy-to-read reports"
+      }
+    ]
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "steps": [
+      {
+        "title": "Register your repo",
+        "description": "Just add your GitHub repository URL. Takes minutes to set up."
+      },
+      {
+        "title": "Automated audit runs",
+        "description": "Our 5 audit lenses scan your codebase thoroughly."
+      },
+      {
+        "title": "Review your report",
+        "description": "Prioritized improvement suggestions in a clear, readable report."
+      },
+      {
+        "title": "Apply fixes",
+        "description": "Safe fixes are auto-created as PRs. Just merge and you're done."
+      }
+    ]
+  },
+  "features": {
+    "title": "Key Features",
+    "items": [
+      {
+        "title": "Security Audit",
+        "description": "Detects OWASP Top 10 vulnerabilities, secret leaks, and auth issues"
+      },
+      {
+        "title": "Performance Optimization",
+        "description": "Core Web Vitals analysis, Japan CDN, and mobile optimization"
+      },
+      {
+        "title": "LINE API Audit",
+        "description": "Webhook signature verification, token management, LIFF configuration"
+      },
+      {
+        "title": "i18n Check",
+        "description": "Character encoding, date formats, currency display, multilingual support"
+      },
+      {
+        "title": "Auto-fix PRs",
+        "description": "Safe fixes automatically created as pull requests"
+      },
+      {
+        "title": "Monthly Reports",
+        "description": "Track progress with monthly improvement status reports"
+      }
+    ]
+  },
+  "stats": {
+    "items": [
+      { "value": "500+", "label": "Vulnerabilities detected" },
+      { "value": "50+", "label": "Sites audited" },
+      { "value": "98%", "label": "Client satisfaction" },
+      { "value": "24h", "label": "Average report delivery" }
+    ]
+  },
+  "pricing": {
+    "title": "Pricing Plans",
+    "subtitle": "Simple pricing that scales with your business",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "annualDiscount": "15% OFF",
+    "perMonth": "/mo",
+    "popular": "Popular",
+    "getStarted": "Get started",
+    "contact": "Contact us",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "19,800",
+        "annualPrice": "16,800",
+        "description": "For small sites",
+        "features": [
+          "1 repository",
+          "1 audit per month",
+          "Japanese report",
+          "Email support"
+        ]
+      },
+      {
+        "name": "Growth",
+        "price": "39,800",
+        "annualPrice": "33,800",
+        "description": "Perfect for growing businesses",
+        "features": [
+          "2 repositories",
+          "2 audits per month",
+          "Japanese report",
+          "Auto-fix PRs",
+          "Priority support",
+          "Onboarding session"
+        ],
+        "highlighted": true,
+        "onboarding": "30,000"
+      },
+      {
+        "name": "Pro",
+        "price": "69,800",
+        "annualPrice": "58,800",
+        "description": "For serious security",
+        "features": [
+          "3 repositories",
+          "4 audits per month",
+          "Japanese report",
+          "Auto-fix PRs",
+          "Dedicated support",
+          "Onboarding session",
+          "Ad-hoc audits"
+        ],
+        "onboarding": "50,000"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Start with a free audit",
+    "description": "Understand the current state of your website. Take the first step toward improvement with a free initial audit.",
+    "button": "Request Free Audit"
+  },
+  "featuresPage": {
+    "title": "Key Features",
+    "subtitle": "We analyze your site thoroughly through 5 audit lenses",
+    "lenses": [
+      {
+        "title": "Security Audit",
+        "description": "Checks for OWASP Top 10 vulnerabilities, secret leaks, authentication patterns, webhook security, and more."
+      },
+      {
+        "title": "Performance Optimization",
+        "description": "Core Web Vitals analysis, Japan CDN optimization, mobile performance, and asset optimization."
+      },
+      {
+        "title": "LINE API Audit",
+        "description": "Webhook signature verification, token management, LIFF configuration, and rate limit handling."
+      },
+      {
+        "title": "i18n / UX Check",
+        "description": "Character encoding, date/currency formats, multilingual support, and Japanese UX patterns."
+      },
+      {
+        "title": "Maintainability",
+        "description": "Outdated dependencies, code structure analysis, deployment risks, and technical debt assessment."
+      }
+    ],
+    "reportShowcase": {
+      "title": "Report Flow",
+      "markdownLabel": "Audit Findings (Markdown)",
+      "pdfLabel": "Client Report (PDF)"
+    },
+    "prExample": {
+      "title": "Auto-fix PR Example",
+      "description": "Issues that can be safely fixed are automatically created as reviewed pull requests."
+    },
+    "stacks": {
+      "title": "Supported Platforms",
+      "shopify": {
+        "title": "Shopify",
+        "description": "Checks Liquid template security, storefront API tokens, app permission scopes, and checkout scripts."
+      },
+      "wordpress": {
+        "title": "WordPress",
+        "description": "Checks plugin vulnerabilities, wp-admin access control, REST API auth, file permissions, and wp-config.php protection."
+      },
+      "nextjs": {
+        "title": "Next.js",
+        "description": "Checks NEXT_PUBLIC_* env vars, Server Actions auth, API route middleware, and client-side secret leakage."
+      },
+      "line": {
+        "title": "LINE Mini App",
+        "description": "Checks X-Line-Signature verification, channel access token management, LIFF URL config, and rate limit handling."
+      }
+    }
+  },
+  "pricingPage": {
+    "faqTitle": "Frequently Asked Questions",
+    "faq": [
+      {
+        "q": "What is the free audit?",
+        "a": "For first-time clients, we run a basic security and performance check on one repository for free. The report is delivered via email."
+      },
+      {
+        "q": "Are there contract commitments?",
+        "a": "Monthly plans can be canceled anytime. Annual plans require a 1-year commitment but include a 15% discount."
+      },
+      {
+        "q": "Are there limitations on which sites I can audit?",
+        "a": "We support major platforms including Shopify, WordPress, Next.js, and LINE Mini Apps. GitHub repository access is required."
+      },
+      {
+        "q": "What format is the report?",
+        "a": "Reports are delivered as Japanese PDF documents. They include prioritized issue lists, business impact explanations, and specific remediation steps."
+      },
+      {
+        "q": "What are auto-fix PRs?",
+        "a": "For issues that can be safely auto-fixed, we create GitHub pull requests automatically. Just review and merge to apply the fix."
+      },
+      {
+        "q": "What is onboarding?",
+        "a": "Included in Growth and Pro plans, onboarding covers initial setup support: repository connection, first audit run, and report walkthrough."
+      }
+    ]
+  },
+  "aboutPage": {
+    "title": "About Us",
+    "subtitle": "WebMori is a Tokyo-based web security audit service",
+    "sections": [
+      {
+        "title": "Mission",
+        "description": "To make enterprise-level web security accessible to Tokyo freelancers and SMBs. We remove technical complexity so you can focus on your business."
+      },
+      {
+        "title": "Approach",
+        "description": "Not just vulnerability scanning — we evaluate sites holistically from 5 angles: security, performance, LINE API, i18n, and maintainability. Reports include specific fix proposals with business impact explanations."
+      },
+      {
+        "title": "Technology",
+        "description": "Our AI-powered audit engine analyzes codebases with the quality of a human security expert, but faster. Auto-fix PRs let you resolve safe issues instantly."
+      }
+    ]
+  },
+  "contactPage": {
+    "title": "Contact",
+    "subtitle": "Request a free audit or ask us about our services",
+    "name": "Name",
+    "namePlaceholder": "Taro Yamada",
+    "email": "Email",
+    "emailPlaceholder": "example@company.jp",
+    "url": "Site URL",
+    "urlPlaceholder": "https://example.com",
+    "stack": "Site Type",
+    "stackPlaceholder": "Select one",
+    "message": "Message",
+    "messagePlaceholder": "Tell us about your questions or needs",
+    "submit": "Send",
+    "responseTime": "We typically respond within 3 business days",
+    "successTitle": "Thank you for reaching out",
+    "successMessage": "We'll get back to you within 3 business days.",
+    "required": "*"
+  },
+  "auth": {
+    "signInTitle": "Sign in",
+    "signInDescription": "Enter your email to receive a magic link",
+    "email": "Email address",
+    "emailPlaceholder": "example@company.jp",
+    "sendMagicLink": "Send magic link",
+    "sending": "Sending...",
+    "signInFooter": "If you don't have an account, one will be created automatically",
+    "verifyTitle": "Check your email",
+    "verifyDescription": "We sent you a login link. Check your email and click the link to sign in.",
+    "verifyNote": "If you don't see it, check your spam folder."
+  },
+  "dashboard": {
+    "nav": {
+      "overview": "Overview",
+      "reports": "Reports",
+      "repos": "Repositories",
+      "billing": "Billing",
+      "messages": "Messages",
+      "settings": "Settings"
+    },
+    "overview": {
+      "title": "Dashboard",
+      "welcome": "Welcome back",
+      "nextAudit": "Next Audit",
+      "totalFindings": "Total Findings",
+      "fixedIssues": "Fixed Issues",
+      "activePlan": "Active Plan",
+      "emptyTitle": "No audits yet",
+      "emptyDescription": "Add a repository to start your first audit.",
+      "addRepo": "Add Repository",
+      "recentReports": "Recent Reports",
+      "noReports": "No reports yet",
+      "quickActions": "Quick Actions",
+      "viewAllReports": "View all reports",
+      "manageBilling": "Manage billing",
+      "findingsTrend": "Findings Trend",
+      "findings": "findings",
+      "noPlan": "No Plan",
+      "notScheduled": "Not scheduled"
+    },
+    "reports": {
+      "title": "Audit Reports",
+      "noReports": "No reports yet",
+      "noReportsDesc": "Reports will appear here once an audit is completed.",
+      "downloadPdf": "Download PDF",
+      "viewDetails": "View Details",
+      "findings": "findings",
+      "critical": "Critical",
+      "prLinks": "PR Links"
+    },
+    "reportDetail": {
+      "backToReports": "Back to reports",
+      "notFound": "Report not found",
+      "notFoundDesc": "The report you're looking for doesn't exist or you don't have access.",
+      "summary": "Summary",
+      "findings": "Findings",
+      "downloadReport": "Report PDF",
+      "downloadFindings": "Findings PDF",
+      "severity": "Severity",
+      "evidence": "Evidence",
+      "impact": "Impact",
+      "fix": "Recommended Fix",
+      "effort": "Effort",
+      "prLink": "PR Link",
+      "noPdf": "PDF is being prepared"
+    },
+    "repos": {
+      "title": "Repositories",
+      "addRepo": "Add Repository",
+      "noRepos": "No repositories",
+      "noReposDesc": "Add a repository to start auditing.",
+      "name": "Repository name",
+      "namePlaceholder": "my-website",
+      "url": "Repository URL",
+      "urlPlaceholder": "https://github.com/user/repo",
+      "stack": "Stack",
+      "add": "Add",
+      "adding": "Adding...",
+      "remove": "Remove",
+      "removing": "Removing...",
+      "lastAudit": "Last audit",
+      "noAudits": "No audits yet",
+      "repoLimit": "Repo limit",
+      "of": "/"
+    },
+    "messages": {
+      "title": "Messages",
+      "noMessages": "No messages yet",
+      "noMessagesDesc": "Your conversations with the WebMori team will appear here.",
+      "placeholder": "Type a message...",
+      "send": "Send",
+      "sending": "Sending...",
+      "operator": "WebMori",
+      "you": "You"
+    },
+    "billing": {
+      "title": "Billing",
+      "currentPlan": "Current Plan",
+      "inactive": "Inactive",
+      "manage": "Manage",
+      "history": "Billing History",
+      "noHistory": "No billing history yet",
+      "amount": "Amount",
+      "date": "Date",
+      "status": "Status",
+      "paid": "Paid",
+      "failed": "Failed",
+      "pending": "Pending"
+    },
+    "settings": {
+      "title": "Settings",
+      "locale": "Language",
+      "localeDesc": "Choose the display language for the dashboard.",
+      "japanese": "日本語",
+      "english": "English",
+      "notifications": "Notifications",
+      "notificationsDesc": "Manage your email notification preferences.",
+      "auditComplete": "Audit complete notification",
+      "newMessage": "New message notification",
+      "save": "Save",
+      "saving": "Saving...",
+      "saved": "Saved"
+    }
+  },
+  "blogPage": {
+    "title": "Blog",
+    "subtitle": "Latest insights on security, performance, and LINE API",
+    "empty": "No posts yet.",
+    "backToBlog": "Back to blog",
+    "relatedPosts": "Related Posts"
+  },
+  "metadata": {
+    "home": {
+      "title": "WebMori - Web Security Audit Service",
+      "description": "Tokyo-based web security audit service for freelancers and SMBs. Monthly audits covering security, performance, LINE API, i18n, and maintainability."
+    },
+    "features": {
+      "title": "Features",
+      "description": "5 audit lenses: Security, Performance, LINE API, i18n, Maintainability. Supports Shopify, WordPress, Next.js, and LINE Mini Apps."
+    },
+    "pricing": {
+      "title": "Pricing Plans",
+      "description": "Starter ¥19,800/mo, Growth ¥39,800/mo, Pro ¥69,800/mo. Annual plans save 15%."
+    },
+    "about": {
+      "title": "About Us",
+      "description": "WebMori is a Tokyo-based web security audit service. AI-powered audits deliver enterprise-level quality."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Request a free audit or ask about our services. We typically respond within 3 business days."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Technical insights and best practices on security, performance, and LINE API."
+    }
+  },
+  "footer": {
+    "description": "Web security audit service protecting Tokyo freelancers and SMBs",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "tokushoho": "Specified Commercial Transactions Act",
+    "copyright": "WebMori. All rights reserved."
+  }
+}

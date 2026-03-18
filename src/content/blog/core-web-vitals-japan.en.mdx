@@ -1,0 +1,60 @@
+---
+title: "Core Web Vitals Optimization Guide for the Japanese Market"
+excerpt: "Key performance optimization points to improve user experience for Japanese audiences."
+date: "2026-03-10"
+category: "Performance"
+locale: "en"
+---
+
+## Why Japan-Specific Optimization Matters
+
+Japanese web users have distinct characteristics compared to global markets:
+
+- **Extremely high mobile usage** (70%+ of traffic from smartphones)
+- **Regional speed variance** — urban areas have fast connections, rural areas rely on 4G
+- **Japanese font file sizes** — JP web fonts can be several MB
+
+Optimizing for these factors impacts both user experience and SEO.
+
+## The 3 Core Web Vitals Metrics
+
+### LCP (Largest Contentful Paint)
+
+Time until the largest content element renders. Target: **under 2.5 seconds**.
+
+**Japan-specific optimization:**
+- Use Japan-region CDNs (Vercel Tokyo, Cloudflare)
+- Convert images to WebP/AVIF
+- Subset Japanese web fonts
+
+```html
+<!-- Font subsetting example -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap&text=..."
+  rel="stylesheet"
+/>
+```
+
+### INP (Interaction to Next Paint)
+
+Response time from user interaction to next paint. Target: **under 200ms**.
+
+**Tips:**
+- Break up long JavaScript tasks
+- Defer background work with `requestIdleCallback`
+- Use React/Next.js server components
+
+### CLS (Cumulative Layout Shift)
+
+Visual stability of the page. Target: **under 0.1**.
+
+**Common causes and fixes:**
+- Always set `width` and `height` on images
+- Reserve space for dynamic content
+- Use `font-display: swap` to prevent layout shift during font loading
+
+## Mobile-First Japan
+
+In Japan, LINE and mobile browsers dominate. Always test at 375px width, and ensure touch targets are at least 44x44px.
+
+WebMori's performance audit automatically checks Japan CDN configuration, mobile optimization, and asset compression, delivering specific improvement steps.

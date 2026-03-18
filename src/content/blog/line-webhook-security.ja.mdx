@@ -1,0 +1,90 @@
+---
+title: "LINE Webhook署名検証の重要性と実装方法"
+excerpt: "LINE Botの安全な運用に不可欠なWebhook署名検証の仕組みと、正しい実装方法を解説します。"
+date: "2026-03-05"
+category: "LINE API"
+locale: "ja"
+---
+
+## なぜWebhook署名検証が必要なのか
+
+LINE Messaging APIを使ったBotやMini Appでは、LINEプラットフォームからWebhookでイベントが送信されます。しかし、Webhookエンドポイントが公開URLである以上、**第三者からの偽装リクエスト**を受け取る可能性があります。
+
+署名検証を行わない場合のリスク：
+
+- **なりすまし攻撃** — 攻撃者がLINEを装って偽のイベントを送信
+- **データの改ざん** — リクエストの内容が途中で変更される
+- **不正な操作** — 偽のメッセージイベントでBotに意図しない動作をさせる
+
+## 署名検証の仕組み
+
+LINEは各WebhookリクエストにX-Line-Signatureヘッダーを付与します。このヘッダーは、チャネルシークレットを鍵としてリクエストボディのHMAC-SHA256ダイジェストをBase64エンコードしたものです。
+
+## 正しい実装例
+
+```javascript
+import crypto from 'crypto';
+
+function validateSignature(body, signature, channelSecret) {
+  const hash = crypto
+    .createHmac('SHA256', channelSecret)
+    .update(body)
+    .digest('base64');
+
+  return crypto.timingSafeEqual(
+    Buffer.from(hash),
+    Buffer.from(signature)
+  );
+}
+
+// Express.jsでの使用例
+app.post('/webhook', express.raw({ type: '*/*' }), (req, res) => {
+  const signature = req.headers['x-line-signature'];
+
+  if (!validateSignature(req.body, signature, CHANNEL_SECRET)) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  // 署名が有効 — イベントを処理
+  handleEvents(JSON.parse(req.body));
+  res.status(200).send('OK');
+});
+```
+
+## よくある間違い
+
+### 1. bodyをパースしてから検証する
+
+```javascript
+// 間違い — パース済みのbodyでは正しいハッシュが計算できない
+app.post('/webhook', express.json(), (req, res) => {
+  validateSignature(JSON.stringify(req.body), ...); // NG
+});
+```
+
+生のリクエストボディ（Buffer）で検証する必要があります。
+
+### 2. 単純な文字列比較を使う
+
+```javascript
+// 間違い — タイミング攻撃に脆弱
+if (hash === signature) { ... }
+```
+
+`crypto.timingSafeEqual`を使って一定時間比較を行ってください。
+
+### 3. チャネルシークレットをハードコードする
+
+環境変数で管理し、ソースコードに含めないでください。
+
+## WebMoriのLINE API監査
+
+WebMoriのLINE API監査では、以下を自動チェックします：
+
+- X-Line-Signature検証の実装有無
+- チャネルアクセストークンの管理方法
+- LIFF URLのHTTPS設定
+- レート制限（429レスポンス）のハンドリング
+- userIdの安全な保存方法
+
+LINE Botを運用している方は、ぜひ一度無料診断をお試しください。

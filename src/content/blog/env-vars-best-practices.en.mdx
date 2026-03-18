@@ -1,0 +1,88 @@
+---
+title: "Environment Variable Management Best Practices"
+excerpt: "How to safely manage API keys and secrets, and common leak patterns to watch for."
+date: "2026-02-28"
+category: "Security"
+locale: "en"
+---
+
+## Why Environment Variable Management Matters
+
+Among web application vulnerabilities, **secret leakage** is one of the most severe. When API keys, database credentials, or OAuth secrets are included in source code, anyone with repository access can obtain them.
+
+According to GitHub research, **roughly 10% of public repositories contain some form of secret**.
+
+## Common Leak Patterns
+
+### 1. Hardcoding in Source Code
+
+```javascript
+// Never do this
+const stripe = new Stripe('sk_live_abc123def456...');
+const dbUrl = 'postgresql://user:password@host:5432/db';
+```
+
+### 2. Committing .env Files to Git
+
+Forgetting to add `.env` to `.gitignore` is extremely common.
+
+```gitignore
+# Always include in .gitignore
+.env
+.env.local
+.env.production
+```
+
+### 3. Misusing Next.js NEXT_PUBLIC_
+
+Environment variables with the `NEXT_PUBLIC_` prefix are **included in the client-side JavaScript bundle**.
+
+```bash
+# Dangerous — exposed to client
+NEXT_PUBLIC_STRIPE_SECRET_KEY=sk_live_...
+
+# Correct usage
+STRIPE_SECRET_KEY=sk_live_...              # Server-side only
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...  # Publishable key
+```
+
+### 4. Logging Secrets
+
+Debug logging of environment variables that accidentally makes it to production.
+
+## Best Practices
+
+### Classify Your Variables
+
+| Type | Example | Handling |
+|------|---------|----------|
+| Public | Site URL, public API keys | OK with `NEXT_PUBLIC_` |
+| Server-only | DB password, Stripe secret | Server-side only |
+| Highly sensitive | Master keys, encryption keys | Secrets manager |
+
+### Recommended Tools
+
+- **Vercel Environment Variables** — for Vercel deployments
+- **dotenv** — for local development
+- **1Password / AWS Secrets Manager** — for highly sensitive data
+
+### Validation
+
+Validate required environment variables at application startup.
+
+```typescript
+import { z } from 'zod';
+
+const envSchema = z.object({
+  DATABASE_URL: z.string().url(),
+  STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
+  LINE_CHANNEL_SECRET: z.string().min(1),
+});
+
+// Validate on startup — fail immediately if missing
+envSchema.parse(process.env);
+```
+
+## WebMori's Security Audit
+
+WebMori scans your entire codebase to automatically detect hardcoded secrets, incorrect `NEXT_PUBLIC_` usage, and `.gitignore` misconfigurations. Detected issues come with specific fix instructions and pull requests.

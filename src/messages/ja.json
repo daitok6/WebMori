@@ -1,0 +1,464 @@
+{
+  "nav": {
+    "features": "機能",
+    "pricing": "料金",
+    "about": "私たちについて",
+    "contact": "お問い合わせ",
+    "blog": "ブログ",
+    "login": "ログイン",
+    "getStarted": "無料診断を始める"
+  },
+  "hero": {
+    "badge": "東京のフリーランス・中小企業向け",
+    "title": "あなたのウェブサイトを",
+    "titleHighlight": "守る",
+    "subtitle": "セキュリティ・パフォーマンス・LINE API・国際化・保守性。5つの視点からサイトを毎月監査し、具体的な改善提案をお届けします。",
+    "cta": "無料診断を始める",
+    "ctaSecondary": "詳しく見る"
+  },
+  "trust": {
+    "title": "対応プラットフォーム"
+  },
+  "problem": {
+    "title": "こんなお悩みありませんか？",
+    "items": [
+      {
+        "title": "セキュリティが不安",
+        "description": "脆弱性や漏洩リスクがないか心配だけど、専門知識がない"
+      },
+      {
+        "title": "サイトが遅い",
+        "description": "ページの表示速度が遅く、ユーザーの離脱率が高い"
+      },
+      {
+        "title": "何を改善すべきかわからない",
+        "description": "問題があることはわかるけど、優先順位がつけられない"
+      }
+    ]
+  },
+  "solution": {
+    "title": "WebMoriが解決します",
+    "items": [
+      {
+        "title": "5つの視点で徹底監査",
+        "description": "セキュリティ、パフォーマンス、LINE API、国際化、保守性を網羅的にチェック"
+      },
+      {
+        "title": "具体的な改善提案",
+        "description": "問題の指摘だけでなく、修正コード付きのプルリクエストをお届け"
+      },
+      {
+        "title": "わかりやすい日本語レポート",
+        "description": "技術的な内容をビジネス視点で解説した、読みやすいレポート"
+      }
+    ]
+  },
+  "howItWorks": {
+    "title": "ご利用の流れ",
+    "steps": [
+      {
+        "title": "リポジトリを登録",
+        "description": "GitHubリポジトリのURLを登録するだけ。数分で完了します。"
+      },
+      {
+        "title": "自動監査を実施",
+        "description": "5つの監査レンズで、コードベースを徹底的にスキャンします。"
+      },
+      {
+        "title": "レポートを確認",
+        "description": "優先度付きの改善提案を、わかりやすい日本語レポートでお届けします。"
+      },
+      {
+        "title": "修正を適用",
+        "description": "安全な修正はPRとして自動作成。そのままマージするだけです。"
+      }
+    ]
+  },
+  "features": {
+    "title": "主な機能",
+    "items": [
+      {
+        "title": "セキュリティ監査",
+        "description": "OWASP Top 10、シークレット漏洩、認証パターンを検出"
+      },
+      {
+        "title": "パフォーマンス最適化",
+        "description": "Core Web Vitals、日本向けCDN、モバイル最適化を分析"
+      },
+      {
+        "title": "LINE API監査",
+        "description": "Webhook署名検証、トークン管理、LIFF設定を検査"
+      },
+      {
+        "title": "国際化チェック",
+        "description": "文字コード、日付形式、通貨表記、多言語対応を検証"
+      },
+      {
+        "title": "自動修正PR",
+        "description": "安全な修正をプルリクエストとして自動作成"
+      },
+      {
+        "title": "月次レポート",
+        "description": "進捗を可視化し、毎月の改善状況をお届け"
+      }
+    ]
+  },
+  "stats": {
+    "items": [
+      { "value": "500+", "label": "検出した脆弱性" },
+      { "value": "50+", "label": "監査済みサイト" },
+      { "value": "98%", "label": "クライアント満足度" },
+      { "value": "24h", "label": "平均レポート提供時間" }
+    ]
+  },
+  "pricing": {
+    "title": "料金プラン",
+    "subtitle": "ビジネスの規模に合わせた、シンプルな料金体系",
+    "monthly": "月額",
+    "annual": "年額",
+    "annualDiscount": "15%OFF",
+    "perMonth": "/月",
+    "popular": "人気",
+    "getStarted": "始める",
+    "contact": "お問い合わせ",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "19,800",
+        "annualPrice": "16,800",
+        "description": "小規模サイト向け",
+        "features": [
+          "リポジトリ1つ",
+          "月1回の監査",
+          "日本語レポート",
+          "メールサポート"
+        ]
+      },
+      {
+        "name": "Growth",
+        "price": "39,800",
+        "annualPrice": "33,800",
+        "description": "成長中のビジネスに最適",
+        "features": [
+          "リポジトリ2つ",
+          "月2回の監査",
+          "日本語レポート",
+          "自動修正PR",
+          "優先サポート",
+          "オンボーディング"
+        ],
+        "highlighted": true,
+        "onboarding": "30,000"
+      },
+      {
+        "name": "Pro",
+        "price": "69,800",
+        "annualPrice": "58,800",
+        "description": "本格的なセキュリティ対策に",
+        "features": [
+          "リポジトリ3つ",
+          "月4回の監査",
+          "日本語レポート",
+          "自動修正PR",
+          "専用サポート",
+          "オンボーディング",
+          "アドホック監査"
+        ],
+        "onboarding": "50,000"
+      }
+    ]
+  },
+  "cta": {
+    "title": "まずは無料診断から",
+    "description": "あなたのウェブサイトの現状を把握しましょう。無料の初回診断で、改善の第一歩を踏み出せます。",
+    "button": "無料診断を申し込む"
+  },
+  "featuresPage": {
+    "title": "主な機能",
+    "subtitle": "5つの監査レンズで、あなたのサイトを徹底的に分析します",
+    "lenses": [
+      {
+        "title": "セキュリティ監査",
+        "description": "OWASP Top 10、シークレット漏洩、認証パターン、Webhookセキュリティなどを検査します。"
+      },
+      {
+        "title": "パフォーマンス最適化",
+        "description": "Core Web Vitals分析、日本向けCDN最適化、モバイルパフォーマンス、アセット最適化を行います。"
+      },
+      {
+        "title": "LINE API監査",
+        "description": "Webhook署名検証、トークン管理、LIFF設定、レート制限対応を検査します。"
+      },
+      {
+        "title": "国際化・UXチェック",
+        "description": "文字コード、日付・通貨形式、多言語対応、日本語UXパターンを検証します。"
+      },
+      {
+        "title": "保守性",
+        "description": "古い依存関係、コード構造分析、デプロイリスク、技術的負債を評価します。"
+      }
+    ],
+    "reportShowcase": {
+      "title": "レポートの流れ",
+      "markdownLabel": "監査結果 (Markdown)",
+      "pdfLabel": "クライアントレポート (PDF)"
+    },
+    "prExample": {
+      "title": "自動修正PRの例",
+      "description": "安全に修正できる問題は、レビュー済みのプルリクエストとして自動作成されます。"
+    },
+    "stacks": {
+      "title": "対応プラットフォーム",
+      "shopify": {
+        "title": "Shopify",
+        "description": "Liquidテンプレートのセキュリティ、ストアフロントAPIトークン、アプリ権限スコープ、チェックアウトスクリプトを検査します。"
+      },
+      "wordpress": {
+        "title": "WordPress",
+        "description": "プラグインの脆弱性、wp-adminアクセス制御、REST API認証、ファイルパーミッション、wp-config.phpの保護を検査します。"
+      },
+      "nextjs": {
+        "title": "Next.js",
+        "description": "NEXT_PUBLIC_*環境変数、Server Actionsの認証、APIルートのミドルウェア、クライアントサイドの秘密情報漏洩を検査します。"
+      },
+      "line": {
+        "title": "LINE Mini App",
+        "description": "X-Line-Signature検証、チャネルアクセストークン管理、LIFF URL設定、レート制限ハンドリングを検査します。"
+      }
+    }
+  },
+  "pricingPage": {
+    "faqTitle": "よくある質問",
+    "faq": [
+      {
+        "q": "無料診断とは何ですか？",
+        "a": "初回のお客様に限り、1つのリポジトリを対象にセキュリティとパフォーマンスの基本チェックを無料で実施します。レポートはメールでお届けします。"
+      },
+      {
+        "q": "契約期間の縛りはありますか？",
+        "a": "月額プランはいつでも解約可能です。年額プランは1年間のコミットメントとなりますが、15%の割引が適用されます。"
+      },
+      {
+        "q": "監査対象のサイトに制限はありますか？",
+        "a": "Shopify、WordPress、Next.js、LINE Mini Appなど、主要なプラットフォームに対応しています。GitHubリポジトリへのアクセスが必要です。"
+      },
+      {
+        "q": "レポートはどのような形式ですか？",
+        "a": "日本語のPDFレポートとして提供されます。重要度別の問題一覧、ビジネス影響の説明、具体的な改善手順が含まれます。"
+      },
+      {
+        "q": "自動修正PRとは何ですか？",
+        "a": "安全に自動修正できる問題について、GitHubプルリクエストを自動作成します。レビュー後にマージするだけで修正が完了します。"
+      },
+      {
+        "q": "オンボーディングとは何ですか？",
+        "a": "Growth・Proプランに含まれる初回セットアップサポートです。リポジトリの接続、初回監査の実施、レポートの説明を行います。"
+      }
+    ]
+  },
+  "aboutPage": {
+    "title": "私たちについて",
+    "subtitle": "WebMori（ウェブ守り）は、東京を拠点とするウェブセキュリティ監査サービスです",
+    "sections": [
+      {
+        "title": "ミッション",
+        "description": "東京のフリーランスや中小企業が、大企業と同じレベルのウェブセキュリティを手軽に導入できるようにすること。技術的な複雑さを取り除き、ビジネスに集中できる環境を提供します。"
+      },
+      {
+        "title": "アプローチ",
+        "description": "単なる脆弱性スキャンではなく、5つの視点（セキュリティ、パフォーマンス、LINE API、国際化、保守性）からサイトを総合的に評価します。問題の指摘だけでなく、具体的な修正提案とビジネス影響の説明を含むレポートをお届けします。"
+      },
+      {
+        "title": "テクノロジー",
+        "description": "最新のAI技術を活用した監査エンジンが、人間のセキュリティエキスパートと同等の品質で、より迅速にコードベースを分析します。自動修正PRにより、安全な問題は即座に解決可能です。"
+      }
+    ]
+  },
+  "contactPage": {
+    "title": "お問い合わせ",
+    "subtitle": "無料診断のお申し込み、またはサービスに関するご質問をお送りください",
+    "name": "お名前",
+    "namePlaceholder": "山田 太郎",
+    "email": "メールアドレス",
+    "emailPlaceholder": "example@company.jp",
+    "url": "サイトURL",
+    "urlPlaceholder": "https://example.com",
+    "stack": "サイトの種類",
+    "stackPlaceholder": "選択してください",
+    "message": "メッセージ",
+    "messagePlaceholder": "ご質問やご要望をお聞かせください",
+    "submit": "送信する",
+    "responseTime": "通常3営業日以内にご返信いたします",
+    "successTitle": "お問い合わせありがとうございます",
+    "successMessage": "3営業日以内にご連絡いたします。",
+    "required": "*"
+  },
+  "auth": {
+    "signInTitle": "ログイン",
+    "signInDescription": "メールアドレスを入力してマジックリンクを受け取ります",
+    "email": "メールアドレス",
+    "emailPlaceholder": "example@company.jp",
+    "sendMagicLink": "マジックリンクを送信",
+    "sending": "送信中...",
+    "signInFooter": "アカウントがない場合は自動的に作成されます",
+    "verifyTitle": "メールを確認してください",
+    "verifyDescription": "ログインリンクをメールで送信しました。メールを確認してリンクをクリックしてください。",
+    "verifyNote": "メールが届かない場合は、迷惑メールフォルダをご確認ください。"
+  },
+  "dashboard": {
+    "nav": {
+      "overview": "概要",
+      "reports": "レポート",
+      "repos": "リポジトリ",
+      "billing": "請求",
+      "messages": "メッセージ",
+      "settings": "設定"
+    },
+    "overview": {
+      "title": "ダッシュボード",
+      "welcome": "おかえりなさい",
+      "nextAudit": "次回の監査",
+      "totalFindings": "検出された問題",
+      "fixedIssues": "修正済み",
+      "activePlan": "現在のプラン",
+      "emptyTitle": "まだ監査がありません",
+      "emptyDescription": "リポジトリを追加して、最初の監査を開始しましょう。",
+      "addRepo": "リポジトリを追加",
+      "recentReports": "最近のレポート",
+      "noReports": "レポートはまだありません",
+      "quickActions": "クイックアクション",
+      "viewAllReports": "すべてのレポートを見る",
+      "manageBilling": "請求管理",
+      "findingsTrend": "検出傾向",
+      "findings": "件の問題",
+      "noPlan": "未契約",
+      "notScheduled": "未定"
+    },
+    "reports": {
+      "title": "監査レポート",
+      "noReports": "レポートはまだありません",
+      "noReportsDesc": "監査が完了すると、ここにレポートが表示されます。",
+      "downloadPdf": "PDFダウンロード",
+      "viewDetails": "詳細を見る",
+      "findings": "件の問題",
+      "critical": "クリティカル",
+      "prLinks": "PRリンク"
+    },
+    "reportDetail": {
+      "backToReports": "レポート一覧に戻る",
+      "notFound": "レポートが見つかりません",
+      "notFoundDesc": "お探しのレポートは存在しないか、アクセス権がありません。",
+      "summary": "概要",
+      "findings": "検出された問題",
+      "downloadReport": "レポートPDF",
+      "downloadFindings": "所見PDF",
+      "severity": "重要度",
+      "evidence": "証拠",
+      "impact": "影響",
+      "fix": "推奨修正",
+      "effort": "工数",
+      "prLink": "PRリンク",
+      "noPdf": "PDFは準備中です"
+    },
+    "repos": {
+      "title": "リポジトリ",
+      "addRepo": "リポジトリを追加",
+      "noRepos": "リポジトリがありません",
+      "noReposDesc": "リポジトリを追加して監査を開始しましょう。",
+      "name": "リポジトリ名",
+      "namePlaceholder": "my-website",
+      "url": "リポジトリURL",
+      "urlPlaceholder": "https://github.com/user/repo",
+      "stack": "スタック",
+      "add": "追加",
+      "adding": "追加中...",
+      "remove": "削除",
+      "removing": "削除中...",
+      "lastAudit": "最終監査",
+      "noAudits": "未監査",
+      "repoLimit": "リポジトリ上限",
+      "of": "/"
+    },
+    "messages": {
+      "title": "メッセージ",
+      "noMessages": "メッセージはまだありません",
+      "noMessagesDesc": "WebMoriチームとのやり取りがここに表示されます。",
+      "placeholder": "メッセージを入力...",
+      "send": "送信",
+      "sending": "送信中...",
+      "operator": "WebMori",
+      "you": "あなた"
+    },
+    "billing": {
+      "title": "請求管理",
+      "currentPlan": "現在のプラン",
+      "inactive": "未契約",
+      "manage": "管理",
+      "history": "請求履歴",
+      "noHistory": "請求履歴はまだありません",
+      "amount": "金額",
+      "date": "日付",
+      "status": "ステータス",
+      "paid": "支払済",
+      "failed": "失敗",
+      "pending": "処理中"
+    },
+    "settings": {
+      "title": "設定",
+      "locale": "言語",
+      "localeDesc": "ダッシュボードの表示言語を選択します。",
+      "japanese": "日本語",
+      "english": "English",
+      "notifications": "通知",
+      "notificationsDesc": "メール通知の設定を管理します。",
+      "auditComplete": "監査完了通知",
+      "newMessage": "新規メッセージ通知",
+      "save": "保存",
+      "saving": "保存中...",
+      "saved": "保存しました"
+    }
+  },
+  "blogPage": {
+    "title": "ブログ",
+    "subtitle": "セキュリティ、パフォーマンス、LINE APIに関する最新情報をお届けします",
+    "empty": "記事がまだありません。",
+    "backToBlog": "ブログ一覧に戻る",
+    "relatedPosts": "関連記事"
+  },
+  "metadata": {
+    "home": {
+      "title": "WebMori（ウェブ守り）- ウェブセキュリティ監査サービス",
+      "description": "東京のフリーランス・中小企業向けウェブセキュリティ監査サービス。セキュリティ、パフォーマンス、LINE API、国際化、保守性の5つの視点から毎月監査。"
+    },
+    "features": {
+      "title": "機能",
+      "description": "5つの監査レンズ：セキュリティ、パフォーマンス、LINE API、国際化、保守性。Shopify、WordPress、Next.js、LINE Mini Appに対応。"
+    },
+    "pricing": {
+      "title": "料金プラン",
+      "description": "Starter ¥19,800/月、Growth ¥39,800/月、Pro ¥69,800/月。年額プランは15%OFF。"
+    },
+    "about": {
+      "title": "私たちについて",
+      "description": "WebMori（ウェブ守り）は東京を拠点とするウェブセキュリティ監査サービスです。AI技術で高品質な監査を提供します。"
+    },
+    "contact": {
+      "title": "お問い合わせ",
+      "description": "無料診断のお申し込み、サービスに関するご質問はこちらから。通常3営業日以内にご返信いたします。"
+    },
+    "blog": {
+      "title": "ブログ",
+      "description": "セキュリティ、パフォーマンス、LINE APIに関する技術情報とベストプラクティスをお届けします。"
+    }
+  },
+  "footer": {
+    "description": "東京のフリーランス・中小企業のウェブサイトを守るセキュリティ監査サービス",
+    "product": "プロダクト",
+    "company": "会社情報",
+    "legal": "法的情報",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "tokushoho": "特定商取引法に基づく表記",
+    "copyright": "WebMori. All rights reserved."
+  }
+}

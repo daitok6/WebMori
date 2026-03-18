@@ -1,0 +1,244 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ──────────────────────────────────────────────
+// NextAuth models
+// ──────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  locale        String    @default("ja")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// ──────────────────────────────────────────────
+// Business models
+// ──────────────────────────────────────────────
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users          User[]
+  subscription   Subscription?
+  repos          Repo[]
+  audits         Audit[]
+  messages       Message[]
+  contactRequest ContactRequest[]
+}
+
+model Subscription {
+  id             String       @id @default(cuid())
+  organizationId String       @unique
+  plan           Plan
+  billingCycle   BillingCycle @default(MONTHLY)
+  status         SubStatus    @default(ACTIVE)
+
+  stripeCustomerId     String?  @unique
+  stripeSubscriptionId String?  @unique
+  stripePriceId        String?
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  payments     Payment[]
+}
+
+model Payment {
+  id             String   @id @default(cuid())
+  subscriptionId String
+  amount         Int
+  currency       String   @default("jpy")
+  status         String
+  stripeInvoiceId String? @unique
+  paidAt         DateTime?
+  createdAt      DateTime @default(now())
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+}
+
+model Repo {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  url            String
+  stack          Stack    @default(OTHER)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  audits       Audit[]
+}
+
+model Audit {
+  id             String      @id @default(cuid())
+  organizationId String
+  repoId         String
+  status         AuditStatus @default(SCHEDULED)
+
+  reportPdfUrl   String?
+  findingsPdfUrl String?
+  prLinks        String[]
+
+  scheduledAt DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+  deliveredAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repo         Repo         @relation(fields: [repoId], references: [id], onDelete: Cascade)
+  findings     Finding[]
+}
+
+model Finding {
+  id       String   @id @default(cuid())
+  auditId  String
+  title    String
+  severity Severity
+  evidence String
+  impact   String
+  fix      String
+  effort   Effort
+  safeAutoFix Boolean @default(false)
+  prUrl    String?
+  createdAt DateTime @default(now())
+
+  audit Audit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  organizationId String
+  fromOperator   Boolean  @default(false)
+  content        String
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model ContactRequest {
+  id             String   @id @default(cuid())
+  name           String
+  email          String
+  url            String?
+  stack          String?
+  message        String?
+  organizationId String?
+  createdAt      DateTime @default(now())
+
+  organization Organization? @relation(fields: [organizationId], references: [id])
+}
+
+// ──────────────────────────────────────────────
+// Enums
+// ──────────────────────────────────────────────
+
+enum Plan {
+  STARTER
+  GROWTH
+  PRO
+}
+
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
+}
+
+enum SubStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+}
+
+enum Stack {
+  SHOPIFY
+  WORDPRESS
+  NEXTJS
+  LINE_MINI_APP
+  OTHER
+}
+
+enum AuditStatus {
+  SCHEDULED
+  IN_PROGRESS
+  REVIEW
+  DELIVERED
+  COMPLETED
+}
+
+enum Severity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum Effort {
+  QUICK_WIN
+  MODERATE
+  LARGE
+}
