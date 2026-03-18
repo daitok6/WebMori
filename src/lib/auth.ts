@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Resend from "next-auth/providers/resend";
+import Google from "next-auth/providers/google";
 import { Resend as ResendClient } from "resend";
 import { prisma } from "./prisma";
 
@@ -55,6 +56,10 @@ function magicLinkHtml(url: string): string {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     Resend({
       from: process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>",
       apiKey: process.env.RESEND_API_KEY,

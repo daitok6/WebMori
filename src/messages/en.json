@@ -295,7 +295,9 @@
   },
   "auth": {
     "signInTitle": "Sign in",
-    "signInDescription": "Enter your email to receive a magic link",
+    "signInDescription": "Sign in with Google or use your email",
+    "signInWithGoogle": "Continue with Google",
+    "or": "or",
     "email": "Email address",
     "emailPlaceholder": "example@company.jp",
     "sendMagicLink": "Send magic link",

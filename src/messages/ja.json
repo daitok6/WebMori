@@ -295,7 +295,9 @@
   },
   "auth": {
     "signInTitle": "ログイン",
-    "signInDescription": "メールアドレスを入力してマジックリンクを受け取ります",
+    "signInDescription": "Googleアカウントまたはメールアドレスでログインしてください",
+    "signInWithGoogle": "Googleでログイン",
+    "or": "または",
     "email": "メールアドレス",
     "emailPlaceholder": "example@company.jp",
     "sendMagicLink": "マジックリンクを送信",
