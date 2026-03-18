@@ -44,10 +44,12 @@ export default function AdminUserDetailPage() {
   const [uploadSiteUrl, setUploadSiteUrl] = useState("");
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   async function handleUpload() {
     if (!user?.org?.id || !uploadFile) return;
     setUploadLoading(true);
+    setUploadError(null);
     try {
       const form = new FormData();
       form.append("orgId", user.org.id);
@@ -62,7 +64,12 @@ export default function AdminUserDetailPage() {
         setUploadFile(null);
         setUploadSiteUrl("");
         setTimeout(() => setUploadSuccess(false), 4000);
+      } else {
+        const body = await res.json().catch(() => ({}));
+        setUploadError(body.error ?? `エラー (${res.status})`);
       }
+    } catch (e) {
+      setUploadError(e instanceof Error ? e.message : "ネットワークエラー");
     } finally {
       setUploadLoading(false);
     }
@@ -251,6 +258,11 @@ export default function AdminUserDetailPage() {
               {uploadSuccess && (
                 <span className="text-sm text-green-600 flex items-center gap-1">
                   ✓ 送信しました
+                </span>
+              )}
+              {uploadError && (
+                <span className="text-sm text-red-600">
+                  ✗ {uploadError}
                 </span>
               )}
             </div>
