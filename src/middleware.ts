@@ -34,5 +34,11 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/(ja|en)/:path*", "/dashboard/:path*", "/dashboard"],
+  matcher: [
+    "/",
+    "/(ja|en)/:path*",
+    "/dashboard/:path*",
+    "/dashboard",
+    "/auth/:path*",
+  ],
 };

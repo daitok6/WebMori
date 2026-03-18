@@ -30,7 +30,7 @@ export default function ReportsPage() {
 
   useEffect(() => {
     fetch("/api/dashboard/reports")
-      .then((r) => r.json())
+      .then((r) => (r.ok ? r.json() : []))
       .then(setAudits)
       .finally(() => setLoading(false));
   }, []);

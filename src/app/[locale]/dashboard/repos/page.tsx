@@ -51,7 +51,7 @@ export default function ReposPage() {
   function fetchRepos() {
     setLoading(true);
     fetch("/api/dashboard/repos")
-      .then((r) => r.json())
+      .then((r) => (r.ok ? r.json() : []))
       .then(setRepos)
       .finally(() => setLoading(false));
   }

@@ -30,7 +30,7 @@ export default function BillingPage() {
 
   useEffect(() => {
     fetch("/api/dashboard/billing")
-      .then((r) => r.json())
+      .then((r) => (r.ok ? r.json() : null))
       .then(setData)
       .finally(() => setLoading(false));
   }, []);
