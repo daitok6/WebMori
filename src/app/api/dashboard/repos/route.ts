@@ -85,6 +85,11 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const org = await getCurrentOrg();
   if (!org) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

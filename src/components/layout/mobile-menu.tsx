@@ -52,7 +52,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 src="/logo-on-light.png"
                 alt="WebMori"
                 width={220}
-                height={60}
+                height={120}
                 className="h-[120px] w-auto"
               />
               <button onClick={onClose} className="p-2 text-text-muted" aria-label="Close menu">

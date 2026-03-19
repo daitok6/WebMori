@@ -25,18 +25,20 @@ export function Navbar() {
 
   useEffect(() => {
     let lastY = window.scrollY;
+    let ticking = false;
     const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 10);
-      // Only hide/show on mobile (< 768px)
-      if (window.innerWidth < 768) {
-        if (y > lastY && y > 60) {
-          setHidden(true);
-        } else {
-          setHidden(false);
-        }
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          setScrolled(y > 10);
+          if (window.innerWidth < 768) {
+            setHidden(y > lastY && y > 60);
+          }
+          lastY = y;
+          ticking = false;
+        });
+        ticking = true;
       }
-      lastY = y;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -59,7 +61,7 @@ export function Navbar() {
               src="/logo-on-light.png"
               alt="WebMori"
               width={220}
-              height={60}
+              height={120}
               className="h-[120px] w-auto"
               priority
             />

@@ -29,7 +29,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No organization" }, { status: 400 });
   }
 
-  const body = await request.json();
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
   const { content } = body as { content: string };
 
   if (!content?.trim()) {
@@ -45,8 +50,8 @@ export async function POST(request: NextRequest) {
   });
 
   // Notify admin
-  const adminEmail = process.env.ADMIN_EMAIL ?? "daito.k631@gmail.com";
-  if (process.env.RESEND_API_KEY) {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (process.env.RESEND_API_KEY && adminEmail) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";
     await resend.emails.send({

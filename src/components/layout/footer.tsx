@@ -16,7 +16,7 @@ export function Footer() {
               src="/logo-on-dark.png"
               alt="WebMori"
               width={220}
-              height={60}
+              height={120}
               className="h-[120px] w-auto"
             />
             <p className="mt-3 text-sm text-white/60">

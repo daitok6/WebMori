@@ -118,11 +118,11 @@ export async function POST(request: NextRequest) {
   const safeStack = trimmedStack ? esc(trimmedStack) : "未入力";
   const safeMessage = trimmedMessage ? esc(trimmedMessage) : "未入力";
 
-  const operatorEmail = process.env.OPERATOR_EMAIL ?? "daito.k631@gmail.com";
+  const operatorEmail = process.env.OPERATOR_EMAIL;
   const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";
 
   // Notify operator
-  await resend.emails.send({
+  if (operatorEmail) await resend.emails.send({
     from,
     to: [operatorEmail],
     subject: `【WebMori】無料診断のお申し込み: ${safeName}`,
