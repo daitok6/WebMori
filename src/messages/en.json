@@ -128,9 +128,11 @@
         "annualPrice": "16,800",
         "description": "For small sites",
         "features": [
-          "1 repository",
-          "1 audit per month",
+          "1 site",
+          "Monthly audit (Security + Performance)",
+          "Basic LINE check included",
           "Japanese report",
+          "All safe fixes as GitHub PRs",
           "Email support"
         ]
       },
@@ -138,13 +140,15 @@
         "name": "Growth",
         "price": "39,800",
         "annualPrice": "33,800",
-        "description": "Perfect for growing businesses",
+        "description": "Comprehensive 5-lens audit",
         "features": [
-          "2 repositories",
-          "2 audits per month",
-          "Japanese report",
-          "Auto-fix PRs",
-          "Priority support",
+          "1 site",
+          "Monthly audit (all 5 lenses)",
+          "Full LINE API audit",
+          "i18n + maintainability checks",
+          "Japanese report + executive summary",
+          "All safe fixes as GitHub PRs",
+          "Priority support (3 business days)",
           "Onboarding session"
         ],
         "highlighted": true,
@@ -154,15 +158,18 @@
         "name": "Pro",
         "price": "69,800",
         "annualPrice": "58,800",
-        "description": "For serious security",
+        "description": "Multi-site + deep audit",
         "features": [
-          "3 repositories",
-          "4 audits per month",
-          "Japanese report",
-          "Auto-fix PRs",
-          "Dedicated support",
-          "Onboarding session",
-          "Ad-hoc audits"
+          "2 sites",
+          "Monthly + ad-hoc audits",
+          "All 5 lenses (deep)",
+          "Deep LINE API audit",
+          "CVE tracking included",
+          "Japanese report + trend comparison",
+          "All safe fixes as GitHub PRs",
+          "Quarterly strategic review",
+          "Same-day support",
+          "Onboarding session"
         ],
         "onboarding": "50,000"
       }

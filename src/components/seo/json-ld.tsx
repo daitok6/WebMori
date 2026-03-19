@@ -12,6 +12,8 @@ export function JsonLd() {
       {
         "@type": "Offer",
         name: "Starter",
+        description:
+          "1 site, monthly security + performance audit, basic LINE check, all safe fixes as GitHub PRs",
         price: "19800",
         priceCurrency: "JPY",
         priceValidUntil: "2027-03-31",
@@ -20,6 +22,8 @@ export function JsonLd() {
       {
         "@type": "Offer",
         name: "Growth",
+        description:
+          "1 site, monthly 5-lens audit (security, performance, LINE API, i18n, maintainability), all safe fixes as GitHub PRs",
         price: "39800",
         priceCurrency: "JPY",
         priceValidUntil: "2027-03-31",
@@ -28,6 +32,8 @@ export function JsonLd() {
       {
         "@type": "Offer",
         name: "Pro",
+        description:
+          "2 sites, monthly + ad-hoc deep 5-lens audit, CVE tracking, quarterly strategic review, all safe fixes as GitHub PRs",
         price: "69800",
         priceCurrency: "JPY",
         priceValidUntil: "2027-03-31",
