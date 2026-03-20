@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { HeroSection } from "@/components/marketing/hero-section";
+
+export const revalidate = 3600;
 import { TrustLogos } from "@/components/marketing/trust-logos";
 import { ProblemSolution } from "@/components/marketing/problem-solution";
 import { HowItWorks } from "@/components/marketing/how-it-works";

@@ -9,15 +9,20 @@ export async function GET(request: NextRequest) {
   }
 
   // Find active subscriptions with repos that are due for audit
+  // Includes repos with their latest audit to avoid N+1 queries
   const activeSubscriptions = await prisma.subscription.findMany({
     where: { status: "ACTIVE" },
     include: {
       organization: {
         include: {
-          repos: { where: { isActive: true } },
-          audits: {
-            orderBy: { createdAt: "desc" },
-            take: 1,
+          repos: {
+            where: { isActive: true },
+            include: {
+              audits: {
+                orderBy: { createdAt: "desc" },
+                take: 1,
+              },
+            },
           },
         },
       },
@@ -36,11 +41,7 @@ export async function GET(request: NextRequest) {
       sub.plan === "PRO" ? 7 : sub.plan === "GROWTH" ? 14 : 30;
 
     for (const repo of org.repos) {
-      // Find last audit for this repo
-      const lastAudit = await prisma.audit.findFirst({
-        where: { repoId: repo.id },
-        orderBy: { createdAt: "desc" },
-      });
+      const lastAudit = repo.audits[0] ?? null;
 
       const daysSinceLastAudit = lastAudit
         ? Math.floor(

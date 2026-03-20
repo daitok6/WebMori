@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getAllPosts } from "@/lib/blog";
+
+export const revalidate = 1800;
 import { PostCard } from "@/components/blog/post-card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 

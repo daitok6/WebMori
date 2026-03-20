@@ -1,5 +1,7 @@
 import { useTranslations } from "next-intl";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
+
+export const revalidate = 3600;
 import { Card } from "@/components/ui/card";
 import { CTASection } from "@/components/marketing/cta-section";
 import { Target, Shield, Cpu } from "lucide-react";
