@@ -29,10 +29,10 @@ export function HeroSection() {
               {t("subtitle")}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/contact">
+              <Link href="/auth/signin?callbackUrl=/dashboard/free-eval">
                 <Button size="lg">{t("cta")}</Button>
               </Link>
-              <Link href="/features">
+              <Link href="/sample-report">
                 <Button variant="secondary" size="lg">
                   {t("ctaSecondary")}
                 </Button>

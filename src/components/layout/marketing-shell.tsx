@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
+import { CookieConsent } from "./cookie-consent";
 
 export function MarketingShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -18,6 +19,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
       <Navbar />
       <main>{children}</main>
       <Footer />
+      <CookieConsent />
     </>
   );
 }

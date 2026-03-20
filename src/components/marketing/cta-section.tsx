@@ -18,7 +18,7 @@ export function CTASection() {
           <p className="mt-4 text-lg text-white/70 leading-relaxed">
             {t("description")}
           </p>
-          <Link href="/contact" className="mt-8 inline-block">
+          <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" className="mt-8 inline-block">
             <Button size="lg">{t("button")}</Button>
           </Link>
         </ScrollReveal>

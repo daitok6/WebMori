@@ -5,6 +5,8 @@ import { routing } from "@/i18n/routing";
 import { MarketingShell } from "@/components/layout/marketing-shell";
 import "../globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://webmori.jp";
+
 export const metadata: Metadata = {
   title: {
     default: "WebMori - Web Security Audit Service",
@@ -16,6 +18,23 @@ export const metadata: Metadata = {
     icon: "/favicon_clean.png",
     shortcut: "/favicon_clean.png",
     apple: "/favicon_clean.png",
+  },
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "WebMori - Web Security Audit Service",
+      },
+    ],
+    siteName: "WebMori",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/opengraph-image"],
   },
 };
 

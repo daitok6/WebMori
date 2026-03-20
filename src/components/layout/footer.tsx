@@ -15,9 +15,9 @@ export function Footer() {
             <Image
               src="/logo-on-dark.png"
               alt="WebMori"
-              width={220}
-              height={120}
-              className="h-[120px] w-auto"
+              width={110}
+              height={44}
+              className="h-[44px] w-auto"
             />
             <p className="mt-3 text-sm text-white/60">
               {t("footer.description")}
@@ -38,6 +38,11 @@ export function Footer() {
               <li>
                 <Link href="/pricing" className="text-sm text-white/60 hover:text-white transition-colors">
                   {t("nav.pricing")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="text-sm text-white/60 hover:text-white transition-colors">
+                  {t("nav.blog")}
                 </Link>
               </li>
             </ul>

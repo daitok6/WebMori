@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const navLinks = [
   { href: "/features", key: "features" },
   { href: "/pricing", key: "pricing" },
+  { href: "/blog", key: "blog" },
   { href: "/about", key: "about" },
   { href: "/contact", key: "contact" },
 ] as const;
@@ -51,9 +52,9 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               <Image
                 src="/logo-on-light.png"
                 alt="WebMori"
-                width={220}
-                height={120}
-                className="h-[120px] w-auto"
+                width={110}
+                height={44}
+                className="h-[44px] w-auto"
               />
               <button onClick={onClose} className="p-2 text-text-muted" aria-label="Close menu">
                 <X className="h-5 w-5" />
@@ -86,7 +87,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                   {t("login")}
                 </Button>
               </Link>
-              <Link href="/contact" onClick={onClose}>
+              <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" onClick={onClose}>
                 <Button className="w-full">{t("getStarted")}</Button>
               </Link>
             </div>

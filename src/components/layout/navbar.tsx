@@ -13,6 +13,7 @@ import Image from "next/image";
 const navLinks = [
   { href: "/features", key: "features" },
   { href: "/pricing", key: "pricing" },
+  { href: "/blog", key: "blog" },
   { href: "/about", key: "about" },
   { href: "/contact", key: "contact" },
 ] as const;
@@ -60,9 +61,9 @@ export function Navbar() {
             <Image
               src="/logo-on-light.png"
               alt="WebMori"
-              width={220}
-              height={120}
-              className="h-[120px] w-auto"
+              width={110}
+              height={44}
+              className="h-[44px] w-auto"
               priority
             />
           </Link>
@@ -86,7 +87,7 @@ export function Navbar() {
                 {t("login")}
               </Button>
             </Link>
-            <Link href="/contact">
+            <Link href="/auth/signin?callbackUrl=/dashboard/free-eval">
               <Button size="sm">{t("getStarted")}</Button>
             </Link>
           </div>

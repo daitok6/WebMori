@@ -9,6 +9,7 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCheckout } from "@/lib/use-checkout";
+import { Link } from "@/i18n/navigation";
 
 const featureCounts = [
   [0, 1, 2, 3],
@@ -95,6 +96,11 @@ export default function PricingPage() {
                         &yen;{annual ? t(`plans.${i}.annualPrice`) : t(`plans.${i}.price`)}
                       </span>
                       <span className="text-text-muted">{t("perMonth")}</span>
+                      {t.has(`plans.${i}.onboarding`) && (
+                        <p className="mt-2 text-xs text-text-muted">
+                          {t("onboardingFee", { amount: t(`plans.${i}.onboarding`) })}
+                        </p>
+                      )}
                     </div>
 
                     <ul className="mb-8 flex-1 space-y-3">
@@ -121,6 +127,23 @@ export default function PricingPage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Free eval banner */}
+      <section className="bg-bg-cream py-12">
+        <div className="mx-auto max-w-3xl px-6 text-center">
+          <ScrollReveal>
+            <h2 className="text-2xl font-bold text-navy-dark">
+              {t("freeEvalTitle")}
+            </h2>
+            <p className="mt-3 text-text-muted">
+              {t("freeEvalDescription")}
+            </p>
+            <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" className="mt-6 inline-block">
+              <Button size="lg">{t("freeEvalButton")}</Button>
+            </Link>
+          </ScrollReveal>
         </div>
       </section>
 
