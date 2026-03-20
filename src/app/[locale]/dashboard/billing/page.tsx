@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CreditCard, ExternalLink, Loader2 } from "lucide-react";
+import { DashboardError } from "@/components/dashboard/dashboard-error";
+import { useDashboardData } from "@/lib/use-dashboard-data";
+import { CreditCard, ExternalLink, Loader2, Download } from "lucide-react";
 
 interface BillingData {
   plan: string | null;
@@ -17,6 +19,7 @@ interface BillingData {
     amount: number;
     currency: string;
     status: string;
+    stripeInvoiceId: string | null;
     paidAt: string | null;
     createdAt: string;
   }[];
@@ -24,16 +27,8 @@ interface BillingData {
 
 export default function BillingPage() {
   const t = useTranslations("dashboard.billing");
-  const [data, setData] = useState<BillingData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, loading, error, retry } = useDashboardData<BillingData>("/api/dashboard/billing");
   const [portalLoading, setPortalLoading] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/dashboard/billing")
-      .then((r) => (r.ok ? r.json() : null))
-      .then(setData)
-      .finally(() => setLoading(false));
-  }, []);
 
   async function openPortal() {
     if (!data?.plan) return;
@@ -57,12 +52,14 @@ export default function BillingPage() {
     );
   }
 
+  if (error || !data) return <DashboardError message={error ?? "Unknown error"} onRetry={retry} />;
+
   const planVariant =
-    data?.plan === "PRO"
+    data.plan === "PRO"
       ? "pro"
-      : data?.plan === "GROWTH"
+      : data.plan === "GROWTH"
         ? "growth"
-        : data?.plan === "STARTER"
+        : data.plan === "STARTER"
           ? "starter"
           : "default";
 
@@ -81,18 +78,18 @@ export default function BillingPage() {
               <p className="text-sm text-text-muted">{t("currentPlan")}</p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-xl font-bold text-navy-dark">
-                  {data?.plan ?? t("inactive")}
+                  {data.plan ?? t("inactive")}
                 </span>
-                {data?.plan && (
+                {data.plan && (
                   <Badge variant={planVariant as "pro" | "growth" | "starter"}>
                     {data.status ?? "ACTIVE"}
                   </Badge>
                 )}
               </div>
-              {data?.currentPeriodEnd && (
+              {data.currentPeriodEnd && (
                 <p className="text-xs text-text-muted mt-1">
-                  {data.billingCycle === "ANNUAL" ? "Annual" : "Monthly"} ·
-                  Renews{" "}
+                  {data.billingCycle === "ANNUAL" ? t("annual") : t("monthly")} ·{" "}
+                  {t("renews")}{" "}
                   {new Date(data.currentPeriodEnd).toLocaleDateString("ja-JP")}
                 </p>
               )}
@@ -102,8 +99,7 @@ export default function BillingPage() {
             variant="secondary"
             size="sm"
             onClick={openPortal}
-            disabled={portalLoading || !data?.plan}
-            title={!data?.plan ? "No active subscription" : undefined}
+            disabled={portalLoading || !data.plan}
           >
             {portalLoading ? (
               <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
@@ -115,13 +111,29 @@ export default function BillingPage() {
         </div>
       </Card>
 
+      {/* Plan upgrade hint */}
+      {data.plan && (
+        <Card className="mt-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-navy-dark">{t("upgrade")}</p>
+              <p className="mt-1 text-xs text-text-muted">{t("upgradeDesc")}</p>
+            </div>
+            <Button variant="secondary" size="sm" onClick={openPortal} disabled={portalLoading}>
+              <ExternalLink className="mr-1.5 h-4 w-4" />
+              {t("upgrade")}
+            </Button>
+          </div>
+        </Card>
+      )}
+
       {/* Payment history */}
       <Card className="mt-6">
         <h2 className="text-lg font-semibold text-navy-dark mb-4">
           {t("history")}
         </h2>
 
-        {!data?.payments || data.payments.length === 0 ? (
+        {!data.payments || data.payments.length === 0 ? (
           <div className="text-center py-8 text-text-muted text-sm">
             {t("noHistory")}
           </div>
@@ -138,6 +150,9 @@ export default function BillingPage() {
                   </th>
                   <th className="pb-2 font-medium text-text-muted">
                     {t("status")}
+                  </th>
+                  <th className="pb-2 font-medium text-text-muted">
+                    {t("invoice")}
                   </th>
                 </tr>
               </thead>
@@ -168,6 +183,21 @@ export default function BillingPage() {
                             ? t("failed")
                             : t("pending")}
                       </Badge>
+                    </td>
+                    <td className="py-3">
+                      {p.stripeInvoiceId && p.status === "paid" ? (
+                        <a
+                          href={`/api/dashboard/billing/invoice?id=${p.stripeInvoiceId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-gold hover:text-gold/80 transition-colors"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          {t("download")}
+                        </a>
+                      ) : (
+                        <span className="text-xs text-text-muted">—</span>
+                      )}
                     </td>
                   </tr>
                 ))}

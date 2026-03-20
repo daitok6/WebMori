@@ -319,6 +319,34 @@
     "verifyNote": "メールが届かない場合は、迷惑メールフォルダをご確認ください。"
   },
   "dashboard": {
+    "error": {
+      "title": "データの読み込みに失敗しました",
+      "retry": "再試行"
+    },
+    "confirm": {
+      "deleteRepo": "リポジトリを削除",
+      "deleteRepoDesc": "このリポジトリを削除しますか？関連する監査データも削除されます。",
+      "confirm": "削除",
+      "cancel": "キャンセル"
+    },
+    "auditStatus": {
+      "SCHEDULED": "予定",
+      "IN_PROGRESS": "進行中",
+      "REVIEW": "レビュー",
+      "DELIVERED": "配信済",
+      "COMPLETED": "完了"
+    },
+    "severity": {
+      "CRITICAL": "クリティカル",
+      "HIGH": "高",
+      "MEDIUM": "中",
+      "LOW": "低"
+    },
+    "effort": {
+      "QUICK_WIN": "クイック修正",
+      "MODERATE": "中程度",
+      "LARGE": "大規模"
+    },
     "nav": {
       "overview": "概要",
       "reports": "レポート",
@@ -391,6 +419,10 @@
       "removing": "削除中...",
       "lastAudit": "最終監査",
       "noAudits": "未監査",
+      "requestAudit": "監査をリクエスト",
+      "requesting": "リクエスト中...",
+      "requested": "リクエスト済み",
+      "findingsCount": "{count}件の問題",
       "repoLimit": "リポジトリ上限",
       "of": "/"
     },
@@ -416,7 +448,14 @@
       "status": "ステータス",
       "paid": "支払済",
       "failed": "失敗",
-      "pending": "処理中"
+      "pending": "処理中",
+      "invoice": "請求書",
+      "download": "ダウンロード",
+      "upgrade": "プラン変更",
+      "upgradeDesc": "プランのアップグレード・ダウングレードはStripeの管理画面で行えます。",
+      "annual": "年額",
+      "monthly": "月額",
+      "renews": "更新日"
     },
     "settings": {
       "title": "設定",

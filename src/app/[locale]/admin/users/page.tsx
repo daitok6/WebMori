@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Pagination } from "@/components/ui/pagination";
 import { Loader2, Search, User, GitBranch, FileText, MessageSquare } from "lucide-react";
 
 interface UserSummary {
@@ -32,28 +33,39 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [planFilter, setPlanFilter] = useState("ALL");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams();
     if (search) params.set("search", search);
     if (planFilter !== "ALL") params.set("plan", planFilter);
+    params.set("page", String(page));
 
     const timeout = setTimeout(() => {
       setLoading(true);
       fetch(`/api/admin/users?${params}`)
-        .then((r) => (r.ok ? r.json() : []))
-        .then(setUsers)
+        .then((r) => (r.ok ? r.json() : { users: [], page: 1, totalPages: 1, total: 0 }))
+        .then((data) => {
+          setUsers(data.users ?? data);
+          setTotalPages(data.totalPages ?? 1);
+          setTotal(data.total ?? data.users?.length ?? 0);
+        })
         .finally(() => setLoading(false));
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [search, planFilter]);
+  }, [search, planFilter, page]);
+
+  // Reset page when filters change
+  useEffect(() => { setPage(1); }, [search, planFilter]);
 
   return (
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-navy-dark">Users</h1>
-        <span className="text-sm text-text-muted">{users.length} users</span>
+        <span className="text-sm text-text-muted">{total} users</span>
       </div>
 
       {/* Filters */}
@@ -155,6 +167,8 @@ export default function AdminUsersPage() {
           ))}
         </div>
       )}
+
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </>
   );
 }

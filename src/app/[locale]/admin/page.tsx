@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
-import { Loader2, Mail, Globe, ChevronDown, MessageSquare, Upload } from "lucide-react";
+import { Loader2, Mail, Globe, ChevronDown, MessageSquare, Upload, Search } from "lucide-react";
 
 interface Contact {
   id: string;
@@ -32,10 +32,12 @@ export default function AdminContactsPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("ALL");
+  const [search, setSearch] = useState("");
   const [editingNotes, setEditingNotes] = useState<string | null>(null);
   const [notesDraft, setNotesDraft] = useState("");
   const [uploading, setUploading] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/contacts")
@@ -45,26 +47,47 @@ export default function AdminContactsPage() {
   }, []);
 
   async function updateStatus(id: string, status: Contact["status"]) {
-    await fetch(`/api/admin/contacts/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
-    setContacts((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, status } : c)),
-    );
+    const prev = contacts.find((c) => c.id === id);
+    setActionError(null);
+    // Optimistic update
+    setContacts((cs) => cs.map((c) => (c.id === id ? { ...c, status } : c)));
+    try {
+      const res = await fetch(`/api/admin/contacts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) {
+        // Revert
+        if (prev) setContacts((cs) => cs.map((c) => (c.id === id ? prev : c)));
+        setActionError(`Failed to update status (${res.status})`);
+      }
+    } catch {
+      if (prev) setContacts((cs) => cs.map((c) => (c.id === id ? prev : c)));
+      setActionError("Network error");
+    }
   }
 
   async function saveNotes(id: string) {
-    await fetch(`/api/admin/contacts/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ notes: notesDraft }),
-    });
-    setContacts((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, notes: notesDraft } : c)),
-    );
+    const prev = contacts.find((c) => c.id === id);
+    setActionError(null);
+    // Optimistic update
+    setContacts((cs) => cs.map((c) => (c.id === id ? { ...c, notes: notesDraft } : c)));
     setEditingNotes(null);
+    try {
+      const res = await fetch(`/api/admin/contacts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notes: notesDraft }),
+      });
+      if (!res.ok) {
+        if (prev) setContacts((cs) => cs.map((c) => (c.id === id ? prev : c)));
+        setActionError(`Failed to save notes (${res.status})`);
+      }
+    } catch {
+      if (prev) setContacts((cs) => cs.map((c) => (c.id === id ? prev : c)));
+      setActionError("Network error");
+    }
   }
 
   async function handleUpload(contact: Contact, file: File) {
@@ -89,8 +112,15 @@ export default function AdminContactsPage() {
     }
   }
 
-  const filtered =
-    filter === "ALL" ? contacts : contacts.filter((c) => c.status === filter);
+  const searchLower = search.toLowerCase();
+  const filtered = contacts
+    .filter((c) => filter === "ALL" || c.status === filter)
+    .filter((c) =>
+      !search ||
+      c.name.toLowerCase().includes(searchLower) ||
+      c.email.toLowerCase().includes(searchLower) ||
+      (c.url && c.url.toLowerCase().includes(searchLower))
+    );
 
   if (loading) {
     return (
@@ -107,37 +137,49 @@ export default function AdminContactsPage() {
           <h1 className="text-xl sm:text-2xl font-bold text-navy-dark">Free Evaluation Requests</h1>
           <p className="mt-1 text-sm text-text-muted">{contacts.length} total</p>
         </div>
-        {/* Filter */}
-        <div className="flex flex-wrap gap-2">
-          {["ALL", "PENDING", "REVIEWING", "COMPLETED", "REJECTED"].map((s) => (
-            <button
-              key={s}
-              onClick={() => setFilter(s)}
-              className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
-                filter === s
-                  ? "border-navy-dark bg-navy-dark text-white"
-                  : "border-border bg-white text-text-muted hover:border-navy-dark"
-              }`}
-            >
-              {s === "ALL" ? "All" : statusConfig[s as Contact["status"]].label}
-              {s !== "ALL" && (
-                <span className="ml-1.5 opacity-60">
-                  {contacts.filter((c) => c.status === s).length}
-                </span>
-              )}
-            </button>
-          ))}
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search name, email, URL..."
+            className="w-full sm:w-64 rounded-lg border border-border bg-white pl-9 pr-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+          />
         </div>
       </div>
 
-      {uploadError && (
-        <p className="mt-3 text-sm text-red-600">✗ {uploadError}</p>
+      {/* Filter */}
+      <div className="mt-4 flex flex-wrap gap-2">
+        {["ALL", "PENDING", "REVIEWING", "COMPLETED", "REJECTED"].map((s) => (
+          <button
+            key={s}
+            onClick={() => setFilter(s)}
+            className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
+              filter === s
+                ? "border-navy-dark bg-navy-dark text-white"
+                : "border-border bg-white text-text-muted hover:border-navy-dark"
+            }`}
+          >
+            {s === "ALL" ? "All" : statusConfig[s as Contact["status"]].label}
+            {s !== "ALL" && (
+              <span className="ml-1.5 opacity-60">
+                {contacts.filter((c) => c.status === s).length}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {(uploadError || actionError) && (
+        <p className="mt-3 text-sm text-red-600">✗ {uploadError ?? actionError}</p>
       )}
 
       {filtered.length === 0 ? (
         <Card className="mt-6 py-12 text-center">
           <Mail className="mx-auto mb-3 h-8 w-8 text-text-muted" />
-          <p className="text-text-muted">No requests</p>
+          <p className="text-text-muted">{search ? "No matching requests" : "No requests"}</p>
         </Card>
       ) : (
         <div className="mt-6 space-y-4">
@@ -184,19 +226,21 @@ export default function AdminContactsPage() {
                   <div className="mt-2.5">
                     {editingNotes === c.id ? (
                       <div className="flex gap-2">
-                        <input
+                        <textarea
                           autoFocus
                           value={notesDraft}
                           onChange={(e) => setNotesDraft(e.target.value)}
                           placeholder="Internal notes..."
-                          className="flex-1 rounded border border-border px-2 py-1 text-sm focus:border-gold focus:outline-none"
+                          rows={2}
+                          className="flex-1 rounded border border-border px-2 py-1 text-sm focus:border-gold focus:outline-none resize-none"
                           onKeyDown={(e) => {
-                            if (e.key === "Enter") saveNotes(c.id);
                             if (e.key === "Escape") setEditingNotes(null);
                           }}
                         />
-                        <button onClick={() => saveNotes(c.id)} className="text-xs text-gold hover:underline">Save</button>
-                        <button onClick={() => setEditingNotes(null)} className="text-xs text-text-muted hover:underline">Cancel</button>
+                        <div className="flex flex-col gap-1">
+                          <button onClick={() => saveNotes(c.id)} className="text-xs text-gold hover:underline">Save</button>
+                          <button onClick={() => setEditingNotes(null)} className="text-xs text-text-muted hover:underline">Cancel</button>
+                        </div>
                       </div>
                     ) : (
                       <button

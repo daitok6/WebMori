@@ -1,14 +1,15 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { AuditStatusBadge } from "@/components/dashboard/audit-status-badge";
+import { DashboardError } from "@/components/dashboard/dashboard-error";
 import { FindingsTrend } from "@/components/dashboard/findings-trend";
 import { OnboardingChecklist } from "@/components/dashboard/onboarding-checklist";
+import { useDashboardData } from "@/lib/use-dashboard-data";
 import {
   Calendar,
   AlertTriangle,
@@ -54,15 +55,8 @@ interface OverviewData {
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard.overview");
-  const [data, setData] = useState<OverviewData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/dashboard/overview")
-      .then((r) => (r.ok ? r.json() : null))
-      .then(setData)
-      .finally(() => setLoading(false));
-  }, []);
+  const tStatus = useTranslations("dashboard.auditStatus");
+  const { data, loading, error, retry } = useDashboardData<OverviewData>("/api/dashboard/overview");
 
   if (loading) {
     return (
@@ -72,7 +66,7 @@ export default function DashboardPage() {
     );
   }
 
-  if (!data) return null;
+  if (error || !data) return <DashboardError message={error ?? "Unknown error"} onRetry={retry} />;
 
   const hasAudits = data.recentAudits.length > 0;
 
@@ -173,7 +167,7 @@ export default function DashboardPage() {
                         {audit.criticalCount > 0 && (
                           <span className="text-severity-critical">
                             {" "}
-                            ({audit.criticalCount} critical)
+                            ({audit.criticalCount} {tStatus("CRITICAL")})
                           </span>
                         )}
                       </p>

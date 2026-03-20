@@ -47,14 +47,10 @@ const severityVariant: Record<string, "critical" | "high" | "medium" | "low"> =
     LOW: "low",
   };
 
-const effortLabels: Record<string, string> = {
-  QUICK_WIN: "Quick Win",
-  MODERATE: "Moderate",
-  LARGE: "Large",
-};
-
 export default function ReportDetailPage() {
   const t = useTranslations("dashboard.reportDetail");
+  const tSev = useTranslations("dashboard.severity");
+  const tEff = useTranslations("dashboard.effort");
   const params = useParams();
   const [audit, setAudit] = useState<AuditDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -193,14 +189,14 @@ export default function ReportDetailPage() {
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
                 <Badge variant={severityVariant[finding.severity]}>
-                  {finding.severity}
+                  {tSev.has(finding.severity) ? tSev(finding.severity) : finding.severity}
                 </Badge>
                 <h3 className="font-semibold text-navy-dark">
                   {finding.title}
                 </h3>
               </div>
               <span className="text-xs text-text-muted">
-                {effortLabels[finding.effort] ?? finding.effort}
+                {tEff.has(finding.effort) ? tEff(finding.effort) : finding.effort}
               </span>
             </div>
 

@@ -11,39 +11,51 @@ export async function GET(request: NextRequest) {
   const plan = searchParams.get("plan");
   const stack = searchParams.get("stack");
   const search = searchParams.get("search");
+  const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
+  const pageSize = 20;
 
-  const users = await prisma.user.findMany({
-    where: {
-      ...(search && {
-        OR: [
-          { email: { contains: search, mode: "insensitive" } },
-          { name: { contains: search, mode: "insensitive" } },
-        ],
-      }),
-      ...(plan || stack
-        ? {
-            organization: {
-              ...(plan && {
-                subscription: { plan: plan as "STARTER" | "GROWTH" | "PRO" },
-              }),
-            },
-          }
-        : {}),
-    },
-    include: {
-      organization: {
-        include: {
-          subscription: true,
-          repos: { where: { isActive: true }, select: { stack: true } },
-          _count: { select: { audits: true, messages: true } },
+  const where = {
+    ...(search && {
+      OR: [
+        { email: { contains: search, mode: "insensitive" as const } },
+        { name: { contains: search, mode: "insensitive" as const } },
+      ],
+    }),
+    ...(plan || stack
+      ? {
+          organization: {
+            ...(plan && {
+              subscription: { plan: plan as "STARTER" | "GROWTH" | "PRO" },
+            }),
+          },
+        }
+      : {}),
+  };
+
+  const [total, users] = await Promise.all([
+    prisma.user.count({ where }),
+    prisma.user.findMany({
+      where,
+      include: {
+        organization: {
+          include: {
+            subscription: true,
+            repos: { where: { isActive: true }, select: { stack: true } },
+            _count: { select: { audits: true, messages: true } },
+          },
         },
       },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+      take: pageSize,
+      skip: (page - 1) * pageSize,
+    }),
+  ]);
 
-  return NextResponse.json(
-    users.map((u) => ({
+  return NextResponse.json({
+    page,
+    totalPages: Math.ceil(total / pageSize),
+    total,
+    users: users.map((u) => ({
       id: u.id,
       name: u.name,
       email: u.email,
@@ -66,5 +78,5 @@ export async function GET(request: NextRequest) {
           }
         : null,
     })),
-  );
+  });
 }

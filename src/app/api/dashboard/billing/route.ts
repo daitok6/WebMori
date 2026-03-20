@@ -19,6 +19,7 @@ export async function GET() {
       amount: p.amount,
       currency: p.currency,
       status: p.status,
+      stripeInvoiceId: p.stripeInvoiceId ?? null,
       paidAt: p.paidAt?.toISOString() ?? null,
       createdAt: p.createdAt.toISOString(),
     })),

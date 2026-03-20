@@ -319,6 +319,34 @@
     "verifyNote": "If you don't see it, check your spam folder."
   },
   "dashboard": {
+    "error": {
+      "title": "Failed to load data",
+      "retry": "Retry"
+    },
+    "confirm": {
+      "deleteRepo": "Delete repository",
+      "deleteRepoDesc": "Are you sure? This will also delete associated audit data.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "auditStatus": {
+      "SCHEDULED": "Scheduled",
+      "IN_PROGRESS": "In Progress",
+      "REVIEW": "Review",
+      "DELIVERED": "Delivered",
+      "COMPLETED": "Completed"
+    },
+    "severity": {
+      "CRITICAL": "Critical",
+      "HIGH": "High",
+      "MEDIUM": "Medium",
+      "LOW": "Low"
+    },
+    "effort": {
+      "QUICK_WIN": "Quick Win",
+      "MODERATE": "Moderate",
+      "LARGE": "Large"
+    },
     "nav": {
       "overview": "Overview",
       "reports": "Reports",
@@ -391,6 +419,10 @@
       "removing": "Removing...",
       "lastAudit": "Last audit",
       "noAudits": "No audits yet",
+      "requestAudit": "Request Audit",
+      "requesting": "Requesting...",
+      "requested": "Requested",
+      "findingsCount": "{count} findings",
       "repoLimit": "Repo limit",
       "of": "/"
     },
@@ -416,7 +448,14 @@
       "status": "Status",
       "paid": "Paid",
       "failed": "Failed",
-      "pending": "Pending"
+      "pending": "Pending",
+      "invoice": "Invoice",
+      "download": "Download",
+      "upgrade": "Change Plan",
+      "upgradeDesc": "You can upgrade or downgrade your plan via the Stripe management portal.",
+      "annual": "Annual",
+      "monthly": "Monthly",
+      "renews": "Renews"
     },
     "settings": {
       "title": "Settings",

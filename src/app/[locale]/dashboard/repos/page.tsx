@@ -1,17 +1,22 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AuditStatusBadge } from "@/components/dashboard/audit-status-badge";
+import { DashboardError } from "@/components/dashboard/dashboard-error";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { useDashboardData } from "@/lib/use-dashboard-data";
 import {
   GitBranch,
   Plus,
   Trash2,
   ExternalLink,
   Loader2,
+  Play,
+  Check,
 } from "lucide-react";
 
 interface Repo {
@@ -37,24 +42,15 @@ const stackLabels: Record<string, string> = {
 
 export default function ReposPage() {
   const t = useTranslations("dashboard.repos");
-  const [repos, setRepos] = useState<Repo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: repos, loading, error, retry, mutate } = useDashboardData<Repo[]>("/api/dashboard/repos");
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: "", url: "", stack: "OTHER" });
   const [submitting, setSubmitting] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchRepos();
-  }, []);
-
-  function fetchRepos() {
-    setLoading(true);
-    fetch("/api/dashboard/repos")
-      .then((r) => (r.ok ? r.json() : []))
-      .then(setRepos)
-      .finally(() => setLoading(false));
-  }
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [requestingId, setRequestingId] = useState<string | null>(null);
+  const [requestedIds, setRequestedIds] = useState<Set<string>>(new Set());
+  const tConfirm = useTranslations("dashboard.confirm");
 
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
@@ -69,7 +65,7 @@ export default function ReposPage() {
       if (res.ok) {
         setFormData({ name: "", url: "", stack: "OTHER" });
         setShowForm(false);
-        fetchRepos();
+        retry();
       }
     } finally {
       setSubmitting(false);
@@ -78,13 +74,32 @@ export default function ReposPage() {
 
   async function handleRemove(id: string) {
     setRemovingId(id);
+    setConfirmDelete(null);
     try {
       const res = await fetch(`/api/dashboard/repos?id=${id}`, {
         method: "DELETE",
       });
-      if (res.ok) fetchRepos();
+      if (res.ok) {
+        mutate((prev) => prev?.filter((r) => r.id !== id) ?? null);
+      }
     } finally {
       setRemovingId(null);
+    }
+  }
+
+  async function handleRequestAudit(id: string) {
+    setRequestingId(id);
+    try {
+      const res = await fetch("/api/dashboard/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: `監査リクエスト: リポジトリ ${repos?.find((r) => r.id === id)?.name ?? id}` }),
+      });
+      if (res.ok) {
+        setRequestedIds((prev) => new Set(prev).add(id));
+      }
+    } finally {
+      setRequestingId(null);
     }
   }
 
@@ -95,6 +110,8 @@ export default function ReposPage() {
       </div>
     );
   }
+
+  if (error || !repos) return <DashboardError message={error ?? "Unknown error"} onRetry={retry} />;
 
   return (
     <>
@@ -194,7 +211,7 @@ export default function ReposPage() {
                         {t("lastAudit")}:{" "}
                         {new Date(repo.lastAudit.date).toLocaleDateString("ja-JP")}
                         {" · "}
-                        {repo.lastAudit.findingsCount} findings
+                        {t("findingsCount", { count: repo.lastAudit.findingsCount })}
                         <AuditStatusBadge status={repo.lastAudit.status} />
                       </span>
                     ) : (
@@ -202,24 +219,56 @@ export default function ReposPage() {
                     )}
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleRemove(repo.id)}
-                  disabled={removingId === repo.id}
-                  className="text-text-muted hover:text-severity-critical"
-                >
-                  {removingId === repo.id ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Trash2 className="h-4 w-4" />
-                  )}
-                </Button>
+                <div className="flex items-center gap-1">
+                  {/* Request audit button */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRequestAudit(repo.id)}
+                    disabled={requestingId === repo.id || requestedIds.has(repo.id)}
+                    className="text-text-muted hover:text-gold"
+                    title={t("requestAudit")}
+                  >
+                    {requestedIds.has(repo.id) ? (
+                      <Check className="h-4 w-4 text-severity-good" />
+                    ) : requestingId === repo.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Play className="h-4 w-4" />
+                    )}
+                  </Button>
+                  {/* Delete button */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setConfirmDelete(repo.id)}
+                    disabled={removingId === repo.id}
+                    className="text-text-muted hover:text-severity-critical"
+                  >
+                    {removingId === repo.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
               </div>
             </Card>
           ))}
         </div>
       )}
+
+      {/* Confirm delete dialog */}
+      <ConfirmDialog
+        open={!!confirmDelete}
+        title={tConfirm("deleteRepo")}
+        description={tConfirm("deleteRepoDesc")}
+        confirmLabel={tConfirm("confirm")}
+        cancelLabel={tConfirm("cancel")}
+        variant="danger"
+        onConfirm={() => confirmDelete && handleRemove(confirmDelete)}
+        onCancel={() => setConfirmDelete(null)}
+      />
     </>
   );
 }
