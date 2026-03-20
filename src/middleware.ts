@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
-import { auth } from "./lib/auth";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
@@ -41,22 +40,24 @@ export default async function middleware(request: NextRequest) {
   response.headers.set("x-nonce", nonce);
 
   if (isProtectedPath(request.nextUrl.pathname)) {
-    // Validate session against the database (not just cookie existence)
-    const session = await auth();
+    // Check for session cookie existence (fast pre-filter for Edge Runtime).
+    // Full session validation happens server-side via auth() in API routes and pages.
+    // Edge middleware cannot import Prisma, so we cannot validate the token here.
+    const sessionToken =
+      request.cookies.get("authjs.session-token")?.value ??
+      request.cookies.get("__Secure-authjs.session-token")?.value;
 
-    if (!session?.user?.id) {
+    if (!sessionToken) {
       const locale = request.nextUrl.pathname.match(/^\/(ja|en)/)?.[1] ?? "ja";
       const signInUrl = new URL(`/${locale}/auth/signin`, request.url);
       signInUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
       return NextResponse.redirect(signInUrl);
     }
 
-    // For admin paths, check the user's role from the session
+    // For admin paths, check for server-set admin marker cookie.
+    // This is a UI-level gate only — real authorization is enforced by isAdmin() in API routes.
     if (isAdminPath(request.nextUrl.pathname)) {
-      const isAdminUser =
-        session.user.email === process.env.ADMIN_EMAIL ||
-        (session.user as { role?: string }).role === "ADMIN";
-
+      const isAdminUser = request.cookies.get("webmori-admin")?.value === "1";
       if (!isAdminUser) {
         const locale = request.nextUrl.pathname.match(/^\/(ja|en)/)?.[1] ?? "ja";
         return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url));

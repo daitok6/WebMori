@@ -101,12 +101,15 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     trialing: "TRIALING",
   };
 
+  const firstItem = subscription.items?.data?.[0];
   await prisma.subscription.update({
     where: { id: sub.id },
     data: {
       status: statusMap[subscription.status] ?? "ACTIVE",
-      currentPeriodStart: new Date(subscription.current_period_start * 1000),
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+      ...(firstItem && {
+        currentPeriodStart: new Date(firstItem.current_period_start * 1000),
+        currentPeriodEnd: new Date(firstItem.current_period_end * 1000),
+      }),
     },
   });
 }
