@@ -227,6 +227,11 @@ model FreeEvalReport {
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }
 
+model StripeEvent {
+  id        String   @id  // Stripe event ID (evt_xxx)
+  createdAt DateTime @default(now())
+}
+
 // ──────────────────────────────────────────────
 // Enums
 // ──────────────────────────────────────────────

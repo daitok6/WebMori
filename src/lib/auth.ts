@@ -4,6 +4,7 @@ import Resend from "next-auth/providers/resend";
 import Google from "next-auth/providers/google";
 import { Resend as ResendClient } from "resend";
 import { prisma } from "./prisma";
+import { getResend, EMAIL_FROM } from "./email";
 
 function magicLinkHtml(url: string): string {
   return `
@@ -99,6 +100,71 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         where: { id: user.id },
         data: { organizationId: org.id },
       });
+
+      // Send welcome email
+      const resend = getResend();
+      if (resend && user.email) {
+        await resend.emails.send({
+          from: EMAIL_FROM,
+          to: [user.email],
+          subject: "【WebMori】ようこそ！アカウント登録が完了しました",
+          html: `
+<body style="background:#FDFBF7;font-family:-apple-system,'SF Pro Text','Segoe UI',sans-serif;margin:0;padding:20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:auto;">
+    <tr>
+      <td style="background:#0F1923;padding:24px 32px;border-radius:8px 8px 0 0;">
+        <span style="color:#C9A84C;font-size:22px;font-weight:bold;letter-spacing:-0.5px;">Web<span style="color:white;">Mori</span></span>
+        <span style="color:rgba(255,255,255,0.4);font-size:12px;margin-left:8px;">ウェブ守り</span>
+      </td>
+    </tr>
+    <tr>
+      <td style="background:white;padding:40px 32px 32px;border:1px solid #EDE9E3;border-top:none;">
+        <h2 style="margin:0 0 12px;color:#0F1923;font-size:20px;font-weight:600;">ようこそ、WebMoriへ！</h2>
+        <p style="margin:0 0 24px;color:#5A6478;font-size:14px;line-height:1.8;">
+          アカウント登録ありがとうございます。<br>
+          WebMoriはあなたのウェブサイトのセキュリティ・パフォーマンスを<br>
+          毎月チェックし、改善提案をお届けするサービスです。
+        </p>
+        <h3 style="margin:0 0 12px;color:#0F1923;font-size:16px;font-weight:600;">はじめの3ステップ</h3>
+        <table cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+          <tr>
+            <td style="padding:8px 12px 8px 0;color:#C9A84C;font-size:18px;font-weight:bold;vertical-align:top;">1.</td>
+            <td style="padding:8px 0;color:#1A1A1A;font-size:14px;">プロフィールを設定する</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px 8px 0;color:#C9A84C;font-size:18px;font-weight:bold;vertical-align:top;">2.</td>
+            <td style="padding:8px 0;color:#1A1A1A;font-size:14px;">サイトのリポジトリを追加する</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px 8px 0;color:#C9A84C;font-size:18px;font-weight:bold;vertical-align:top;">3.</td>
+            <td style="padding:8px 0;color:#1A1A1A;font-size:14px;">無料診断をリクエストする</td>
+          </tr>
+        </table>
+        <table cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="border-radius:8px;background:#C9A84C;">
+              <a href="https://webmori.jp/ja/dashboard"
+                target="_blank"
+                style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:600;color:#0F1923;text-decoration:none;border-radius:8px;">
+                ダッシュボードを開く
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:20px 0;text-align:center;">
+        <span style="color:#5A6478;font-size:12px;">
+          © ${new Date().getFullYear()} WebMori（ウェブ守り）
+          · <a href="https://webmori.jp" style="color:#5A6478;">webmori.jp</a>
+        </span>
+      </td>
+    </tr>
+  </table>
+</body>`.trim(),
+        }).catch(() => {/* non-fatal */});
+      }
     },
   },
 });

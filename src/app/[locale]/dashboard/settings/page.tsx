@@ -86,7 +86,7 @@ export default function SettingsPage() {
             {loadingPrefs ? (
               <Loader2 className="mt-3 h-4 w-4 animate-spin text-text-muted" />
             ) : (
-              <div className="mt-3 space-y-3">
+              <div className="mt-3">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
@@ -94,20 +94,14 @@ export default function SettingsPage() {
                     onChange={(e) => setEmailNotifications(e.target.checked)}
                     className="h-4 w-4 rounded border-border text-gold focus:ring-gold"
                   />
-                  <span className="text-sm text-navy-dark">
-                    {t("auditComplete")}
-                  </span>
-                </label>
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={emailNotifications}
-                    onChange={(e) => setEmailNotifications(e.target.checked)}
-                    className="h-4 w-4 rounded border-border text-gold focus:ring-gold"
-                  />
-                  <span className="text-sm text-navy-dark">
-                    {t("newMessage")}
-                  </span>
+                  <div>
+                    <span className="text-sm text-navy-dark">
+                      {t("emailNotifications")}
+                    </span>
+                    <p className="text-xs text-text-muted">
+                      {t("emailNotificationsDesc")}
+                    </p>
+                  </div>
                 </label>
               </div>
             )}

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { AuditStatusBadge } from "@/components/dashboard/audit-status-badge";
 import { FindingsTrend } from "@/components/dashboard/findings-trend";
+import { OnboardingChecklist } from "@/components/dashboard/onboarding-checklist";
 import {
   Calendar,
   AlertTriangle,
@@ -23,6 +24,11 @@ interface OverviewData {
   plan: string | null;
   status: string | null;
   repoCount: number;
+  onboarding: {
+    profileComplete: boolean;
+    hasRepo: boolean;
+    hasRequestedEval: boolean;
+  } | null;
   stats: {
     totalFindings: number;
     fixedFindings: number;
@@ -101,6 +107,9 @@ export default function DashboardPage() {
     <>
       <h1 className="text-2xl font-bold text-navy-dark">{t("title")}</h1>
       <p className="mt-1 text-text-muted">{t("welcome")}</p>
+
+      {/* Onboarding checklist — shown until all steps complete */}
+      {data.onboarding && <OnboardingChecklist data={data.onboarding} />}
 
       {/* Stats grid */}
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

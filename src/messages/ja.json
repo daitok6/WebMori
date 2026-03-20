@@ -422,11 +422,21 @@
       "english": "English",
       "notifications": "通知",
       "notificationsDesc": "メール通知の設定を管理します。",
-      "auditComplete": "監査完了通知",
-      "newMessage": "新規メッセージ通知",
+      "emailNotifications": "メール通知を受け取る",
+      "emailNotificationsDesc": "監査完了や新しいメッセージがあった際にメールでお知らせします。",
       "save": "保存",
       "saving": "保存中...",
       "saved": "保存しました"
+    },
+    "onboarding": {
+      "title": "はじめましょう",
+      "description": "以下のステップを完了して、最初の監査を受けましょう。",
+      "profileTitle": "プロフィールを設定する",
+      "profileDesc": "お名前と会社情報を入力してください。",
+      "repoTitle": "リポジトリを追加する",
+      "repoDesc": "監査対象のサイトを登録しましょう。",
+      "evalTitle": "無料診断をリクエストする",
+      "evalDesc": "まずは無料でサイトの診断を受けてみましょう。"
     }
   },
   "blogPage": {

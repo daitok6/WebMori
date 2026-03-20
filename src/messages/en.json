@@ -422,11 +422,21 @@
       "english": "English",
       "notifications": "Notifications",
       "notificationsDesc": "Manage your email notification preferences.",
-      "auditComplete": "Audit complete notification",
-      "newMessage": "New message notification",
+      "emailNotifications": "Receive email notifications",
+      "emailNotificationsDesc": "Get notified by email when audits are completed or new messages arrive.",
       "save": "Save",
       "saving": "Saving...",
       "saved": "Saved"
+    },
+    "onboarding": {
+      "title": "Get Started",
+      "description": "Complete these steps to receive your first audit.",
+      "profileTitle": "Set up your profile",
+      "profileDesc": "Enter your name and company information.",
+      "repoTitle": "Add a repository",
+      "repoDesc": "Register the site you want audited.",
+      "evalTitle": "Request a free evaluation",
+      "evalDesc": "Try a free site evaluation to get started."
     }
   },
   "blogPage": {

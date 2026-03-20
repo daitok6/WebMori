@@ -23,6 +23,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
+  // Idempotency — skip already-processed events
+  try {
+    await prisma.stripeEvent.create({ data: { id: event.id } });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+      // Duplicate event — already processed
+      return NextResponse.json({ received: true, duplicate: true });
+    }
+    throw e;
+  }
+
   switch (event.type) {
     case "checkout.session.completed":
       await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);

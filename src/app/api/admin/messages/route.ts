@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
-import { esc, getResend, EMAIL_FROM } from "@/lib/email";
+import { sendNewMessageEmail } from "@/lib/notifications";
 
 const messageSchema = z.object({
   orgId: z.string().min(1),
@@ -67,41 +67,8 @@ export async function POST(request: NextRequest) {
     data: { organizationId: orgId, content: content.trim(), fromOperator: true },
   });
 
-  // Email notification to client
-  const org = await prisma.organization.findUnique({
-    where: { id: orgId },
-    include: { users: { select: { email: true, emailNotifications: true } } },
-  });
-
-  const clientUser = org?.users[0];
-  const clientEmail = clientUser?.emailNotifications !== false ? clientUser?.email : null;
-  const resend = getResend();
-  if (clientEmail && resend) {
-    await resend.emails.send({
-      from: EMAIL_FROM,
-      to: [clientEmail],
-      subject: "【WebMori】新しいメッセージが届いています",
-      html: `
-        <body style="background:#FDFBF7;font-family:-apple-system,sans-serif;padding:20px;">
-          <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:auto;">
-            <tr><td style="background:#0F1923;padding:24px 32px;border-radius:8px 8px 0 0;">
-              <span style="color:#C9A84C;font-size:20px;font-weight:bold;">Web<span style="color:white;">Mori</span></span>
-            </td></tr>
-            <tr><td style="background:white;padding:32px;border:1px solid #EDE9E3;border-top:none;border-radius:0 0 8px 8px;">
-              <p style="color:#0F1923;font-size:16px;margin:0 0 16px;">WebMoriからメッセージが届いています。</p>
-              <div style="background:#F8F5EE;border-radius:8px;padding:16px;margin:0 0 24px;">
-                <p style="color:#1A1A1A;font-size:14px;margin:0;">${esc(content.trim())}</p>
-              </div>
-              <a href="https://webmori.jp/ja/dashboard/messages"
-                style="background:#C9A84C;color:#0F1923;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">
-                ダッシュボードで確認する
-              </a>
-            </td></tr>
-          </table>
-        </body>
-      `,
-    });
-  }
+  // Email notification to client (checks emailNotifications preference)
+  await sendNewMessageEmail(orgId, content);
 
   return NextResponse.json(message, { status: 201 });
 }
