@@ -1,63 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { esc, getResend, EMAIL_FROM } from "@/lib/email";
+import { checkPublicRateLimit } from "@/lib/rate-limit";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// ---------------------------------------------------------------------------
-// Input limits
-// ---------------------------------------------------------------------------
-const LIMITS = { name: 100, email: 254, url: 500, stack: 100, message: 2000 };
-
-// ---------------------------------------------------------------------------
-// HTML escaping — prevents HTML injection in email templates
-// ---------------------------------------------------------------------------
-function esc(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-// ---------------------------------------------------------------------------
-// Basic email format check
-// ---------------------------------------------------------------------------
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// ---------------------------------------------------------------------------
-// Best-effort in-memory rate limit (5 submissions per IP per hour)
-// NOTE: resets on cold-start in serverless; use Redis for multi-instance
-// ---------------------------------------------------------------------------
-const rateMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateMap.set(ip, { count: 1, resetAt: now + 60 * 60 * 1000 });
-    return true;
-  }
-  if (entry.count >= 5) return false;
-  entry.count++;
-  return true;
-}
+const contactSchema = z.object({
+  name: z.string().min(1, "Name is required").max(100),
+  email: z.string().min(1, "Email is required").max(254).email("Invalid email address"),
+  url: z.string().max(500).optional().default(""),
+  stack: z.string().max(100).optional().default(""),
+  message: z.string().max(2000).optional().default(""),
+});
 
 // ---------------------------------------------------------------------------
 // Route handler
 // ---------------------------------------------------------------------------
 export async function POST(request: NextRequest) {
-  // Rate limiting
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown";
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json(
-      { error: "Too many requests. Please try again later." },
-      { status: 429 },
-    );
-  }
+  // Rate limiting (Upstash Redis — 5 per hour per IP)
+  const rateLimited = await checkPublicRateLimit(request);
+  if (rateLimited) return rateLimited;
 
   let body: unknown;
   try {
@@ -66,39 +27,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const { name, email, url, stack, message } = body as Record<string, unknown>;
-
-  // Required field presence + type checks
-  if (typeof name !== "string" || typeof email !== "string") {
-    return NextResponse.json({ error: "Name and email required" }, { status: 400 });
+  const result = contactSchema.safeParse(body);
+  if (!result.success) {
+    return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
   }
 
-  const trimmedName = name.trim();
-  const trimmedEmail = email.trim();
-
-  if (!trimmedName || !trimmedEmail) {
-    return NextResponse.json({ error: "Name and email required" }, { status: 400 });
-  }
-
-  // Length limits
-  if (trimmedName.length > LIMITS.name) {
-    return NextResponse.json({ error: "Name too long" }, { status: 400 });
-  }
-  if (trimmedEmail.length > LIMITS.email) {
-    return NextResponse.json({ error: "Email too long" }, { status: 400 });
-  }
-
-  // Email format
-  if (!EMAIL_RE.test(trimmedEmail)) {
-    return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
-  }
-
-  const trimmedUrl =
-    typeof url === "string" ? url.trim().slice(0, LIMITS.url) : "";
-  const trimmedStack =
-    typeof stack === "string" ? stack.trim().slice(0, LIMITS.stack) : "";
-  const trimmedMessage =
-    typeof message === "string" ? message.trim().slice(0, LIMITS.message) : "";
+  const trimmedName = result.data.name.trim();
+  const trimmedEmail = result.data.email.trim();
+  const trimmedUrl = result.data.url.trim();
+  const trimmedStack = result.data.stack.trim();
+  const trimmedMessage = result.data.message.trim();
 
   // Save to DB
   await prisma.contactRequest.create({
@@ -119,11 +57,11 @@ export async function POST(request: NextRequest) {
   const safeMessage = trimmedMessage ? esc(trimmedMessage) : "未入力";
 
   const operatorEmail = process.env.OPERATOR_EMAIL;
-  const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";
+  const resend = getResend();
 
   // Notify operator
-  if (operatorEmail) await resend.emails.send({
-    from,
+  if (operatorEmail && resend) await resend.emails.send({
+    from: EMAIL_FROM,
     to: [operatorEmail],
     subject: `【WebMori】無料診断のお申し込み: ${safeName}`,
     html: `
@@ -165,8 +103,8 @@ export async function POST(request: NextRequest) {
   });
 
   // Confirm to customer
-  await resend.emails.send({
-    from,
+  if (resend) await resend.emails.send({
+    from: EMAIL_FROM,
     to: [trimmedEmail],
     subject: "【WebMori】お問い合わせを受け付けました",
     html: `

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { uploadPdf } from "@/lib/r2";
-import { Resend } from "resend";
+import { esc, getResend, EMAIL_FROM } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   if (!(await isAdmin())) {
@@ -19,18 +19,36 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Missing orgId or file" }, { status: 400 });
   }
 
+  // Validate file size (max 10MB)
+  if (file.size > 10 * 1024 * 1024) {
+    return NextResponse.json({ error: "ファイルサイズが10MBを超えています" }, { status: 400 });
+  }
+
+  // Validate MIME type
+  if (file.type !== "application/pdf") {
+    return NextResponse.json({ error: "PDFファイルのみアップロードできます" }, { status: 400 });
+  }
+
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
+  // Validate PDF magic bytes (%PDF-)
+  if (
+    buffer.length < 5 ||
+    buffer[0] !== 0x25 || buffer[1] !== 0x50 || buffer[2] !== 0x44 || buffer[3] !== 0x46 || buffer[4] !== 0x2d
+  ) {
+    return NextResponse.json({ error: "有効なPDFファイルではありません" }, { status: 400 });
+  }
+
   // Generate a unique ID for the record first
-  const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const id = crypto.randomUUID();
   const pdfKey = `free-evals/${orgId}/${id}.pdf`;
 
   try {
     await uploadPdf(pdfKey, buffer);
   } catch (e) {
     console.error("[free-evals/upload] R2 upload failed:", e);
-    return NextResponse.json({ error: `R2アップロード失敗: ${e instanceof Error ? e.message : String(e)}` }, { status: 500 });
+    return NextResponse.json({ error: "ファイルのアップロードに失敗しました" }, { status: 500 });
   }
 
   let report;
@@ -40,7 +58,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (e) {
     console.error("[free-evals/upload] DB create failed:", e);
-    return NextResponse.json({ error: `DB保存失敗: ${e instanceof Error ? e.message : String(e)}` }, { status: 500 });
+    return NextResponse.json({ error: "データの保存に失敗しました" }, { status: 500 });
   }
 
   // Auto-complete the contact request if contactId provided
@@ -59,13 +77,12 @@ export async function POST(request: NextRequest) {
 
   const clientUser = org?.users[0];
   const clientEmail = clientUser?.emailNotifications !== false ? clientUser?.email : null;
-  if (clientEmail && process.env.RESEND_API_KEY) {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";
+  const resend = getResend();
+  if (clientEmail && resend) {
     const siteLabel = siteUrl ?? "あなたのサイト";
     try {
       await resend.emails.send({
-        from,
+        from: EMAIL_FROM,
         to: [clientEmail],
         subject: "【WebMori】無料診断レポートが届いています",
         html: `
@@ -77,7 +94,7 @@ export async function POST(request: NextRequest) {
     <tr><td style="background:white;padding:32px;border:1px solid #EDE9E3;border-top:none;border-radius:0 0 8px 8px;">
       <h2 style="margin:0 0 12px;color:#0F1923;font-size:18px;">無料診断レポートが完成しました</h2>
       <p style="color:#5A6478;font-size:14px;line-height:1.7;margin:0 0 24px;">
-        <strong>${siteLabel}</strong> の無料診断レポートをお届けします。<br>
+        <strong>${esc(siteLabel)}</strong> の無料診断レポートをお届けします。<br>
         ダッシュボードからPDFをダウンロードしてご確認ください。
       </p>
       <a href="https://webmori.jp/ja/dashboard/reports"
@@ -91,8 +108,7 @@ export async function POST(request: NextRequest) {
       });
     } catch (e) {
       console.error("[free-evals/upload] Email send failed:", e);
-      // Don't fail the whole request — report was saved, just email didn't send
-      return NextResponse.json({ ...report, emailError: `メール送信失敗: ${e instanceof Error ? e.message : String(e)}` }, { status: 201 });
+      return NextResponse.json({ ...report, emailError: "メール送信に失敗しました" }, { status: 201 });
     }
   }
 

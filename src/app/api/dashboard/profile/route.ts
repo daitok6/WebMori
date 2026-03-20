@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrg } from "@/lib/dashboard";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+const profileSchema = z.object({
+  name: z.string().max(100).optional(),
+  phone: z.string().max(20).optional(),
+  bio: z.string().max(500).optional(),
+  company: z.string().max(100).optional(),
+  website: z.string().max(500).optional(),
+  orgPhone: z.string().max(20).optional(),
+});
 
 export async function GET() {
   const session = await auth();
@@ -28,19 +39,25 @@ export async function GET() {
 }
 
 export async function PATCH(request: NextRequest) {
+  const rateLimited = await checkRateLimit(request);
+  if (rateLimited) return rateLimited;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { name, phone, bio, company, website, orgPhone } = (await request.json()) as {
-    name?: string;
-    phone?: string;
-    bio?: string;
-    company?: string;
-    website?: string;
-    orgPhone?: string;
-  };
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+  const result = profileSchema.safeParse(body);
+  if (!result.success) {
+    return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
+  }
+  const { name, phone, bio, company, website, orgPhone } = result.data;
 
   await prisma.user.update({
     where: { id: session.user.id },

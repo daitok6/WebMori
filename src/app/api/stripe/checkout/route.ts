@@ -1,24 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getStripe, STRIPE_PRICES, STRIPE_ONBOARDING } from "@/lib/stripe";
-import type { PlanKey, BillingCycleKey } from "@/lib/stripe";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+const checkoutSchema = z.object({
+  plan: z.enum(["STARTER", "GROWTH", "PRO"]),
+  billingCycle: z.enum(["MONTHLY", "ANNUAL"]),
+});
 
 export async function POST(request: NextRequest) {
+  const rateLimited = await checkRateLimit(request);
+  if (rateLimited) return rateLimited;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { plan, billingCycle } = body as {
-    plan: PlanKey;
-    billingCycle: BillingCycleKey;
-  };
-
-  if (!STRIPE_PRICES[plan]?.[billingCycle]) {
-    return NextResponse.json({ error: "Invalid plan or billing cycle" }, { status: 400 });
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
+  const result = checkoutSchema.safeParse(body);
+  if (!result.success) {
+    return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
+  }
+  const { plan, billingCycle } = result.data;
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },

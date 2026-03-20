@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrg } from "@/lib/dashboard";
 import { Stack } from "@/generated/prisma/client";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+const repoSchema = z.object({
+  name: z.string().min(1).max(200),
+  url: z.string().url().max(500),
+  stack: z.string().max(50).optional(),
+});
 
 export async function GET() {
   const org = await getCurrentOrg();
@@ -41,6 +49,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const rateLimited = await checkRateLimit(request);
+  if (rateLimited) return rateLimited;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -63,12 +74,17 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const body = await request.json();
-  const { name, url, stack } = body as { name: string; url: string; stack?: string };
-
-  if (!name || !url) {
-    return NextResponse.json({ error: "Name and URL required" }, { status: 400 });
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
+  const result = repoSchema.safeParse(body);
+  if (!result.success) {
+    return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
+  }
+  const { name, url, stack } = result.data;
 
   const stackValue = (stack?.toUpperCase() as Stack) ?? "OTHER";
 

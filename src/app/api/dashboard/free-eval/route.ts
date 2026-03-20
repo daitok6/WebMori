@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrg } from "@/lib/dashboard";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+const freeEvalSchema = z.object({
+  name: z.string().min(1).max(100),
+  website: z.string().min(1).max(500),
+  stack: z.string().max(100).optional(),
+  message: z.string().max(2000).optional(),
+});
 
 export async function GET() {
   const session = await auth();
@@ -20,6 +29,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const rateLimited = await checkRateLimit(request);
+  if (rateLimited) return rateLimited;
+
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -44,24 +56,25 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "already_submitted" }, { status: 409 });
   }
 
-  const body = await request.json() as {
-    name: string;
-    website: string;
-    stack?: string;
-    message?: string;
-  };
-
-  if (!body.name?.trim() || !body.website?.trim()) {
-    return NextResponse.json({ error: "Name and website are required" }, { status: 400 });
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
+  const result = freeEvalSchema.safeParse(body);
+  if (!result.success) {
+    return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
+  }
+  const { name, website, stack, message } = result.data;
 
   const contact = await prisma.contactRequest.create({
     data: {
-      name: body.name.trim(),
+      name: name.trim(),
       email: user.email,
-      url: body.website.trim(),
-      stack: body.stack?.trim() || null,
-      message: body.message?.trim() || null,
+      url: website.trim(),
+      stack: stack?.trim() || null,
+      message: message?.trim() || null,
       organizationId: org.id,
       status: "PENDING",
     },

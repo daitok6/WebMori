@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
-import { Resend } from "resend";
+import { esc, getResend, EMAIL_FROM } from "@/lib/email";
+
+const messageSchema = z.object({
+  orgId: z.string().min(1),
+  content: z.string().min(1).max(5000),
+});
 
 export async function GET() {
   if (!(await isAdmin())) {
@@ -45,14 +51,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { orgId, content } = (await request.json()) as {
-    orgId: string;
-    content: string;
-  };
-
-  if (!orgId || !content?.trim()) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
+  const result = messageSchema.safeParse(body);
+  if (!result.success) {
+    return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
+  }
+  const { orgId, content } = result.data;
 
   const message = await prisma.message.create({
     data: { organizationId: orgId, content: content.trim(), fromOperator: true },
@@ -66,11 +75,10 @@ export async function POST(request: NextRequest) {
 
   const clientUser = org?.users[0];
   const clientEmail = clientUser?.emailNotifications !== false ? clientUser?.email : null;
-  if (clientEmail && process.env.RESEND_API_KEY) {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";
+  const resend = getResend();
+  if (clientEmail && resend) {
     await resend.emails.send({
-      from,
+      from: EMAIL_FROM,
       to: [clientEmail],
       subject: "【WebMori】新しいメッセージが届いています",
       html: `
@@ -82,7 +90,7 @@ export async function POST(request: NextRequest) {
             <tr><td style="background:white;padding:32px;border:1px solid #EDE9E3;border-top:none;border-radius:0 0 8px 8px;">
               <p style="color:#0F1923;font-size:16px;margin:0 0 16px;">WebMoriからメッセージが届いています。</p>
               <div style="background:#F8F5EE;border-radius:8px;padding:16px;margin:0 0 24px;">
-                <p style="color:#1A1A1A;font-size:14px;margin:0;">${content.trim()}</p>
+                <p style="color:#1A1A1A;font-size:14px;margin:0;">${esc(content.trim())}</p>
               </div>
               <a href="https://webmori.jp/ja/dashboard/messages"
                 style="background:#C9A84C;color:#0F1923;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">

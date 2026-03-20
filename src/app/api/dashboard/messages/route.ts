@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrg } from "@/lib/dashboard";
-import { Resend } from "resend";
+import { esc, getResend, EMAIL_FROM } from "@/lib/email";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+const messageSchema = z.object({
+  content: z.string().min(1).max(5000),
+});
 
 export async function GET() {
   const org = await getCurrentOrg();
@@ -19,6 +25,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const rateLimited = await checkRateLimit(request);
+  if (rateLimited) return rateLimited;
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -35,11 +44,11 @@ export async function POST(request: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
-  const { content } = body as { content: string };
-
-  if (!content?.trim()) {
-    return NextResponse.json({ error: "Message required" }, { status: 400 });
+  const result = messageSchema.safeParse(body);
+  if (!result.success) {
+    return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
   }
+  const { content } = result.data;
 
   const message = await prisma.message.create({
     data: {
@@ -51,11 +60,10 @@ export async function POST(request: NextRequest) {
 
   // Notify admin
   const adminEmail = process.env.ADMIN_EMAIL;
-  if (process.env.RESEND_API_KEY && adminEmail) {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>";
+  const resend = getResend();
+  if (resend && adminEmail) {
     await resend.emails.send({
-      from,
+      from: EMAIL_FROM,
       to: [adminEmail],
       subject: `【WebMori】${org.name} からメッセージが届いています`,
       html: `
@@ -65,9 +73,9 @@ export async function POST(request: NextRequest) {
               <span style="color:#C9A84C;font-size:20px;font-weight:bold;">Web<span style="color:white;">Mori</span></span>
             </td></tr>
             <tr><td style="background:white;padding:32px;border:1px solid #EDE9E3;border-top:none;border-radius:0 0 8px 8px;">
-              <p style="color:#0F1923;font-size:16px;margin:0 0 8px;"><strong>${org.name}</strong> からメッセージが届いています。</p>
+              <p style="color:#0F1923;font-size:16px;margin:0 0 8px;"><strong>${esc(org.name)}</strong> からメッセージが届いています。</p>
               <div style="background:#F8F5EE;border-radius:8px;padding:16px;margin:0 0 24px;">
-                <p style="color:#1A1A1A;font-size:14px;margin:0;">${content.trim()}</p>
+                <p style="color:#1A1A1A;font-size:14px;margin:0;">${esc(content.trim())}</p>
               </div>
               <a href="https://webmori.jp/ja/admin/messages"
                 style="background:#C9A84C;color:#0F1923;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">

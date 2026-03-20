@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import type Stripe from "stripe";
-import { Plan, BillingCycle, SubStatus } from "@/generated/prisma/client";
+import { Plan, BillingCycle, SubStatus, Prisma } from "@/generated/prisma/client";
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -47,6 +47,9 @@ export async function POST(request: NextRequest) {
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const { userId, organizationId, plan, billingCycle } = session.metadata ?? {};
   if (!userId || !plan) return;
+
+  const validPlans = ["STARTER", "GROWTH", "PRO"];
+  if (!validPlans.includes(plan)) return;
 
   // Ensure organization exists
   let orgId = organizationId;
@@ -102,7 +105,8 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     where: { id: sub.id },
     data: {
       status: statusMap[subscription.status] ?? "ACTIVE",
-      currentPeriodStart: new Date(subscription.start_date * 1000),
+      currentPeriodStart: new Date(subscription.current_period_start * 1000),
+      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
     },
   });
 }
@@ -131,16 +135,24 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   });
   if (!sub) return;
 
-  await prisma.payment.create({
-    data: {
-      subscriptionId: sub.id,
-      amount: invoice.amount_paid,
-      currency: invoice.currency,
-      status: "succeeded",
-      stripeInvoiceId: invoice.id,
-      paidAt: new Date(),
-    },
-  });
+  try {
+    await prisma.payment.create({
+      data: {
+        subscriptionId: sub.id,
+        amount: invoice.amount_paid,
+        currency: invoice.currency,
+        status: "succeeded",
+        stripeInvoiceId: invoice.id,
+        paidAt: new Date(),
+      },
+    });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+      // Duplicate event — already processed, ignore
+      return;
+    }
+    throw e;
+  }
 }
 
 async function handlePaymentFailed(invoice: Stripe.Invoice) {
@@ -152,15 +164,23 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
   });
   if (!sub) return;
 
-  await prisma.payment.create({
-    data: {
-      subscriptionId: sub.id,
-      amount: invoice.amount_due,
-      currency: invoice.currency,
-      status: "failed",
-      stripeInvoiceId: invoice.id,
-    },
-  });
+  try {
+    await prisma.payment.create({
+      data: {
+        subscriptionId: sub.id,
+        amount: invoice.amount_due,
+        currency: invoice.currency,
+        status: "failed",
+        stripeInvoiceId: invoice.id,
+      },
+    });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+      // Duplicate event — already processed, ignore
+      return;
+    }
+    throw e;
+  }
 
   await prisma.subscription.update({
     where: { id: sub.id },

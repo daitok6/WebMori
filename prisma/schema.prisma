@@ -21,6 +21,7 @@ model User {
   bio           String?
   locale        String    @default("ja")
   emailNotifications Boolean @default(true)
+  role          Role      @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -29,6 +30,8 @@ model User {
 
   organizationId String?
   organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([organizationId])
 }
 
 model Account {
@@ -121,6 +124,8 @@ model Payment {
   createdAt      DateTime @default(now())
 
   subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId])
 }
 
 model Repo {
@@ -157,6 +162,9 @@ model Audit {
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   repo         Repo         @relation(fields: [repoId], references: [id], onDelete: Cascade)
   findings     Finding[]
+
+  @@index([organizationId, createdAt])
+  @@index([repoId, createdAt])
 }
 
 model Finding {
@@ -173,6 +181,8 @@ model Finding {
   createdAt DateTime @default(now())
 
   audit Audit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+
+  @@index([auditId])
 }
 
 model Message {
@@ -185,6 +195,8 @@ model Message {
   createdAt        DateTime @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
 }
 
 model ContactRequest {
@@ -201,6 +213,8 @@ model ContactRequest {
   updatedAt      DateTime    @default(now()) @updatedAt
 
   organization Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([status])
 }
 
 model FreeEvalReport {
@@ -216,6 +230,11 @@ model FreeEvalReport {
 // ──────────────────────────────────────────────
 // Enums
 // ──────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
 
 enum Plan {
   STARTER
