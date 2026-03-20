@@ -93,7 +93,6 @@ vi.mock("@/lib/env", () => ({
     R2_SECRET_ACCESS_KEY: "test",
     R2_BUCKET_NAME: "webmori-reports",
     R2_PUBLIC_URL: "",
-    CRON_SECRET: "test-cron-secret",
   },
   clientEnv: {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_123",
@@ -115,9 +114,11 @@ vi.mock("@/generated/prisma/client", () => ({
   Prisma: {
     PrismaClientKnownRequestError: class PrismaClientKnownRequestError extends Error {
       code: string;
-      constructor(message: string, { code }: { code: string }) {
+      clientVersion: string;
+      constructor(message: string, { code, clientVersion }: { code: string; clientVersion?: string }) {
         super(message);
         this.code = code;
+        this.clientVersion = clientVersion ?? "0.0.0";
       }
     },
   },

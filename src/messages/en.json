@@ -579,6 +579,91 @@
     "accept": "Accept",
     "decline": "Decline"
   },
+  "legal": {
+    "tokushoho": {
+      "title": "Specified Commercial Transactions Act",
+      "notice": "This page is required by the Japanese Specified Commercial Transactions Act (特定商取引法). The original content is in Japanese as required by law.",
+      "lastUpdated": "Last updated: March 18, 2026",
+      "rows": [
+        ["Business name", "WebMori"],
+        ["Representative", "Daito Kojima"],
+        ["Location", "Tokyo (full address disclosed upon request)"],
+        ["Phone", "Disclosed upon request"],
+        ["Email", "support@webmori.jp"],
+        ["Inquiries", "support@webmori.jp or via the contact page"],
+        ["Pricing", "Starter ¥19,800/mo, Growth ¥39,800/mo, Pro ¥69,800/mo (tax included)"],
+        ["Additional fees", "Growth onboarding ¥30,000, Pro onboarding ¥50,000 (one-time, tax included)"],
+        ["Payment methods", "Credit card (Visa, Mastercard, American Express, JCB)"],
+        ["Billing cycle", "Monthly plans: auto-renewed monthly. Annual plans: billed once per year"],
+        ["Service availability", "Available immediately after payment"],
+        ["Refund policy", "Due to the nature of digital services, refunds are generally not provided. Exceptions apply when caused by our fault"],
+        ["System requirements", "Latest versions of Chrome, Firefox, Safari, and Edge"]
+      ]
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: March 18, 2026",
+      "intro": "WebMori is committed to protecting your personal information. This policy explains how we handle personal data when you use our services.",
+      "sections": [
+        {
+          "title": "Information We Collect",
+          "content": "We collect your email address and name during account registration, repository URLs for audit purposes, session cookies, and information you provide through our contact form."
+        },
+        {
+          "title": "How We Use It",
+          "content": "We use your information to provide and operate our services, create and deliver audit reports, respond to inquiries, analyze usage for service improvements, and process payments."
+        },
+        {
+          "title": "Third-Party Sharing",
+          "content": "We do not share personal information with third parties without your consent, except as required by law. We do share necessary data with service providers for payment processing (Stripe) and email delivery (Resend)."
+        },
+        {
+          "title": "Data Storage",
+          "content": "Personal data is stored on servers with appropriate security measures. Data that is no longer needed is promptly deleted."
+        },
+        {
+          "title": "Contact",
+          "content": "For questions about personal data handling, please contact support@webmori.jp."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: March 18, 2026",
+      "intro": "These Terms of Service govern your use of WebMori's services.",
+      "sections": [
+        {
+          "title": "Services",
+          "content": "We provide web security, performance, and related audit services. Audit results are delivered as reports and pull requests."
+        },
+        {
+          "title": "Registration",
+          "content": "An account is required to use our services. Information provided during registration must be accurate and up to date."
+        },
+        {
+          "title": "Pricing & Payment",
+          "content": "Service fees are listed on our pricing page. Payment is made by credit card. Monthly plans are auto-renewed each month."
+        },
+        {
+          "title": "Cancellation",
+          "content": "Monthly plans can be canceled at any time. Annual plans can be canceled at the end of the contract period. You retain access until the end of your paid period."
+        },
+        {
+          "title": "Disclaimer",
+          "content": "Audit results are informational and do not guarantee detection of all vulnerabilities. Application of suggested fixes is your responsibility."
+        },
+        {
+          "title": "Changes to Terms",
+          "content": "We may update these terms. Significant changes will be communicated via email."
+        }
+      ]
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to home"
+  },
   "footer": {
     "description": "Web security audit service protecting Tokyo freelancers and SMBs",
     "product": "Product",

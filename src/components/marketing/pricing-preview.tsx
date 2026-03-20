@@ -8,13 +8,7 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { Link } from "@/i18n/navigation";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-// Feature indices per plan (Starter=4, Growth=6, Pro=7)
-const featureCounts = [
-  [0, 1, 2, 3],
-  [0, 1, 2, 3, 4, 5],
-  [0, 1, 2, 3, 4, 5, 6],
-];
+import { featureCounts } from "@/lib/pricing-data";
 
 export function PricingPreview() {
   const t = useTranslations("pricing");

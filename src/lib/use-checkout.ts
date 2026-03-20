@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "next-intl";
 
 const PLAN_KEYS = ["STARTER", "GROWTH", "PRO"] as const;
 
 export function useCheckout() {
   const [loading, setLoading] = useState(false);
+  const locale = useLocale();
 
   async function checkout(planIndex: number, annual: boolean) {
     setLoading(true);
@@ -20,8 +22,7 @@ export function useCheckout() {
       });
 
       if (res.status === 401) {
-        // Not authenticated — redirect to signin
-        window.location.href = "/auth/signin";
+        window.location.href = `/${locale}/auth/signin`;
         return;
       }
 

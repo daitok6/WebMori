@@ -7,14 +7,7 @@ import { LanguageToggle } from "./language-toggle";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-
-const navLinks = [
-  { href: "/features", key: "features" },
-  { href: "/pricing", key: "pricing" },
-  { href: "/blog", key: "blog" },
-  { href: "/about", key: "about" },
-  { href: "/contact", key: "contact" },
-] as const;
+import { navLinks } from "@/lib/nav-links";
 
 interface MobileMenuProps {
   open: boolean;

@@ -10,12 +10,8 @@ import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCheckout } from "@/lib/use-checkout";
 import { Link } from "@/i18n/navigation";
-
-const featureCounts = [
-  [0, 1, 2, 3],
-  [0, 1, 2, 3, 4, 5],
-  [0, 1, 2, 3, 4, 5, 6],
-];
+import { AnimatePresence, motion } from "framer-motion";
+import { featureCounts } from "@/lib/pricing-data";
 
 export default function PricingPage() {
   const t = useTranslations("pricing");
@@ -172,11 +168,22 @@ export default function PricingPage() {
                       )}
                     />
                   </button>
-                  {openFaq === i && (
-                    <div className="px-6 pb-4 text-sm text-text-muted leading-relaxed">
-                      {tFaq(`faq.${i}.a`)}
-                    </div>
-                  )}
+                  <AnimatePresence initial={false}>
+                    {openFaq === i && (
+                      <motion.div
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-6 pb-4 text-sm text-text-muted leading-relaxed">
+                          {tFaq(`faq.${i}.a`)}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </ScrollReveal>
             ))}

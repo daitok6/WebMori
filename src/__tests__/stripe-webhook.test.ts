@@ -53,7 +53,7 @@ describe("Stripe Webhook Handler", () => {
     // Simulate P2002 unique constraint violation
     const { Prisma } = await import("@/generated/prisma/client");
     mockPrisma.stripeEvent.create.mockRejectedValue(
-      new Prisma.PrismaClientKnownRequestError("Unique constraint", { code: "P2002" }),
+      new Prisma.PrismaClientKnownRequestError("Unique constraint", { code: "P2002", clientVersion: "0.0.0" }),
     );
 
     const res = await POST(makeRequest("{}"));
@@ -280,7 +280,7 @@ describe("Stripe Webhook Handler", () => {
 
       const { Prisma } = await import("@/generated/prisma/client");
       mockPrisma.payment.create.mockRejectedValue(
-        new Prisma.PrismaClientKnownRequestError("Unique constraint", { code: "P2002" }),
+        new Prisma.PrismaClientKnownRequestError("Unique constraint", { code: "P2002", clientVersion: "0.0.0" }),
       );
 
       const res = await POST(makeRequest("{}"));

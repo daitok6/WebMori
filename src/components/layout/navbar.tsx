@@ -5,18 +5,12 @@ import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./language-toggle";
+import { ThemeToggle } from "./theme-toggle";
 import { MobileMenu } from "./mobile-menu";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { navLinks } from "@/lib/nav-links";
 import Image from "next/image";
-
-const navLinks = [
-  { href: "/features", key: "features" },
-  { href: "/pricing", key: "pricing" },
-  { href: "/blog", key: "blog" },
-  { href: "/about", key: "about" },
-  { href: "/contact", key: "contact" },
-] as const;
 
 export function Navbar() {
   const t = useTranslations("nav");
@@ -81,6 +75,7 @@ export function Navbar() {
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
+            <ThemeToggle />
             <LanguageToggle />
             <Link href="/auth/signin">
               <Button variant="ghost" size="sm">

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   /* Backgrounds */
   --color-bg-white: #FFFFFF;
@@ -38,4 +40,21 @@
 body {
   background: var(--color-bg-white);
   color: var(--color-text-body);
+}
+
+/* Dark mode overrides */
+.dark {
+  --color-bg-white: #0F1923;
+  --color-bg-cream: #141E2A;
+  --color-bg-warm: #1A2736;
+
+  --color-navy-dark: #E8E4DC;
+  --color-navy: #D0CCC4;
+  --color-navy-light: #B8B4AC;
+
+  --color-text-body: #E8E4DC;
+  --color-text-muted: #8A92A0;
+
+  --color-border: #2C3E50;
+  --color-border-light: #1E3040;
 }

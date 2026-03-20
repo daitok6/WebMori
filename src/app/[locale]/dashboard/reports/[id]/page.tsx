@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { AuditStatusBadge } from "@/components/dashboard/audit-status-badge";
 import {
-  ArrowLeft,
+  ChevronRight,
   Download,
   ExternalLink,
   FileText,
@@ -49,6 +49,7 @@ const severityVariant: Record<string, "critical" | "high" | "medium" | "low"> =
 
 export default function ReportDetailPage() {
   const t = useTranslations("dashboard.reportDetail");
+  const tNav = useTranslations("dashboard.nav");
   const tSev = useTranslations("dashboard.severity");
   const tEff = useTranslations("dashboard.effort");
   const params = useParams();
@@ -78,7 +79,6 @@ export default function ReportDetailPage() {
         <p className="mt-1 text-sm text-text-muted">{t("notFoundDesc")}</p>
         <Link href="/dashboard/reports" className="mt-4 inline-block">
           <Button variant="secondary" size="sm">
-            <ArrowLeft className="mr-1 h-4 w-4" />
             {t("backToReports")}
           </Button>
         </Link>
@@ -88,17 +88,25 @@ export default function ReportDetailPage() {
 
   return (
     <>
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-1 text-sm text-text-muted">
+        <Link href="/dashboard" className="hover:text-navy-dark transition-colors">
+          {tNav("overview")}
+        </Link>
+        <ChevronRight className="h-3 w-3" />
+        <Link href="/dashboard/reports" className="hover:text-navy-dark transition-colors">
+          {tNav("reports")}
+        </Link>
+        <ChevronRight className="h-3 w-3" />
+        <span className="text-navy-dark font-medium truncate max-w-[200px]">
+          {audit?.repoName ?? "..."}
+        </span>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="mt-4 flex items-start justify-between">
         <div>
-          <Link
-            href="/dashboard/reports"
-            className="text-sm text-text-muted hover:text-navy-dark transition-colors"
-          >
-            <ArrowLeft className="mr-1 inline h-3 w-3" />
-            {t("backToReports")}
-          </Link>
-          <h1 className="mt-2 text-2xl font-bold text-navy-dark">
+          <h1 className="text-2xl font-bold text-navy-dark">
             {audit.repoName}
           </h1>
           <div className="mt-1 flex items-center gap-3">
