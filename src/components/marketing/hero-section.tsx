@@ -23,6 +23,7 @@ export function HeroSection() {
             <Badge className="mb-4">{t("badge")}</Badge>
             <h1 className="text-3xl font-bold leading-tight text-navy-dark sm:text-4xl lg:text-6xl">
               {t("title")}
+              <br />
               <span className="text-gold">{t("titleHighlight")}</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg text-text-muted leading-relaxed">
