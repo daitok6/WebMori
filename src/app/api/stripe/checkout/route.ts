@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getStripe, STRIPE_PRICES, STRIPE_ONBOARDING } from "@/lib/stripe";
+import { getStripe, getStripePrices, getStripeOnboarding } from "@/lib/stripe";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const checkoutSchema = z.object({
@@ -41,16 +41,18 @@ export async function POST(request: NextRequest) {
   }
 
   // Build line items
+  const prices = getStripePrices();
   const lineItems: { price: string; quantity: number }[] = [
-    { price: STRIPE_PRICES[plan][billingCycle], quantity: 1 },
+    { price: prices[plan][billingCycle], quantity: 1 },
   ];
 
   // Add onboarding fee for Growth/Pro
+  const onboarding = getStripeOnboarding();
   const onboardingPrice =
     plan === "GROWTH"
-      ? STRIPE_ONBOARDING.GROWTH
+      ? onboarding.GROWTH
       : plan === "PRO"
-        ? STRIPE_ONBOARDING.PRO
+        ? onboarding.PRO
         : undefined;
 
   if (onboardingPrice) {

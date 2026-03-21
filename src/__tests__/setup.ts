@@ -37,15 +37,16 @@ export const mockStripe = {
 
 vi.mock("@/lib/stripe", () => ({
   getStripe: () => mockStripe,
-  STRIPE_PRICES: {
+  getStripePrices: () => ({
     STARTER: { MONTHLY: "price_starter_m", ANNUAL: "price_starter_a" },
     GROWTH: { MONTHLY: "price_growth_m", ANNUAL: "price_growth_a" },
     PRO: { MONTHLY: "price_pro_m", ANNUAL: "price_pro_a" },
-  },
-  STRIPE_ONBOARDING: {
+  }),
+  getStripeOnboarding: () => ({
     GROWTH: "price_onboard_growth",
     PRO: "price_onboard_pro",
-  },
+  }),
+  getWebhookSecret: () => "whsec_test",
 }));
 
 // ---------------------------------------------------------------------------
