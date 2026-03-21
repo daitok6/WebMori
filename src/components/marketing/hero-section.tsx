@@ -21,7 +21,7 @@ export function HeroSection() {
             transition={{ duration: 0.6 }}
           >
             <Badge className="mb-4">{t("badge")}</Badge>
-            <h1 className="text-3xl font-bold leading-tight text-navy-dark sm:text-4xl lg:text-6xl">
+            <h1 className="text-3xl font-bold leading-tight text-navy-dark sm:text-4xl lg:text-5xl">
               {t("title")}
               <br />
               <span className="text-gold">{t("titleHighlight")}</span>
