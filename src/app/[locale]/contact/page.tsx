@@ -41,7 +41,7 @@ export default function ContactPage() {
   }
 
   return (
-    <section className="bg-gradient-to-b from-bg-cream to-white pt-32 pb-20">
+    <section className="bg-gradient-to-b from-bg-cream to-white pt-24 sm:pt-32 pb-12 sm:pb-20">
       <div className="mx-auto max-w-2xl px-6">
         <ScrollReveal>
           <h1 className="text-center text-4xl font-bold text-navy-dark sm:text-5xl">

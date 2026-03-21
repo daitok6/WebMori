@@ -54,7 +54,7 @@ export function SampleReportContent() {
 
   return (
     <>
-      <section className="bg-gradient-to-b from-bg-cream to-white pt-32 pb-12">
+      <section className="bg-gradient-to-b from-bg-cream to-white pt-24 sm:pt-32 pb-12">
         <div className="mx-auto max-w-4xl px-6">
           <ScrollReveal>
             <div className="text-center">
@@ -88,7 +88,7 @@ export function SampleReportContent() {
               <h2 className="text-xl font-bold text-navy-dark mb-4">
                 {t("overviewTitle")}
               </h2>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+              <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
                 {lenses.map((lens) => (
                   <div
                     key={lens.key}

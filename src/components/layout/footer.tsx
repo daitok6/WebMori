@@ -92,7 +92,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/40">
+        <div className="mt-12 border-t border-white/10 pt-8 pb-[env(safe-area-inset-bottom)] text-center text-sm text-white/40">
           &copy; {new Date().getFullYear()} {t("footer.copyright")}
         </div>
       </div>

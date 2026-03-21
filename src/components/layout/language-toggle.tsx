@@ -18,7 +18,7 @@ export function LanguageToggle() {
       <button
         onClick={() => switchLocale("ja")}
         className={cn(
-          "px-2.5 py-1 rounded-l-lg transition-colors cursor-pointer",
+          "px-3 py-2 rounded-l-lg transition-colors cursor-pointer min-h-[44px]",
           locale === "ja"
             ? "bg-navy-dark text-white"
             : "text-text-muted hover:text-text-body",
@@ -29,7 +29,7 @@ export function LanguageToggle() {
       <button
         onClick={() => switchLocale("en")}
         className={cn(
-          "px-2.5 py-1 rounded-r-lg transition-colors cursor-pointer",
+          "px-3 py-2 rounded-r-lg transition-colors cursor-pointer min-h-[44px]",
           locale === "en"
             ? "bg-navy-dark text-white"
             : "text-text-muted hover:text-text-body",
