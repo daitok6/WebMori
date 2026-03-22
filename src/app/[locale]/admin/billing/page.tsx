@@ -48,27 +48,27 @@ export default function AdminBillingPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
 
-  if (!data) return <p className="text-text-muted">Failed to load billing data.</p>;
+  if (!data) return <p className="text-ink-muted">Failed to load billing data.</p>;
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-navy-dark">Billing Dashboard</h1>
+      <h1 className="text-2xl font-bold text-ink">Billing Dashboard</h1>
 
       {/* KPI cards */}
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
         <Card>
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-gold/10 p-2.5">
-              <TrendingUp className="h-5 w-5 text-gold" />
+            <div className="rounded-lg bg-primary/10 p-2.5">
+              <TrendingUp className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <p className="text-xs text-text-muted">MRR</p>
-              <p className="text-xl font-bold text-navy-dark">
+              <p className="text-xs text-ink-muted">MRR</p>
+              <p className="text-xl font-bold text-ink">
                 ¥{data.mrr.toLocaleString()}
               </p>
             </div>
@@ -80,19 +80,19 @@ export default function AdminBillingPage() {
               <Users className="h-5 w-5 text-severity-good" />
             </div>
             <div>
-              <p className="text-xs text-text-muted">Active Subscriptions</p>
-              <p className="text-xl font-bold text-navy-dark">{data.activeCount}</p>
+              <p className="text-xs text-ink-muted">Active Subscriptions</p>
+              <p className="text-xl font-bold text-ink">{data.activeCount}</p>
             </div>
           </div>
         </Card>
         <Card>
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-navy-light/10 p-2.5">
-              <CreditCard className="h-5 w-5 text-navy-light" />
+            <div className="rounded-lg bg-ink-subtle/10 p-2.5">
+              <CreditCard className="h-5 w-5 text-ink-muted" />
             </div>
             <div>
-              <p className="text-xs text-text-muted">Total Subscriptions</p>
-              <p className="text-xl font-bold text-navy-dark">{data.subscriptions.length}</p>
+              <p className="text-xs text-ink-muted">Total Subscriptions</p>
+              <p className="text-xl font-bold text-ink">{data.subscriptions.length}</p>
             </div>
           </div>
         </Card>
@@ -100,35 +100,35 @@ export default function AdminBillingPage() {
 
       {/* Active subscriptions */}
       <Card className="mt-6">
-        <h2 className="text-lg font-semibold text-navy-dark mb-4">Subscriptions</h2>
+        <h2 className="text-lg font-semibold text-ink mb-4">Subscriptions</h2>
         {data.subscriptions.length === 0 ? (
-          <p className="text-sm text-text-muted text-center py-8">No subscriptions yet</p>
+          <p className="text-sm text-ink-muted text-center py-8">No subscriptions yet</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="pb-2 font-medium text-text-muted">Organization</th>
-                  <th className="pb-2 font-medium text-text-muted">Plan</th>
-                  <th className="pb-2 font-medium text-text-muted">Cycle</th>
-                  <th className="pb-2 font-medium text-text-muted">Status</th>
-                  <th className="pb-2 font-medium text-text-muted">Period End</th>
+                  <th className="pb-2 font-medium text-ink-muted">Organization</th>
+                  <th className="pb-2 font-medium text-ink-muted">Plan</th>
+                  <th className="pb-2 font-medium text-ink-muted">Cycle</th>
+                  <th className="pb-2 font-medium text-ink-muted">Status</th>
+                  <th className="pb-2 font-medium text-ink-muted">Period End</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {data.subscriptions.map((s) => (
                   <tr key={s.id}>
-                    <td className="py-3 font-medium text-navy-dark">{s.orgName}</td>
+                    <td className="py-3 font-medium text-ink">{s.orgName}</td>
                     <td className="py-3">
                       <Badge variant={planVariant[s.plan] ?? "default"}>{s.plan}</Badge>
                     </td>
-                    <td className="py-3 text-text-muted">{s.billingCycle}</td>
+                    <td className="py-3 text-ink-muted">{s.billingCycle}</td>
                     <td className="py-3">
                       <Badge variant={s.status === "ACTIVE" ? "good" : "default"}>
                         {s.status}
                       </Badge>
                     </td>
-                    <td className="py-3 text-text-muted">
+                    <td className="py-3 text-ink-muted">
                       {s.currentPeriodEnd
                         ? new Date(s.currentPeriodEnd).toLocaleDateString("ja-JP")
                         : "—"}
@@ -143,35 +143,35 @@ export default function AdminBillingPage() {
 
       {/* Recent payments */}
       <Card className="mt-6">
-        <h2 className="text-lg font-semibold text-navy-dark mb-4">Recent Payments</h2>
+        <h2 className="text-lg font-semibold text-ink mb-4">Recent Payments</h2>
         {data.payments.length === 0 ? (
-          <p className="text-sm text-text-muted text-center py-8">No payments yet</p>
+          <p className="text-sm text-ink-muted text-center py-8">No payments yet</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="pb-2 font-medium text-text-muted">Organization</th>
-                  <th className="pb-2 font-medium text-text-muted">Plan</th>
-                  <th className="pb-2 font-medium text-text-muted">Amount</th>
-                  <th className="pb-2 font-medium text-text-muted">Status</th>
-                  <th className="pb-2 font-medium text-text-muted">Date</th>
+                  <th className="pb-2 font-medium text-ink-muted">Organization</th>
+                  <th className="pb-2 font-medium text-ink-muted">Plan</th>
+                  <th className="pb-2 font-medium text-ink-muted">Amount</th>
+                  <th className="pb-2 font-medium text-ink-muted">Status</th>
+                  <th className="pb-2 font-medium text-ink-muted">Date</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {data.payments.map((p) => (
                   <tr key={p.id}>
-                    <td className="py-3 font-medium text-navy-dark">{p.orgName}</td>
+                    <td className="py-3 font-medium text-ink">{p.orgName}</td>
                     <td className="py-3">
                       <Badge variant={planVariant[p.plan] ?? "default"}>{p.plan}</Badge>
                     </td>
-                    <td className="py-3 text-navy-dark">¥{p.amount.toLocaleString()}</td>
+                    <td className="py-3 text-ink">¥{p.amount.toLocaleString()}</td>
                     <td className="py-3">
                       <Badge variant={p.status === "paid" ? "good" : p.status === "failed" ? "critical" : "default"}>
                         {p.status}
                       </Badge>
                     </td>
-                    <td className="py-3 text-text-muted">
+                    <td className="py-3 text-ink-muted">
                       {new Date(p.paidAt ?? p.createdAt).toLocaleDateString("ja-JP")}
                     </td>
                   </tr>

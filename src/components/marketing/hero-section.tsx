@@ -3,91 +3,143 @@
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@/i18n/navigation";
-import { Shield, Zap, Globe, Code, LineChart } from "lucide-react";
+import { Shield, Zap, Globe, Code, LineChart, Users } from "lucide-react";
+import { useEffect, useState } from "react";
 
+/* ---------- Terminal scan animation ---------- */
+const scanLines = [
+  { text: "$ webmori scan --target client-site.jp", color: "text-primary" },
+  { text: "  [1/6] Security audit .............. PASS", color: "text-emerald-400" },
+  { text: "  [2/6] Performance check ........... 3 issues", color: "text-amber-400" },
+  { text: "  [3/6] LINE API review ............. PASS", color: "text-emerald-400" },
+  { text: "  [4/6] i18n / Japanese UX .......... 1 issue", color: "text-yellow-400" },
+  { text: "  [5/6] Maintainability ............. PASS", color: "text-emerald-400" },
+  { text: "  [6/6] Frontend design ............. 2 issues", color: "text-amber-400" },
+  { text: "  Report generated: report-ja.pdf", color: "text-primary" },
+];
+
+function TerminalScan() {
+  const [visibleLines, setVisibleLines] = useState(0);
+
+  useEffect(() => {
+    if (visibleLines < scanLines.length) {
+      const timeout = setTimeout(
+        () => setVisibleLines((v) => v + 1),
+        visibleLines === 0 ? 800 : 400,
+      );
+      return () => clearTimeout(timeout);
+    }
+  }, [visibleLines]);
+
+  return (
+    <div className="rounded-2xl bg-stone-900 p-5 shadow-2xl border border-stone-700/50 font-mono text-sm leading-relaxed">
+      {/* Terminal chrome */}
+      <div className="flex items-center gap-2 pb-4 mb-4 border-b border-stone-700/50">
+        <span className="h-3 w-3 rounded-full bg-red-400/80" />
+        <span className="h-3 w-3 rounded-full bg-amber-400/80" />
+        <span className="h-3 w-3 rounded-full bg-emerald-400/80" />
+        <span className="ml-2 text-xs text-stone-500">webmori-audit</span>
+      </div>
+
+      {/* Scan lines */}
+      <div className="space-y-1.5 min-h-[220px]">
+        <AnimatePresence>
+          {scanLines.slice(0, visibleLines).map((line, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+              className={line.color}
+            >
+              {line.text}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        {/* Blinking cursor */}
+        {visibleLines < scanLines.length && (
+          <motion.span
+            animate={{ opacity: [1, 0] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
+            className="inline-block w-2 h-4 bg-primary"
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Hero Section ---------- */
 export function HeroSection() {
   const t = useTranslations("hero");
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-bg-cream to-white pt-24 sm:pt-32 pb-14 sm:pb-20">
+    <section className="relative overflow-hidden pt-24 sm:pt-32 pb-14 sm:pb-20">
+      {/* Warm gradient mesh background */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary-subtle via-surface to-surface" />
+      <div className="absolute top-0 left-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-accent-subtle/30 blur-3xl" />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid items-center gap-10 sm:gap-12 md:grid-cols-2">
-          {/* Text */}
+        {/* Centered text block */}
+        <div className="mx-auto max-w-3xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge className="mb-4">{t("badge")}</Badge>
-            <h1 className="text-3xl font-bold leading-tight text-navy-dark sm:text-4xl lg:text-5xl">
+            <Badge className="mb-6">{t("badge")}</Badge>
+            <h1 className="text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
               {t("title")}
               <br />
-              <span className="text-gold">{t("titleHighlight")}</span>
+              <span className="text-primary">{t("titleHighlight")}</span>
             </h1>
-            <p className="mt-6 max-w-lg text-lg text-text-muted leading-relaxed">
+            <p className="mx-auto mt-6 max-w-xl text-lg text-ink-muted leading-relaxed">
               {t("subtitle")}
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/auth/signin?callbackUrl=/dashboard/free-eval">
-                <Button size="lg">{t("cta")}</Button>
-              </Link>
-              <Link href="/sample-report">
-                <Button variant="secondary" size="lg">
-                  {t("ctaSecondary")}
-                </Button>
-              </Link>
-            </div>
           </motion.div>
 
-          {/* Animated report mockup */}
+          {/* CTAs */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-4"
           >
-            <div className="rounded-2xl bg-white p-6 shadow-xl border border-border-light">
-              {/* Mock report header */}
-              <div className="flex items-center gap-3 border-b border-border-light pb-4 mb-4">
-                <div className="h-3 w-3 rounded-full bg-severity-good" />
-                <div className="h-3 w-3 rounded-full bg-severity-medium" />
-                <div className="h-3 w-3 rounded-full bg-severity-critical" />
-                <span className="ml-2 text-sm text-text-muted">audit-report.pdf</span>
-              </div>
+            <Link href="/auth/signin?callbackUrl=/dashboard/free-eval">
+              <Button size="lg">{t("cta")}</Button>
+            </Link>
+            <Link href="/sample-report">
+              <Button variant="secondary" size="lg">
+                {t("ctaSecondary")}
+              </Button>
+            </Link>
+          </motion.div>
 
-              {/* Mock findings */}
-              <div className="space-y-3">
-                {[
-                  { icon: Shield, label: "Security", color: "text-severity-good", status: "Pass" },
-                  { icon: Zap, label: "Performance", color: "text-severity-medium", status: "3 issues" },
-                  { icon: LineChart, label: "LINE API", color: "text-severity-good", status: "Pass" },
-                  { icon: Globe, label: "i18n", color: "text-severity-low", status: "1 issue" },
-                  { icon: Code, label: "Maintainability", color: "text-severity-good", status: "Pass" },
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 + i * 0.1 }}
-                    className="flex items-center justify-between rounded-lg bg-bg-cream px-4 py-3"
-                  >
-                    <div className="flex items-center gap-3">
-                      <item.icon className={`h-5 w-5 ${item.color}`} />
-                      <span className="text-sm font-medium text-text-body">{item.label}</span>
-                    </div>
-                    <span className={`text-sm font-medium ${item.color}`}>{item.status}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Decorative blur */}
-            <div className="absolute -z-10 -top-8 -right-8 h-64 w-64 rounded-full bg-gold/10 blur-3xl" />
-            <div className="absolute -z-10 -bottom-8 -left-8 h-48 w-48 rounded-full bg-navy/5 blur-3xl" />
+          {/* Social proof line */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="mt-6 flex items-center justify-center gap-2 text-sm text-ink-muted"
+          >
+            <Users className="h-4 w-4" />
+            <span>{t("socialProof")}</span>
           </motion.div>
         </div>
+
+        {/* Terminal scan animation */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="mx-auto mt-14 max-w-2xl"
+        >
+          <TerminalScan />
+        </motion.div>
       </div>
     </section>
   );

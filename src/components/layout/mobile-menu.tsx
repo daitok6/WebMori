@@ -47,9 +47,9 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 z-50 h-full w-72 bg-bg-white shadow-xl md:hidden"
+            className="fixed top-0 right-0 z-50 h-full w-72 bg-surface shadow-xl md:hidden"
           >
-            <div className="flex items-center justify-between border-b border-border-light px-6 py-4">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <Image
                 src="/logo-on-light.png"
                 alt="WebMori"
@@ -57,7 +57,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 height={44}
                 className="h-[44px] w-auto"
               />
-              <button onClick={onClose} className="p-2 text-text-muted" aria-label="Close menu">
+              <button onClick={onClose} className="p-2 text-ink-muted" aria-label="Close menu">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -73,7 +73,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                   <Link
                     href={link.href}
                     onClick={onClose}
-                    className="block rounded-lg px-4 py-3 text-sm font-medium text-text-muted transition-colors hover:bg-bg-cream hover:text-text-body"
+                    className="block rounded-lg px-4 py-3 text-sm font-medium text-ink-muted transition-colors hover:bg-surface-raised hover:text-ink"
                   >
                     {t(link.key)}
                   </Link>
@@ -81,7 +81,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               ))}
             </div>
 
-            <div className="border-t border-border-light p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] flex flex-col gap-3">
+            <div className="border-t border-border p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] flex flex-col gap-3">
               <LanguageToggle />
               <Link href="/auth/signin" onClick={onClose}>
                 <Button variant="secondary" className="w-full">

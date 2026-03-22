@@ -15,15 +15,16 @@ export function StatCounter() {
   ];
 
   return (
-    <section className="bg-navy-dark py-10 sm:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="bg-stone-900 py-10 sm:py-16 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(217,119,6,0.1),_transparent_70%)]" />
+      <div className="mx-auto max-w-7xl px-6 relative">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {items.map((item, i) => (
             <ScrollReveal key={i} delay={i * 0.1}>
               <div className="text-center">
                 <AnimatedCounter
                   value={item.value}
-                  className="text-3xl font-bold text-gold sm:text-4xl"
+                  className="text-3xl font-bold text-primary sm:text-4xl"
                 />
                 <p className="mt-2 text-sm text-white/60">{item.label}</p>
               </div>

@@ -26,7 +26,7 @@ interface FindingsTrendProps {
 export function FindingsTrend({ data }: FindingsTrendProps) {
   if (data.length === 0) {
     return (
-      <div className="flex h-48 items-center justify-center text-sm text-text-muted">
+      <div className="flex h-48 items-center justify-center text-sm text-ink-muted">
         No audit data yet
       </div>
     );
@@ -35,15 +35,15 @@ export function FindingsTrend({ data }: FindingsTrendProps) {
   return (
     <ResponsiveContainer width="100%" height={240}>
       <AreaChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#EDE9E3" />
+        <CartesianGrid strokeDasharray="3 3" stroke="#E7E5E4" />
         <XAxis
           dataKey="date"
-          tick={{ fontSize: 11, fill: "#5A6478" }}
+          tick={{ fontSize: 11, fill: "#78716C" }}
           tickLine={false}
           axisLine={false}
         />
         <YAxis
-          tick={{ fontSize: 11, fill: "#5A6478" }}
+          tick={{ fontSize: 11, fill: "#78716C" }}
           tickLine={false}
           axisLine={false}
           allowDecimals={false}
@@ -51,8 +51,8 @@ export function FindingsTrend({ data }: FindingsTrendProps) {
         <Tooltip
           contentStyle={{
             background: "#fff",
-            border: "1px solid #DDD8CF",
-            borderRadius: 8,
+            border: "1px solid #E7E5E4",
+            borderRadius: 12,
             fontSize: 12,
           }}
         />
@@ -60,32 +60,32 @@ export function FindingsTrend({ data }: FindingsTrendProps) {
           type="monotone"
           dataKey="critical"
           stackId="1"
-          stroke="#C0392B"
-          fill="#C0392B"
+          stroke="#DC2626"
+          fill="#DC2626"
           fillOpacity={0.6}
         />
         <Area
           type="monotone"
           dataKey="high"
           stackId="1"
-          stroke="#D35400"
-          fill="#D35400"
+          stroke="#EA580C"
+          fill="#EA580C"
           fillOpacity={0.5}
         />
         <Area
           type="monotone"
           dataKey="medium"
           stackId="1"
-          stroke="#B7770D"
-          fill="#B7770D"
+          stroke="#D97706"
+          fill="#D97706"
           fillOpacity={0.4}
         />
         <Area
           type="monotone"
           dataKey="low"
           stackId="1"
-          stroke="#1A6EA8"
-          fill="#1A6EA8"
+          stroke="#2563EB"
+          fill="#2563EB"
           fillOpacity={0.3}
         />
       </AreaChart>

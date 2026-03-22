@@ -3,7 +3,17 @@
 import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import { ShieldAlert, Gauge, HelpCircle, ScanSearch, FileCode, FileText } from "lucide-react";
+import { SectionHeader } from "@/components/marketing/section-header";
+import {
+  ShieldAlert,
+  Gauge,
+  HelpCircle,
+  ScanSearch,
+  FileCode,
+  FileText,
+  X,
+  Check,
+} from "lucide-react";
 
 const problemIcons = [ShieldAlert, Gauge, HelpCircle];
 const solutionIcons = [ScanSearch, FileCode, FileText];
@@ -13,68 +23,81 @@ export function ProblemSolution() {
   const tSolution = useTranslations("solution");
 
   return (
-    <>
-      {/* Problem */}
-      <section className="bg-bg-cream py-12 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <ScrollReveal>
-            <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
-              {tProblem("title")}
-            </h2>
-          </ScrollReveal>
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {[0, 1, 2].map((i) => {
-              const Icon = problemIcons[i];
-              return (
-                <ScrollReveal key={i} delay={i * 0.1}>
-                  <Card className="text-center h-full">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-severity-high/10">
-                      <Icon className="h-6 w-6 text-severity-high" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-navy-dark">
-                      {tProblem(`items.${i}.title`)}
-                    </h3>
-                    <p className="mt-2 text-sm text-text-muted leading-relaxed">
-                      {tProblem(`items.${i}.description`)}
-                    </p>
-                  </Card>
-                </ScrollReveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+    <section className="bg-surface-raised py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader title={tProblem("title")} />
 
-      {/* Solution */}
-      <section className="bg-white py-12 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        {/* Side-by-side Before / After comparison */}
+        <div className="mt-14 grid gap-10 lg:grid-cols-2">
+          {/* Before (Problem) side */}
           <ScrollReveal>
-            <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
-              {tSolution("title")}
-            </h2>
-          </ScrollReveal>
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {[0, 1, 2].map((i) => {
-              const Icon = solutionIcons[i];
-              return (
-                <ScrollReveal key={i} delay={i * 0.1}>
-                  <Card accent className="h-full">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold/10">
-                      <Icon className="h-6 w-6 text-gold" />
+            <div className="rounded-2xl border-2 border-severity-high/20 bg-severity-high/5 p-6 sm:p-8 h-full">
+              <div className="mb-6 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-severity-high/10">
+                  <X className="h-4 w-4 text-severity-high" />
+                </div>
+                <span className="text-sm font-semibold uppercase tracking-wider text-severity-high">
+                  Before
+                </span>
+              </div>
+              <div className="space-y-5">
+                {[0, 1, 2].map((i) => {
+                  const Icon = problemIcons[i];
+                  return (
+                    <div key={i} className="flex items-start gap-4">
+                      <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-severity-high/10">
+                        <Icon className="h-5 w-5 text-severity-high" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-semibold text-ink">
+                          {tProblem(`items.${i}.title`)}
+                        </h3>
+                        <p className="mt-1 text-sm text-ink-muted leading-relaxed">
+                          {tProblem(`items.${i}.description`)}
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-lg font-semibold text-navy-dark">
-                      {tSolution(`items.${i}.title`)}
-                    </h3>
-                    <p className="mt-2 text-sm text-text-muted leading-relaxed">
-                      {tSolution(`items.${i}.description`)}
-                    </p>
-                  </Card>
-                </ScrollReveal>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* After (Solution) side */}
+          <ScrollReveal delay={0.15}>
+            <div className="rounded-2xl border-2 border-primary/20 bg-primary-subtle/30 p-6 sm:p-8 h-full">
+              <div className="mb-6 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                  <Check className="h-4 w-4 text-primary" />
+                </div>
+                <span className="text-sm font-semibold uppercase tracking-wider text-primary">
+                  After
+                </span>
+              </div>
+              <div className="space-y-5">
+                {[0, 1, 2].map((i) => {
+                  const Icon = solutionIcons[i];
+                  return (
+                    <div key={i} className="flex items-start gap-4">
+                      <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                        <Icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-semibold text-ink">
+                          {tSolution(`items.${i}.title`)}
+                        </h3>
+                        <p className="mt-1 text-sm text-ink-muted leading-relaxed">
+                          {tSolution(`items.${i}.description`)}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

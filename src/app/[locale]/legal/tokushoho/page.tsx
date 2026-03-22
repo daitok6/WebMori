@@ -12,13 +12,13 @@ export default function TokushohoPage() {
   const rows: [string, string][] = t.raw("rows");
 
   return (
-    <main className="bg-white pt-32 pb-20">
+    <main className="bg-surface pt-32 pb-20">
       <div className="mx-auto max-w-3xl px-6">
-        <h1 className="text-3xl font-bold text-navy-dark">{t("title")}</h1>
-        <p className="mt-2 text-sm text-text-muted">{t("lastUpdated")}</p>
+        <h1 className="text-3xl font-bold text-ink">{t("title")}</h1>
+        <p className="mt-2 text-sm text-ink-muted">{t("lastUpdated")}</p>
 
         {t.has("notice") && (
-          <div className="mt-6 rounded-lg bg-bg-cream border border-border-light p-4 text-sm text-text-muted">
+          <div className="mt-6 rounded-lg bg-surface-raised border border-border p-4 text-sm text-ink-muted">
             {t("notice")}
           </div>
         )}
@@ -28,10 +28,10 @@ export default function TokushohoPage() {
             <tbody>
               {rows.map(([label, value]) => (
                 <tr key={label} className="border-b border-border">
-                  <th className="py-4 pr-6 text-left font-medium text-navy-dark align-top w-40 whitespace-nowrap">
+                  <th className="py-4 pr-6 text-left font-medium text-ink align-top w-40 whitespace-nowrap">
                     {label}
                   </th>
-                  <td className="py-4 text-text-body">{value}</td>
+                  <td className="py-4 text-ink">{value}</td>
                 </tr>
               ))}
             </tbody>

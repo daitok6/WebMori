@@ -66,7 +66,7 @@ export default function ReportDetailPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
@@ -74,9 +74,9 @@ export default function ReportDetailPage() {
   if (!audit) {
     return (
       <Card className="mt-6 text-center py-12">
-        <FileText className="mx-auto mb-4 h-10 w-10 text-text-muted" />
-        <p className="font-medium text-navy-dark">{t("notFound")}</p>
-        <p className="mt-1 text-sm text-text-muted">{t("notFoundDesc")}</p>
+        <FileText className="mx-auto mb-4 h-10 w-10 text-ink-muted" />
+        <p className="font-medium text-ink">{t("notFound")}</p>
+        <p className="mt-1 text-sm text-ink-muted">{t("notFoundDesc")}</p>
         <Link href="/dashboard/reports" className="mt-4 inline-block">
           <Button variant="secondary" size="sm">
             {t("backToReports")}
@@ -89,16 +89,16 @@ export default function ReportDetailPage() {
   return (
     <>
       {/* Breadcrumbs */}
-      <nav className="flex items-center gap-1 text-sm text-text-muted">
-        <Link href="/dashboard" className="hover:text-navy-dark transition-colors">
+      <nav className="flex items-center gap-1 text-sm text-ink-muted">
+        <Link href="/dashboard" className="hover:text-ink transition-colors">
           {tNav("overview")}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <Link href="/dashboard/reports" className="hover:text-navy-dark transition-colors">
+        <Link href="/dashboard/reports" className="hover:text-ink transition-colors">
           {tNav("reports")}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-navy-dark font-medium truncate max-w-[200px]">
+        <span className="text-ink font-medium truncate max-w-[200px]">
           {audit?.repoName ?? "..."}
         </span>
       </nav>
@@ -106,11 +106,11 @@ export default function ReportDetailPage() {
       {/* Header */}
       <div className="mt-4 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-navy-dark">
+          <h1 className="text-2xl font-bold text-ink">
             {audit.repoName}
           </h1>
           <div className="mt-1 flex items-center gap-3">
-            <span className="text-sm text-text-muted">
+            <span className="text-sm text-ink-muted">
               {new Date(audit.date).toLocaleDateString("ja-JP")}
             </span>
             <AuditStatusBadge status={audit.status} />
@@ -143,7 +143,7 @@ export default function ReportDetailPage() {
 
       {/* Summary card */}
       <Card className="mt-6">
-        <h2 className="text-lg font-semibold text-navy-dark mb-3">
+        <h2 className="text-lg font-semibold text-ink mb-3">
           {t("summary")}
         </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -154,7 +154,7 @@ export default function ReportDetailPage() {
             return (
               <div key={sev} className="text-center">
                 <Badge variant={severityVariant[sev]}>{sev}</Badge>
-                <p className="mt-1 text-2xl font-bold text-navy-dark">
+                <p className="mt-1 text-2xl font-bold text-ink">
                   {count}
                 </p>
               </div>
@@ -165,7 +165,7 @@ export default function ReportDetailPage() {
         {/* PR links */}
         {audit.prLinks.length > 0 && (
           <div className="mt-4 border-t border-border pt-4">
-            <p className="text-sm font-medium text-navy-dark mb-2">
+            <p className="text-sm font-medium text-ink mb-2">
               Pull Requests
             </p>
             <div className="flex flex-wrap gap-2">
@@ -175,7 +175,7 @@ export default function ReportDetailPage() {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-navy-light hover:text-gold transition-colors"
+                  className="inline-flex items-center gap-1 text-xs text-ink-muted hover:text-primary transition-colors"
                 >
                   <ExternalLink className="h-3 w-3" />
                   PR-{i + 1}
@@ -187,7 +187,7 @@ export default function ReportDetailPage() {
       </Card>
 
       {/* Findings list */}
-      <h2 className="mt-8 text-lg font-semibold text-navy-dark">
+      <h2 className="mt-8 text-lg font-semibold text-ink">
         {t("findings")} ({audit.findings.length})
       </h2>
 
@@ -199,29 +199,29 @@ export default function ReportDetailPage() {
                 <Badge variant={severityVariant[finding.severity]}>
                   {tSev.has(finding.severity) ? tSev(finding.severity) : finding.severity}
                 </Badge>
-                <h3 className="font-semibold text-navy-dark">
+                <h3 className="font-semibold text-ink">
                   {finding.title}
                 </h3>
               </div>
-              <span className="text-xs text-text-muted">
+              <span className="text-xs text-ink-muted">
                 {tEff.has(finding.effort) ? tEff(finding.effort) : finding.effort}
               </span>
             </div>
 
             <div className="mt-3 space-y-3 text-sm">
               <div>
-                <p className="font-medium text-text-muted">{t("evidence")}</p>
-                <pre className="mt-1 overflow-x-auto rounded bg-bg-cream p-2 text-xs text-navy-dark">
+                <p className="font-medium text-ink-muted">{t("evidence")}</p>
+                <pre className="mt-1 overflow-x-auto rounded bg-surface-raised p-2 text-xs text-ink">
                   {finding.evidence}
                 </pre>
               </div>
               <div>
-                <p className="font-medium text-text-muted">{t("impact")}</p>
-                <p className="mt-1 text-navy-dark">{finding.impact}</p>
+                <p className="font-medium text-ink-muted">{t("impact")}</p>
+                <p className="mt-1 text-ink">{finding.impact}</p>
               </div>
               <div>
-                <p className="font-medium text-text-muted">{t("fix")}</p>
-                <p className="mt-1 text-navy-dark">{finding.fix}</p>
+                <p className="font-medium text-ink-muted">{t("fix")}</p>
+                <p className="mt-1 text-ink">{finding.fix}</p>
               </div>
 
               {finding.prUrl && (
@@ -229,7 +229,7 @@ export default function ReportDetailPage() {
                   href={finding.prUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm text-navy-light hover:text-gold transition-colors"
+                  className="inline-flex items-center gap-1 text-sm text-ink-muted hover:text-primary transition-colors"
                 >
                   <ExternalLink className="h-3 w-3" />
                   {t("prLink")}

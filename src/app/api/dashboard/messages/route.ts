@@ -68,12 +68,12 @@ export async function POST(request: NextRequest) {
       to: [adminEmail],
       subject: `【WebMori】${esc(org.name)} からメッセージが届いています`,
       html: buildEmail(
-        `<p style="color:#0F1923;font-size:16px;margin:0 0 8px;"><strong>${esc(org.name)}</strong> からメッセージが届いています。</p>
+        `<p style="color:#1C1917;font-size:16px;margin:0 0 8px;"><strong>${esc(org.name)}</strong> からメッセージが届いています。</p>
         <div style="background:#F8F5EE;border-radius:8px;padding:16px;margin:0 0 24px;">
-          <p style="color:#1A1A1A;font-size:14px;margin:0;">${esc(content.trim())}</p>
+          <p style="color:#1C1917;font-size:14px;margin:0;">${esc(content.trim())}</p>
         </div>
         <a href="https://webmori.jp/ja/admin/messages"
-          style="background:#C9A84C;color:#0F1923;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">
+          style="background:#D97706;color:#1C1917;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">
           管理画面で確認する
         </a>`,
       ),

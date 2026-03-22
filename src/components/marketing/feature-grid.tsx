@@ -11,18 +11,18 @@ const iconColors = [
   "text-severity-high",
   "text-severity-good",
   "text-severity-low",
-  "text-gold",
-  "text-navy-light",
+  "text-primary",
+  "text-ink-muted",
 ];
 
 export function FeatureGrid() {
   const t = useTranslations("features");
 
   return (
-    <section className="bg-white py-12 sm:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="bg-surface py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
-          <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
+          <h2 className="text-center text-3xl font-bold text-ink sm:text-4xl">
             {t("title")}
           </h2>
         </ScrollReveal>
@@ -30,16 +30,17 @@ export function FeatureGrid() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2, 3, 4, 5].map((i) => {
             const Icon = featureIcons[i];
+            const isLarge = i === 0;
             return (
               <ScrollReveal key={i} delay={i * 0.08}>
-                <Card className="h-full transition-shadow hover:shadow-md">
+                <Card className={`h-full transition-all hover:shadow-md hover:border-primary/30 ${isLarge ? "sm:col-span-2 lg:col-span-2" : ""}`}>
                   <div className={`mb-3 ${iconColors[i]}`}>
                     <Icon className="h-8 w-8" />
                   </div>
-                  <h3 className="text-base font-semibold text-navy-dark">
+                  <h3 className="text-base font-semibold text-ink">
                     {t(`items.${i}.title`)}
                   </h3>
-                  <p className="mt-2 text-sm text-text-muted leading-relaxed">
+                  <p className="mt-2 text-sm text-ink-muted leading-relaxed">
                     {t(`items.${i}.description`)}
                   </p>
                 </Card>

@@ -45,7 +45,7 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border-light"
+            ? "bg-surface/95 backdrop-blur-md shadow-sm border-b border-border"
             : "bg-transparent",
           hidden && "-translate-y-full",
         )}
@@ -67,7 +67,7 @@ export function Navbar() {
               <Link
                 key={link.key}
                 href={link.href}
-                className="text-sm font-medium text-text-muted transition-colors hover:text-text-body"
+                className="text-sm font-medium text-ink-muted transition-colors hover:text-ink"
               >
                 {t(link.key)}
               </Link>
@@ -88,7 +88,7 @@ export function Navbar() {
           </div>
 
           <button
-            className="md:hidden p-2 text-text-muted"
+            className="md:hidden p-2 text-ink-muted"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >

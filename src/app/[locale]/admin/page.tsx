@@ -125,7 +125,7 @@ export default function AdminContactsPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
@@ -134,18 +134,18 @@ export default function AdminContactsPage() {
     <>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-navy-dark">Free Evaluation Requests</h1>
-          <p className="mt-1 text-sm text-text-muted">{contacts.length} total</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-ink">Free Evaluation Requests</h1>
+          <p className="mt-1 text-sm text-ink-muted">{contacts.length} total</p>
         </div>
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search name, email, URL..."
-            className="w-full sm:w-64 rounded-lg border border-border bg-white pl-9 pr-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+            className="w-full sm:w-64 rounded-lg border border-border bg-white pl-9 pr-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
@@ -158,8 +158,8 @@ export default function AdminContactsPage() {
             onClick={() => setFilter(s)}
             className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
               filter === s
-                ? "border-navy-dark bg-navy-dark text-white"
-                : "border-border bg-white text-text-muted hover:border-navy-dark"
+                ? "border-stone-900 bg-stone-900 text-white"
+                : "border-border bg-white text-ink-muted hover:border-ink"
             }`}
           >
             {s === "ALL" ? "All" : statusConfig[s as Contact["status"]].label}
@@ -178,8 +178,8 @@ export default function AdminContactsPage() {
 
       {filtered.length === 0 ? (
         <Card className="mt-6 py-12 text-center">
-          <Mail className="mx-auto mb-3 h-8 w-8 text-text-muted" />
-          <p className="text-text-muted">{search ? "No matching requests" : "No requests"}</p>
+          <Mail className="mx-auto mb-3 h-8 w-8 text-ink-muted" />
+          <p className="text-ink-muted">{search ? "No matching requests" : "No requests"}</p>
         </Card>
       ) : (
         <div className="mt-6 space-y-4">
@@ -189,35 +189,35 @@ export default function AdminContactsPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     {c.userId ? (
-                      <Link href={`/admin/users/${c.userId}`} className="font-semibold text-navy-dark hover:text-gold transition-colors">
+                      <Link href={`/admin/users/${c.userId}`} className="font-semibold text-ink hover:text-primary transition-colors">
                         {c.name}
                       </Link>
                     ) : (
-                      <p className="font-semibold text-navy-dark">{c.name}</p>
+                      <p className="font-semibold text-ink">{c.name}</p>
                     )}
                     {c.stack && (
-                      <span className="rounded-full bg-bg-cream px-2 py-0.5 text-xs text-text-muted">
+                      <span className="rounded-full bg-surface-raised px-2 py-0.5 text-xs text-ink-muted">
                         {c.stack}
                       </span>
                     )}
-                    <span className="text-xs text-text-muted">
+                    <span className="text-xs text-ink-muted">
                       {new Date(c.createdAt).toLocaleDateString("ja-JP")}
                     </span>
                   </div>
 
-                  <div className="mt-1.5 flex flex-wrap items-center gap-3 text-sm text-text-muted">
-                    <a href={`mailto:${c.email}`} className="hover:text-gold transition-colors flex items-center gap-1">
+                  <div className="mt-1.5 flex flex-wrap items-center gap-3 text-sm text-ink-muted">
+                    <a href={`mailto:${c.email}`} className="hover:text-primary transition-colors flex items-center gap-1">
                       <Mail className="h-3.5 w-3.5" />{c.email}
                     </a>
                     {c.url && (
-                      <a href={c.url} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors flex items-center gap-1">
+                      <a href={c.url} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-1">
                         <Globe className="h-3.5 w-3.5" />{c.url}
                       </a>
                     )}
                   </div>
 
                   {c.message && (
-                    <p className="mt-2.5 rounded-lg bg-bg-cream px-3 py-2 text-sm text-text-body">
+                    <p className="mt-2.5 rounded-lg bg-surface-raised px-3 py-2 text-sm text-ink">
                       {c.message}
                     </p>
                   )}
@@ -232,20 +232,20 @@ export default function AdminContactsPage() {
                           onChange={(e) => setNotesDraft(e.target.value)}
                           placeholder="Internal notes..."
                           rows={2}
-                          className="flex-1 rounded border border-border px-2 py-1 text-sm focus:border-gold focus:outline-none resize-none"
+                          className="flex-1 rounded border border-border px-2 py-1 text-sm focus:border-primary focus:outline-none resize-none"
                           onKeyDown={(e) => {
                             if (e.key === "Escape") setEditingNotes(null);
                           }}
                         />
                         <div className="flex flex-col gap-1">
-                          <button onClick={() => saveNotes(c.id)} className="text-xs text-gold hover:underline">Save</button>
-                          <button onClick={() => setEditingNotes(null)} className="text-xs text-text-muted hover:underline">Cancel</button>
+                          <button onClick={() => saveNotes(c.id)} className="text-xs text-primary hover:underline">Save</button>
+                          <button onClick={() => setEditingNotes(null)} className="text-xs text-ink-muted hover:underline">Cancel</button>
                         </div>
                       </div>
                     ) : (
                       <button
                         onClick={() => { setEditingNotes(c.id); setNotesDraft(c.notes ?? ""); }}
-                        className="text-xs text-text-muted hover:text-navy-dark transition-colors"
+                        className="text-xs text-ink-muted hover:text-ink transition-colors"
                       >
                         {c.notes ? `📝 ${c.notes}` : "+ Add notes"}
                       </button>
@@ -256,8 +256,8 @@ export default function AdminContactsPage() {
                   <div className="mt-3 flex items-center gap-3">
                     <label className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                       uploading === c.id
-                        ? "border-border text-text-muted opacity-50"
-                        : "border-gold/50 text-navy-dark hover:border-gold hover:bg-gold/5"
+                        ? "border-border text-ink-muted opacity-50"
+                        : "border-primary/50 text-ink hover:border-primary hover:bg-primary/5"
                     }`}>
                       {uploading === c.id ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -280,7 +280,7 @@ export default function AdminContactsPage() {
                     {c.organizationId && (
                       <Link
                         href={`/admin/messages?orgId=${c.organizationId}`}
-                        className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-muted hover:border-navy-dark hover:text-navy-dark transition-colors"
+                        className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-ink-muted hover:border-ink hover:text-ink transition-colors"
                       >
                         <MessageSquare className="h-3.5 w-3.5" />
                         チャット

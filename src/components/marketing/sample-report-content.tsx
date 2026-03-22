@@ -54,17 +54,17 @@ export function SampleReportContent() {
 
   return (
     <>
-      <section className="bg-gradient-to-b from-bg-cream to-white pt-24 sm:pt-32 pb-12">
+      <section className="bg-gradient-to-b from-surface-raised to-surface pt-24 sm:pt-32 pb-12">
         <div className="mx-auto max-w-4xl px-6">
           <ScrollReveal>
             <div className="text-center">
               <Badge variant="growth" className="mb-4">
                 {t("badge")}
               </Badge>
-              <h1 className="text-3xl font-bold text-navy-dark sm:text-4xl">
+              <h1 className="text-3xl font-bold text-ink sm:text-4xl">
                 {t("title")}
               </h1>
-              <p className="mt-4 text-lg text-text-muted">
+              <p className="mt-4 text-lg text-ink-muted">
                 {t("subtitle")}
               </p>
             </div>
@@ -73,11 +73,11 @@ export function SampleReportContent() {
       </section>
 
       {/* Report header */}
-      <section className="bg-white py-12">
+      <section className="bg-surface py-12">
         <div className="mx-auto max-w-4xl px-6">
           <ScrollReveal>
-            <Card className="border-gold/30">
-              <div className="flex flex-col gap-1 text-sm text-text-muted mb-6">
+            <Card className="border-primary/30">
+              <div className="flex flex-col gap-1 text-sm text-ink-muted mb-6">
                 <span><strong>{t("client")}:</strong> {t("clientName")}</span>
                 <span><strong>{t("site")}:</strong> example-store.jp</span>
                 <span><strong>{t("date")}:</strong> 2026-03-15</span>
@@ -85,18 +85,18 @@ export function SampleReportContent() {
               </div>
 
               {/* Lens scores */}
-              <h2 className="text-xl font-bold text-navy-dark mb-4">
+              <h2 className="text-xl font-bold text-ink mb-4">
                 {t("overviewTitle")}
               </h2>
               <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
                 {lenses.map((lens) => (
                   <div
                     key={lens.key}
-                    className="flex flex-col items-center rounded-lg bg-bg-cream p-4"
+                    className="flex flex-col items-center rounded-xl bg-surface-raised p-4"
                   >
-                    <lens.icon className="h-6 w-6 text-navy-dark mb-2" />
-                    <span className="text-xs text-text-muted">{t(`lens.${lens.key}`)}</span>
-                    <span className="mt-1 text-lg font-bold text-navy-dark">
+                    <lens.icon className="h-6 w-6 text-ink mb-2" />
+                    <span className="text-xs text-ink-muted">{t(`lens.${lens.key}`)}</span>
+                    <span className="mt-1 text-lg font-bold text-ink">
                       {lens.score}
                     </span>
                   </div>
@@ -108,10 +108,10 @@ export function SampleReportContent() {
       </section>
 
       {/* Findings */}
-      <section className="bg-bg-cream py-12">
+      <section className="bg-surface-raised py-12">
         <div className="mx-auto max-w-4xl px-6">
           <ScrollReveal>
-            <h2 className="text-2xl font-bold text-navy-dark mb-6">
+            <h2 className="text-2xl font-bold text-ink mb-6">
               {t("findingsTitle")}
             </h2>
           </ScrollReveal>
@@ -126,21 +126,21 @@ export function SampleReportContent() {
                       <Icon className={`h-5 w-5 mt-0.5 shrink-0 ${severityColor[finding.severity]}`} />
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-semibold text-navy-dark">
+                          <h3 className="font-semibold text-ink">
                             {t(`findings.${finding.key}.title`)}
                           </h3>
                           <Badge variant={finding.severity}>
                             {t(`severity.${finding.severity}`)}
                           </Badge>
                         </div>
-                        <p className="text-sm text-text-muted mb-3">
+                        <p className="text-sm text-ink-muted mb-3">
                           {t(`findings.${finding.key}.impact`)}
                         </p>
-                        <div className="rounded-lg bg-bg-cream p-3">
-                          <p className="text-xs font-medium text-text-muted mb-1">
+                        <div className="rounded-xl bg-surface-raised p-3">
+                          <p className="text-xs font-medium text-ink-muted mb-1">
                             {t("recommendedFix")}
                           </p>
-                          <p className="text-sm text-text-body">
+                          <p className="text-sm text-ink">
                             {t(`findings.${finding.key}.fix`)}
                           </p>
                         </div>
@@ -155,20 +155,20 @@ export function SampleReportContent() {
       </section>
 
       {/* Priorities */}
-      <section className="bg-white py-12">
+      <section className="bg-surface py-12">
         <div className="mx-auto max-w-4xl px-6">
           <ScrollReveal>
-            <h2 className="text-2xl font-bold text-navy-dark mb-6">
+            <h2 className="text-2xl font-bold text-ink mb-6">
               {t("prioritiesTitle")}
             </h2>
             <Card>
               <ol className="space-y-3">
                 {[0, 1, 2].map((i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/10 text-xs font-bold text-gold">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
                       {i + 1}
                     </span>
-                    <span className="text-sm text-text-body">
+                    <span className="text-sm text-ink">
                       {t(`priorities.${i}`)}
                     </span>
                   </li>
@@ -180,8 +180,9 @@ export function SampleReportContent() {
       </section>
 
       {/* CTA */}
-      <section className="bg-navy-dark py-16">
-        <div className="mx-auto max-w-3xl px-6 text-center">
+      <section className="bg-gradient-to-br from-stone-900 to-stone-800 py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(217,119,6,0.15),_transparent_70%)]" />
+        <div className="mx-auto max-w-3xl px-6 text-center relative">
           <ScrollReveal>
             <h2 className="text-3xl font-bold text-white">
               {t("ctaTitle")}

@@ -52,23 +52,23 @@ export default async function BlogPostPage({
     .slice(0, 2);
 
   return (
-    <article className="bg-white pt-32 pb-20">
+    <article className="bg-surface pt-32 pb-20">
       <div className="mx-auto max-w-3xl px-6">
         <ScrollReveal>
           <Link
             href="/blog"
-            className="mb-8 inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-body transition-colors"
+            className="mb-8 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             {t("backToBlog")}
           </Link>
 
           <Badge className="mb-4">{post.category}</Badge>
-          <h1 className="text-3xl font-bold text-navy-dark sm:text-4xl leading-tight">
+          <h1 className="text-3xl font-bold text-ink sm:text-4xl leading-tight">
             {post.title}
           </h1>
 
-          <div className="mt-4 flex items-center gap-4 text-sm text-text-muted">
+          <div className="mt-4 flex items-center gap-4 text-sm text-ink-muted">
             <span className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4" />
               {post.date}
@@ -79,7 +79,7 @@ export default async function BlogPostPage({
             </span>
           </div>
 
-          <hr className="my-8 border-border-light" />
+          <hr className="my-8 border-border" />
         </ScrollReveal>
 
         <div className="prose-webmori">
@@ -90,7 +90,7 @@ export default async function BlogPostPage({
       {/* Related posts */}
       {related.length > 0 && (
         <div className="mx-auto max-w-7xl px-6 mt-20">
-          <h2 className="text-2xl font-bold text-navy-dark mb-8">
+          <h2 className="text-2xl font-bold text-ink mb-8">
             {t("relatedPosts")}
           </h2>
           <div className="grid gap-8 sm:grid-cols-2">

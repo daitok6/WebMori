@@ -20,13 +20,13 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const posts = getAllPosts(locale);
 
   return (
-    <section className="bg-gradient-to-b from-bg-cream to-white pt-32 pb-20">
+    <section className="bg-gradient-to-b from-surface-raised to-white pt-32 pb-20">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
-          <h1 className="text-center text-4xl font-bold text-navy-dark sm:text-5xl">
+          <h1 className="text-center text-4xl font-bold text-ink sm:text-5xl">
             {t("title")}
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-text-muted">
+          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-ink-muted">
             {t("subtitle")}
           </p>
         </ScrollReveal>
@@ -40,7 +40,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
         </div>
 
         {posts.length === 0 && (
-          <p className="mt-12 text-center text-text-muted">{t("empty")}</p>
+          <p className="mt-12 text-center text-ink-muted">{t("empty")}</p>
         )}
       </div>
     </section>

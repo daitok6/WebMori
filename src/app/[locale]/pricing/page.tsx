@@ -22,27 +22,27 @@ export default function PricingPage() {
 
   return (
     <>
-      <section className="bg-gradient-to-b from-bg-cream to-white pt-24 sm:pt-32 pb-12 sm:pb-20">
+      <section className="bg-gradient-to-b from-surface-raised to-surface pt-24 sm:pt-32 pb-12 sm:pb-20">
         <div className="mx-auto max-w-7xl px-6">
           <ScrollReveal>
-            <h1 className="text-center text-4xl font-bold text-navy-dark sm:text-5xl">
+            <h1 className="text-center text-4xl font-bold text-ink sm:text-5xl">
               {t("title")}
             </h1>
-            <p className="mt-4 text-center text-lg text-text-muted">
+            <p className="mt-4 text-center text-lg text-ink-muted">
               {t("subtitle")}
             </p>
           </ScrollReveal>
 
           {/* Toggle */}
           <div className="mt-10 flex items-center justify-center gap-4">
-            <span className={cn("text-sm font-medium", !annual ? "text-navy-dark" : "text-text-muted")}>
+            <span className={cn("text-sm font-medium", !annual ? "text-ink" : "text-ink-muted")}>
               {t("monthly")}
             </span>
             <button
               onClick={() => setAnnual(!annual)}
               className={cn(
                 "relative h-7 w-12 rounded-full transition-colors cursor-pointer",
-                annual ? "bg-gold" : "bg-border",
+                annual ? "bg-primary" : "bg-border",
               )}
             >
               <span
@@ -52,7 +52,7 @@ export default function PricingPage() {
                 )}
               />
             </button>
-            <span className={cn("text-sm font-medium", annual ? "text-navy-dark" : "text-text-muted")}>
+            <span className={cn("text-sm font-medium", annual ? "text-ink" : "text-ink-muted")}>
               {t("annual")}
             </span>
             {annual && (
@@ -69,7 +69,7 @@ export default function PricingPage() {
                   <Card
                     className={cn(
                       "relative flex flex-col h-full",
-                      highlighted && "border-gold ring-2 ring-gold/20 shadow-lg md:scale-105",
+                      highlighted && "border-primary ring-2 ring-primary/20 shadow-lg md:scale-105",
                     )}
                   >
                     {highlighted && (
@@ -79,21 +79,21 @@ export default function PricingPage() {
                     )}
 
                     <div className="mb-6">
-                      <h3 className="text-xl font-semibold text-navy-dark">
+                      <h3 className="text-xl font-semibold text-ink">
                         {t(`plans.${i}.name`)}
                       </h3>
-                      <p className="mt-1 text-sm text-text-muted">
+                      <p className="mt-1 text-sm text-ink-muted">
                         {t(`plans.${i}.description`)}
                       </p>
                     </div>
 
                     <div className="mb-6">
-                      <span className="text-4xl font-bold text-navy-dark">
+                      <span className="text-4xl font-bold text-ink">
                         &yen;{annual ? t(`plans.${i}.annualPrice`) : t(`plans.${i}.price`)}
                       </span>
-                      <span className="text-text-muted">{t("perMonth")}</span>
+                      <span className="text-ink-muted">{t("perMonth")}</span>
                       {t.has(`plans.${i}.onboarding`) && (
-                        <p className="mt-2 text-xs text-text-muted">
+                        <p className="mt-2 text-xs text-ink-muted">
                           {t("onboardingFee", { amount: t(`plans.${i}.onboarding`) })}
                         </p>
                       )}
@@ -101,7 +101,7 @@ export default function PricingPage() {
 
                     <ul className="mb-8 flex-1 space-y-3">
                       {featureCounts[i].map((j) => (
-                        <li key={j} className="flex items-start gap-2 text-sm text-text-body">
+                        <li key={j} className="flex items-start gap-2 text-sm text-ink">
                           <Check className="mt-0.5 h-4 w-4 shrink-0 text-severity-good" />
                           {t(`plans.${i}.features.${j}`)}
                         </li>
@@ -127,13 +127,13 @@ export default function PricingPage() {
       </section>
 
       {/* Free eval banner */}
-      <section className="bg-bg-cream py-12">
+      <section className="bg-surface-raised py-12">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <ScrollReveal>
-            <h2 className="text-2xl font-bold text-navy-dark">
+            <h2 className="text-2xl font-bold text-ink">
               {t("freeEvalTitle")}
             </h2>
-            <p className="mt-3 text-text-muted">
+            <p className="mt-3 text-ink-muted">
               {t("freeEvalDescription")}
             </p>
             <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" className="mt-6 inline-block">
@@ -144,10 +144,10 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-white py-20">
+      <section className="bg-surface py-20">
         <div className="mx-auto max-w-3xl px-6">
           <ScrollReveal>
-            <h2 className="text-center text-3xl font-bold text-navy-dark">
+            <h2 className="text-center text-3xl font-bold text-ink">
               {tFaq("faqTitle")}
             </h2>
           </ScrollReveal>
@@ -155,15 +155,15 @@ export default function PricingPage() {
           <div className="mt-12 space-y-3">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <ScrollReveal key={i} delay={i * 0.05}>
-                <div className="rounded-lg border border-border-light">
+                <div className="rounded-xl border border-border">
                   <button
                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
                     className="flex w-full items-center justify-between px-6 py-4 text-left cursor-pointer"
                   >
-                    <span className="font-medium text-navy-dark">{tFaq(`faq.${i}.q`)}</span>
+                    <span className="font-medium text-ink">{tFaq(`faq.${i}.q`)}</span>
                     <ChevronDown
                       className={cn(
-                        "h-5 w-5 shrink-0 text-text-muted transition-transform",
+                        "h-5 w-5 shrink-0 text-ink-muted transition-transform",
                         openFaq === i && "rotate-180",
                       )}
                     />
@@ -178,7 +178,7 @@ export default function PricingPage() {
                         transition={{ duration: 0.2, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="px-6 pb-4 text-sm text-text-muted leading-relaxed">
+                        <div className="px-6 pb-4 text-sm text-ink-muted leading-relaxed">
                           {tFaq(`faq.${i}.a`)}
                         </div>
                       </motion.div>

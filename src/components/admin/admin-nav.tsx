@@ -63,7 +63,7 @@ export function AdminNav() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-56 shrink-0 bg-navy-dark text-white flex-col">
+      <aside className="hidden md:flex w-56 shrink-0 bg-stone-800 text-white flex-col">
         <div className="px-6 py-5 border-b border-white/10">
           <Link href="/" className="block">
             <Image src="/logo-on-dark.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto" />
@@ -74,7 +74,7 @@ export function AdminNav() {
       </aside>
 
       {/* Mobile header */}
-      <div className="flex md:hidden w-full h-14 items-center justify-between bg-navy-dark text-white px-4 border-b border-white/10">
+      <div className="flex md:hidden w-full h-14 items-center justify-between bg-stone-800 text-white px-4 border-b border-white/10">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo-on-dark.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto" />
           <span className="text-xs text-white/40 ml-1">Admin</span>
@@ -90,7 +90,7 @@ export function AdminNav() {
 
       {/* Mobile dropdown */}
       {mobileOpen && (
-        <div className="flex md:hidden flex-col bg-navy-dark text-white border-b border-white/10">
+        <div className="flex md:hidden flex-col bg-stone-800 text-white border-b border-white/10">
           {navContent}
         </div>
       )}

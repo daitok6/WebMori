@@ -13,13 +13,13 @@ export function PostCard({ post }: PostCardProps) {
     <Link href={`/blog/${post.slug}`}>
       <Card className="h-full transition-shadow hover:shadow-md group">
         <Badge className="mb-3">{post.category}</Badge>
-        <h2 className="text-lg font-semibold text-navy-dark group-hover:text-gold transition-colors line-clamp-2">
+        <h2 className="text-lg font-semibold text-ink group-hover:text-primary transition-colors line-clamp-2">
           {post.title}
         </h2>
-        <p className="mt-2 text-sm text-text-muted leading-relaxed line-clamp-3">
+        <p className="mt-2 text-sm text-ink-muted leading-relaxed line-clamp-3">
           {post.excerpt}
         </p>
-        <div className="mt-4 flex items-center gap-4 text-xs text-text-muted">
+        <div className="mt-4 flex items-center gap-4 text-xs text-ink-muted">
           <span className="flex items-center gap-1">
             <Calendar className="h-3.5 w-3.5" />
             {post.date}

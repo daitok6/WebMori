@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }) {
   return (
     <UnreadCountProvider>
-      <div className="flex flex-col md:flex-row min-h-screen bg-bg-cream">
+      <div className="flex flex-col md:flex-row min-h-screen bg-surface-raised">
         <DashboardNav />
         <div className="flex-1 overflow-x-hidden">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-8">{children}</div>

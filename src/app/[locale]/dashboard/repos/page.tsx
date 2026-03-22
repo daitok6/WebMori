@@ -106,7 +106,7 @@ export default function ReposPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
@@ -116,7 +116,7 @@ export default function ReposPage() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-navy-dark">{t("title")}</h1>
+        <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
         <Button size="sm" onClick={() => setShowForm(!showForm)}>
           <Plus className="mr-1.5 h-4 w-4" />
           {t("addRepo")}
@@ -128,7 +128,7 @@ export default function ReposPage() {
         <Card className="mt-4">
           <form onSubmit={handleAdd} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-navy-dark mb-1">
+              <label className="block text-sm font-medium text-ink mb-1">
                 {t("name")}
               </label>
               <input
@@ -136,12 +136,12 @@ export default function ReposPage() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder={t("namePlaceholder")}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-navy-dark mb-1">
+              <label className="block text-sm font-medium text-ink mb-1">
                 {t("url")}
               </label>
               <input
@@ -149,18 +149,18 @@ export default function ReposPage() {
                 value={formData.url}
                 onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                 placeholder={t("urlPlaceholder")}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-navy-dark mb-1">
+              <label className="block text-sm font-medium text-ink mb-1">
                 {t("stack")}
               </label>
               <select
                 value={formData.stack}
                 onChange={(e) => setFormData({ ...formData, stack: e.target.value })}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               >
                 {Object.entries(stackLabels).map(([value, label]) => (
                   <option key={value} value={value}>
@@ -179,11 +179,11 @@ export default function ReposPage() {
       {/* Repo list */}
       {repos.length === 0 ? (
         <Card className="mt-6 text-center py-12">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-bg-cream">
-            <GitBranch className="h-7 w-7 text-text-muted" />
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-raised">
+            <GitBranch className="h-7 w-7 text-ink-muted" />
           </div>
-          <p className="font-medium text-navy-dark">{t("noRepos")}</p>
-          <p className="mt-1 text-sm text-text-muted">{t("noReposDesc")}</p>
+          <p className="font-medium text-ink">{t("noRepos")}</p>
+          <p className="mt-1 text-sm text-ink-muted">{t("noReposDesc")}</p>
         </Card>
       ) : (
         <div className="mt-6 space-y-4">
@@ -192,20 +192,20 @@ export default function ReposPage() {
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <GitBranch className="h-4 w-4 text-text-muted" />
-                    <h3 className="font-semibold text-navy-dark">{repo.name}</h3>
+                    <GitBranch className="h-4 w-4 text-ink-muted" />
+                    <h3 className="font-semibold text-ink">{repo.name}</h3>
                     <Badge>{stackLabels[repo.stack] ?? repo.stack}</Badge>
                   </div>
                   <a
                     href={repo.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 inline-flex items-center gap-1 text-xs text-text-muted hover:text-navy-light transition-colors"
+                    className="mt-1 inline-flex items-center gap-1 text-xs text-ink-muted hover:text-ink-muted transition-colors"
                   >
                     {repo.url}
                     <ExternalLink className="h-3 w-3" />
                   </a>
-                  <div className="mt-2 text-xs text-text-muted">
+                  <div className="mt-2 text-xs text-ink-muted">
                     {repo.lastAudit ? (
                       <span className="flex items-center gap-2">
                         {t("lastAudit")}:{" "}
@@ -226,7 +226,7 @@ export default function ReposPage() {
                     size="sm"
                     onClick={() => handleRequestAudit(repo.id)}
                     disabled={requestingId === repo.id || requestedIds.has(repo.id)}
-                    className="text-text-muted hover:text-gold"
+                    className="text-ink-muted hover:text-primary"
                     title={t("requestAudit")}
                   >
                     {requestedIds.has(repo.id) ? (
@@ -243,7 +243,7 @@ export default function ReposPage() {
                     size="sm"
                     onClick={() => setConfirmDelete(repo.id)}
                     disabled={removingId === repo.id}
-                    className="text-text-muted hover:text-severity-critical"
+                    className="text-ink-muted hover:text-severity-critical"
                   >
                     {removingId === repo.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />

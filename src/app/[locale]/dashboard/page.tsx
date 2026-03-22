@@ -61,7 +61,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
@@ -75,7 +75,7 @@ export default function DashboardPage() {
       key: "nextAudit",
       icon: Calendar,
       value: data.stats.nextAuditDate ?? t("notScheduled"),
-      color: "text-navy-light",
+      color: "text-ink-muted",
     },
     {
       key: "totalFindings",
@@ -93,14 +93,14 @@ export default function DashboardPage() {
       key: "activePlan",
       icon: CreditCard,
       value: data.plan ?? t("noPlan"),
-      color: "text-gold",
+      color: "text-primary",
     },
   ];
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-navy-dark">{t("title")}</h1>
-      <p className="mt-1 text-text-muted">{t("welcome")}</p>
+      <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
+      <p className="mt-1 text-ink-muted">{t("welcome")}</p>
 
       {/* Onboarding checklist — shown until all steps complete */}
       {data.onboarding && <OnboardingChecklist data={data.onboarding} />}
@@ -110,12 +110,12 @@ export default function DashboardPage() {
         {stats.map((stat) => (
           <Card key={stat.key}>
             <div className="flex items-center gap-3">
-              <div className={`rounded-lg bg-bg-cream p-2.5 ${stat.color}`}>
+              <div className={`rounded-lg bg-surface-raised p-2.5 ${stat.color}`}>
                 <stat.icon className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-xs text-text-muted">{t(stat.key)}</p>
-                <p className="text-xl font-bold text-navy-dark">{stat.value}</p>
+                <p className="text-xs text-ink-muted">{t(stat.key)}</p>
+                <p className="text-xl font-bold text-ink">{stat.value}</p>
               </div>
             </div>
           </Card>
@@ -127,7 +127,7 @@ export default function DashboardPage() {
           {/* Findings trend chart */}
           {data.stats.trend.length > 1 && (
             <Card className="mt-6">
-              <h2 className="mb-4 text-lg font-semibold text-navy-dark">
+              <h2 className="mb-4 text-lg font-semibold text-ink">
                 {t("findingsTrend")}
               </h2>
               <FindingsTrend data={data.stats.trend} />
@@ -137,7 +137,7 @@ export default function DashboardPage() {
           {/* Recent audits */}
           <Card className="mt-6">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-navy-dark">
+              <h2 className="text-lg font-semibold text-ink">
                 {t("recentReports")}
               </h2>
               <Link href="/dashboard/reports">
@@ -152,15 +152,15 @@ export default function DashboardPage() {
                 <Link
                   key={audit.id}
                   href={`/dashboard/reports/${audit.id}`}
-                  className="flex items-center justify-between py-3 first:pt-0 last:pb-0 hover:bg-bg-cream/50 -mx-4 px-4 transition-colors"
+                  className="flex items-center justify-between py-3 first:pt-0 last:pb-0 hover:bg-surface-raised/50 -mx-4 px-4 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <FileText className="h-4 w-4 text-text-muted" />
+                    <FileText className="h-4 w-4 text-ink-muted" />
                     <div>
-                      <p className="font-medium text-navy-dark">
+                      <p className="font-medium text-ink">
                         {audit.repoName}
                       </p>
-                      <p className="text-xs text-text-muted">
+                      <p className="text-xs text-ink-muted">
                         {new Date(audit.date).toLocaleDateString("ja-JP")}
                         {" · "}
                         {audit.findingsCount} {t("findings")}
@@ -182,13 +182,13 @@ export default function DashboardPage() {
       ) : (
         /* Empty state */
         <Card className="mt-8 text-center py-12">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gold/10">
-            <GitBranch className="h-8 w-8 text-gold" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <GitBranch className="h-8 w-8 text-primary" />
           </div>
-          <h2 className="text-xl font-semibold text-navy-dark">
+          <h2 className="text-xl font-semibold text-ink">
             {t("emptyTitle")}
           </h2>
-          <p className="mt-2 text-text-muted">{t("emptyDescription")}</p>
+          <p className="mt-2 text-ink-muted">{t("emptyDescription")}</p>
           <Link href="/dashboard/repos" className="mt-6 inline-block">
             <Button>{t("addRepo")}</Button>
           </Link>
@@ -200,23 +200,23 @@ export default function DashboardPage() {
         <Link href="/dashboard/reports">
           <Card className="flex items-center justify-between group hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3">
-              <FileText className="h-5 w-5 text-text-muted" />
-              <span className="font-medium text-navy-dark">
+              <FileText className="h-5 w-5 text-ink-muted" />
+              <span className="font-medium text-ink">
                 {t("viewAllReports")}
               </span>
             </div>
-            <ArrowRight className="h-4 w-4 text-text-muted group-hover:text-gold transition-colors" />
+            <ArrowRight className="h-4 w-4 text-ink-muted group-hover:text-primary transition-colors" />
           </Card>
         </Link>
         <Link href="/dashboard/billing">
           <Card className="flex items-center justify-between group hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3">
-              <CreditCard className="h-5 w-5 text-text-muted" />
-              <span className="font-medium text-navy-dark">
+              <CreditCard className="h-5 w-5 text-ink-muted" />
+              <span className="font-medium text-ink">
                 {t("manageBilling")}
               </span>
             </div>
-            <ArrowRight className="h-4 w-4 text-text-muted group-hover:text-gold transition-colors" />
+            <ArrowRight className="h-4 w-4 text-ink-muted group-hover:text-primary transition-colors" />
           </Card>
         </Link>
       </div>

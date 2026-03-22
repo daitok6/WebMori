@@ -41,15 +41,15 @@ export default function AdminAuditsPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-navy-dark">Audit Management</h1>
-      <p className="mt-1 text-sm text-text-muted">{audits.length} total audits</p>
+      <h1 className="text-2xl font-bold text-ink">Audit Management</h1>
+      <p className="mt-1 text-sm text-ink-muted">{audits.length} total audits</p>
 
       {/* Filter */}
       <div className="mt-4 flex flex-wrap gap-2">
@@ -59,8 +59,8 @@ export default function AdminAuditsPage() {
             onClick={() => setFilter(s)}
             className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
               filter === s
-                ? "border-navy-dark bg-navy-dark text-white"
-                : "border-border bg-white text-text-muted hover:border-navy-dark"
+                ? "border-stone-900 bg-stone-900 text-white"
+                : "border-border bg-white text-ink-muted hover:border-ink"
             }`}
           >
             {s === "ALL" ? "All" : s.replace("_", " ")}
@@ -75,31 +75,31 @@ export default function AdminAuditsPage() {
 
       {filtered.length === 0 ? (
         <Card className="mt-6 py-12 text-center">
-          <BarChart3 className="mx-auto mb-3 h-8 w-8 text-text-muted" />
-          <p className="text-text-muted">No audits found</p>
+          <BarChart3 className="mx-auto mb-3 h-8 w-8 text-ink-muted" />
+          <p className="text-ink-muted">No audits found</p>
         </Card>
       ) : (
         <div className="mt-6 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 font-medium text-text-muted">Organization</th>
-                <th className="pb-2 font-medium text-text-muted">Repository</th>
-                <th className="pb-2 font-medium text-text-muted">Status</th>
-                <th className="pb-2 font-medium text-text-muted">Findings</th>
-                <th className="pb-2 font-medium text-text-muted">Date</th>
+                <th className="pb-2 font-medium text-ink-muted">Organization</th>
+                <th className="pb-2 font-medium text-ink-muted">Repository</th>
+                <th className="pb-2 font-medium text-ink-muted">Status</th>
+                <th className="pb-2 font-medium text-ink-muted">Findings</th>
+                <th className="pb-2 font-medium text-ink-muted">Date</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {filtered.map((audit) => (
                 <tr key={audit.id}>
-                  <td className="py-3 text-navy-dark font-medium">{audit.orgName}</td>
+                  <td className="py-3 text-ink font-medium">{audit.orgName}</td>
                   <td className="py-3">
                     <a
                       href={audit.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-navy-dark hover:text-gold transition-colors"
+                      className="inline-flex items-center gap-1 text-ink hover:text-primary transition-colors"
                     >
                       {audit.repoName}
                       <ExternalLink className="h-3 w-3" />
@@ -110,8 +110,8 @@ export default function AdminAuditsPage() {
                       {audit.status.replace("_", " ")}
                     </Badge>
                   </td>
-                  <td className="py-3 text-text-muted">{audit.findingsCount}</td>
-                  <td className="py-3 text-text-muted">
+                  <td className="py-3 text-ink-muted">{audit.findingsCount}</td>
+                  <td className="py-3 text-ink-muted">
                     {new Date(audit.createdAt).toLocaleDateString("ja-JP")}
                   </td>
                 </tr>

@@ -41,27 +41,27 @@ export default function SettingsPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-navy-dark">{t("title")}</h1>
+      <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
 
       {/* Language */}
       <Card className="mt-6">
         <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-bg-cream">
-            <Globe className="h-5 w-5 text-navy-light" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-raised">
+            <Globe className="h-5 w-5 text-ink-muted" />
           </div>
           <div className="flex-1">
-            <h2 className="font-semibold text-navy-dark">{t("locale")}</h2>
-            <p className="mt-0.5 text-sm text-text-muted">{t("localeDesc")}</p>
+            <h2 className="font-semibold text-ink">{t("locale")}</h2>
+            <p className="mt-0.5 text-sm text-ink-muted">{t("localeDesc")}</p>
             <div className="mt-3 flex gap-2">
               <button
                 onClick={() => switchLocale("ja")}
-                className="rounded-lg border border-border px-4 py-2 text-sm hover:border-gold hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold"
+                className="rounded-lg border border-border px-4 py-2 text-sm hover:border-primary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 {t("japanese")}
               </button>
               <button
                 onClick={() => switchLocale("en")}
-                className="rounded-lg border border-border px-4 py-2 text-sm hover:border-gold hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold"
+                className="rounded-lg border border-border px-4 py-2 text-sm hover:border-primary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 {t("english")}
               </button>
@@ -73,18 +73,18 @@ export default function SettingsPage() {
       {/* Notifications */}
       <Card className="mt-4">
         <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-bg-cream">
-            <Bell className="h-5 w-5 text-navy-light" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-raised">
+            <Bell className="h-5 w-5 text-ink-muted" />
           </div>
           <div className="flex-1">
-            <h2 className="font-semibold text-navy-dark">
+            <h2 className="font-semibold text-ink">
               {t("notifications")}
             </h2>
-            <p className="mt-0.5 text-sm text-text-muted">
+            <p className="mt-0.5 text-sm text-ink-muted">
               {t("notificationsDesc")}
             </p>
             {loadingPrefs ? (
-              <Loader2 className="mt-3 h-4 w-4 animate-spin text-text-muted" />
+              <Loader2 className="mt-3 h-4 w-4 animate-spin text-ink-muted" />
             ) : (
               <div className="mt-3">
                 <label className="flex items-center gap-3 cursor-pointer">
@@ -92,13 +92,13 @@ export default function SettingsPage() {
                     type="checkbox"
                     checked={emailNotifications}
                     onChange={(e) => setEmailNotifications(e.target.checked)}
-                    className="h-4 w-4 rounded border-border text-gold focus:ring-gold"
+                    className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                   />
                   <div>
-                    <span className="text-sm text-navy-dark">
+                    <span className="text-sm text-ink">
                       {t("emailNotifications")}
                     </span>
-                    <p className="text-xs text-text-muted">
+                    <p className="text-xs text-ink-muted">
                       {t("emailNotificationsDesc")}
                     </p>
                   </div>

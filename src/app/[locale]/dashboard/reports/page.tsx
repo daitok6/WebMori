@@ -49,30 +49,30 @@ export default function ReportsPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-navy-dark">{t("title")}</h1>
+      <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
 
       {freeEvals.length > 0 && (
         <div className="mt-6">
-          <h2 className="text-lg font-semibold text-navy-dark mb-3">無料診断レポート</h2>
+          <h2 className="text-lg font-semibold text-ink mb-3">無料診断レポート</h2>
           <div className="space-y-3">
             {freeEvals.map((r) => (
-              <Card key={r.id} className="border-l-4 border-l-gold">
+              <Card key={r.id} className="border-l-4 border-l-primary">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="flex items-center gap-2">
                       <Badge variant="default">無料診断</Badge>
                       {r.siteUrl && (
-                        <span className="text-sm text-text-muted">{r.siteUrl}</span>
+                        <span className="text-sm text-ink-muted">{r.siteUrl}</span>
                       )}
                     </div>
-                    <p className="mt-1 text-xs text-text-muted">
+                    <p className="mt-1 text-xs text-ink-muted">
                       {new Date(r.date).toLocaleDateString("ja-JP")}
                     </p>
                   </div>
@@ -91,16 +91,16 @@ export default function ReportsPage() {
 
       {audits.length === 0 && freeEvals.length === 0 ? (
         <Card className="mt-6 text-center py-12">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-bg-cream">
-            <FileText className="h-7 w-7 text-text-muted" />
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-raised">
+            <FileText className="h-7 w-7 text-ink-muted" />
           </div>
-          <p className="font-medium text-navy-dark">{t("noReports")}</p>
-          <p className="mt-1 text-sm text-text-muted">{t("noReportsDesc")}</p>
+          <p className="font-medium text-ink">{t("noReports")}</p>
+          <p className="mt-1 text-sm text-ink-muted">{t("noReportsDesc")}</p>
         </Card>
       ) : audits.length > 0 ? (
         <>
           {(audits.length > 0 || freeEvals.length > 0) && (
-            <h2 className="text-lg font-semibold text-navy-dark mt-6 mb-3">監査レポート</h2>
+            <h2 className="text-lg font-semibold text-ink mt-6 mb-3">監査レポート</h2>
           )}
         <div className="mt-0 space-y-4">
           {audits.map((audit) => (
@@ -108,12 +108,12 @@ export default function ReportsPage() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <h3 className="font-semibold text-navy-dark">
+                    <h3 className="font-semibold text-ink">
                       {audit.repoName}
                     </h3>
                     <AuditStatusBadge status={audit.status} />
                   </div>
-                  <p className="mt-1 text-sm text-text-muted">
+                  <p className="mt-1 text-sm text-ink-muted">
                     {new Date(audit.date).toLocaleDateString("ja-JP")}
                   </p>
 
@@ -139,7 +139,7 @@ export default function ReportsPage() {
                       <Badge variant="good">No issues</Badge>
                     )}
                     {audit.prCount > 0 && (
-                      <span className="text-xs text-text-muted">
+                      <span className="text-xs text-ink-muted">
                         {audit.prCount} {t("prLinks")}
                       </span>
                     )}

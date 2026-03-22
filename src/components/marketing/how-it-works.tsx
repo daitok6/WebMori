@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { SectionHeader } from "@/components/marketing/section-header";
 import { GitBranch, ScanSearch, FileText, GitPullRequest } from "lucide-react";
 
 const stepIcons = [GitBranch, ScanSearch, FileText, GitPullRequest];
@@ -10,38 +11,41 @@ export function HowItWorks() {
   const t = useTranslations("howItWorks");
 
   return (
-    <section className="bg-bg-cream py-12 sm:py-20">
+    <section className="bg-surface py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <ScrollReveal>
-          <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
-            {t("title")}
-          </h2>
-        </ScrollReveal>
+        <SectionHeader title={t("title")} />
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {[0, 1, 2, 3].map((i) => {
-            const Icon = stepIcons[i];
-            return (
-              <ScrollReveal key={i} delay={i * 0.15}>
-                <div className="flex flex-col items-center text-center">
-                  <div className="relative mb-4">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-navy-dark text-white shadow-lg">
-                      <Icon className="h-7 w-7" />
+        {/* Timeline */}
+        <div className="relative mt-14">
+          {/* Dashed connector line (desktop only) */}
+          <div className="absolute top-8 left-[calc(12.5%)] right-[calc(12.5%)] hidden h-px border-t-2 border-dashed border-primary/30 lg:block" />
+
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {[0, 1, 2, 3].map((i) => {
+              const Icon = stepIcons[i];
+              return (
+                <ScrollReveal key={i} delay={i * 0.15}>
+                  <div className="flex flex-col items-center text-center">
+                    {/* Step circle */}
+                    <div className="relative mb-6">
+                      <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full bg-surface border-2 border-primary shadow-lg shadow-primary/10">
+                        <Icon className="h-7 w-7 text-primary" />
+                      </div>
+                      <span className="absolute -right-1 -top-1 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-white shadow">
+                        {i + 1}
+                      </span>
                     </div>
-                    <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-gold text-xs font-bold text-white shadow">
-                      {i + 1}
-                    </span>
+                    <h3 className="text-base font-semibold text-ink">
+                      {t(`steps.${i}.title`)}
+                    </h3>
+                    <p className="mt-2 text-sm text-ink-muted leading-relaxed">
+                      {t(`steps.${i}.description`)}
+                    </p>
                   </div>
-                  <h3 className="text-base font-semibold text-navy-dark">
-                    {t(`steps.${i}.title`)}
-                  </h3>
-                  <p className="mt-2 text-sm text-text-muted leading-relaxed">
-                    {t(`steps.${i}.description`)}
-                  </p>
-                </div>
-              </ScrollReveal>
-            );
-          })}
+                </ScrollReveal>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

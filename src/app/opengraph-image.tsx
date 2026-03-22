@@ -16,11 +16,11 @@ export default function OGImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #1a2332 0%, #0f1923 100%)",
+          background: "linear-gradient(135deg, #292524 0%, #1C1917 100%)",
           fontFamily: "sans-serif",
         }}
       >
-        {/* Gold accent line */}
+        {/* Amber accent line */}
         <div
           style={{
             position: "absolute",
@@ -28,7 +28,7 @@ export default function OGImage() {
             left: 0,
             right: 0,
             height: 6,
-            background: "linear-gradient(90deg, #c8a84e, #e0c068)",
+            background: "linear-gradient(90deg, #D97706, #F59E0B)",
           }}
         />
 
@@ -46,13 +46,13 @@ export default function OGImage() {
               width: 64,
               height: 64,
               borderRadius: 16,
-              background: "linear-gradient(135deg, #c8a84e, #e0c068)",
+              background: "linear-gradient(135deg, #D97706, #F59E0B)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 32,
               fontWeight: 700,
-              color: "#1a2332",
+              color: "#1C1917",
             }}
           >
             W
@@ -73,7 +73,7 @@ export default function OGImage() {
         <div
           style={{
             fontSize: 28,
-            color: "#c8a84e",
+            color: "#F59E0B",
             fontWeight: 600,
             marginBottom: 24,
           }}

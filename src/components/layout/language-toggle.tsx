@@ -14,14 +14,14 @@ export function LanguageToggle() {
   }
 
   return (
-    <div className="flex items-center rounded-lg border border-border-light text-sm">
+    <div className="flex items-center rounded-lg border border-border text-sm">
       <button
         onClick={() => switchLocale("ja")}
         className={cn(
           "px-3 py-2 rounded-l-lg transition-colors cursor-pointer min-h-[44px]",
           locale === "ja"
-            ? "bg-navy-dark text-white"
-            : "text-text-muted hover:text-text-body",
+            ? "bg-stone-800 text-white"
+            : "text-ink-muted hover:text-ink",
         )}
       >
         JP
@@ -31,8 +31,8 @@ export function LanguageToggle() {
         className={cn(
           "px-3 py-2 rounded-r-lg transition-colors cursor-pointer min-h-[44px]",
           locale === "en"
-            ? "bg-navy-dark text-white"
-            : "text-text-muted hover:text-text-body",
+            ? "bg-stone-800 text-white"
+            : "text-ink-muted hover:text-ink",
         )}
       >
         EN

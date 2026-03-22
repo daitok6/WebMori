@@ -70,22 +70,22 @@ export default function MessagesPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
 
   return (
     <div className="flex h-[calc(100vh-12rem)] flex-col">
-      <h1 className="text-2xl font-bold text-navy-dark">{t("title")}</h1>
+      <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
 
       {/* Message thread */}
       <Card className="mt-4 flex-1 overflow-hidden flex flex-col">
         {messages.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center text-center">
-            <MessageSquare className="mb-4 h-10 w-10 text-text-muted" />
-            <p className="font-medium text-navy-dark">{t("noMessages")}</p>
-            <p className="mt-1 text-sm text-text-muted">
+            <MessageSquare className="mb-4 h-10 w-10 text-ink-muted" />
+            <p className="font-medium text-ink">{t("noMessages")}</p>
+            <p className="mt-1 text-sm text-ink-muted">
               {t("noMessagesDesc")}
             </p>
           </div>
@@ -99,8 +99,8 @@ export default function MessagesPage() {
                 <div
                   className={`max-w-[75%] rounded-lg px-4 py-2.5 ${
                     msg.fromOperator
-                      ? "bg-bg-cream text-navy-dark"
-                      : "bg-navy-dark text-white"
+                      ? "bg-surface-raised text-ink"
+                      : "bg-stone-900 text-white"
                   }`}
                 >
                   <p className="text-xs font-medium mb-1 opacity-70">
@@ -127,7 +127,7 @@ export default function MessagesPage() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder={t("placeholder")}
-            className="flex-1 rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+            className="flex-1 rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
           <Button type="submit" disabled={sending || !content.trim()} size="sm">
             {sending ? (

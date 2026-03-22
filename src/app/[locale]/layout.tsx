@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
@@ -6,6 +7,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { routing } from "@/i18n/routing";
 import { MarketingShell } from "@/components/layout/marketing-shell";
 import "../globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://webmori.jp";
 
@@ -60,7 +67,7 @@ export default async function LocaleLayout({
   const messages = (await import(`@/messages/${locale}.json`)).default;
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -68,7 +75,7 @@ export default async function LocaleLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased bg-bg-white text-text-body transition-colors">
+      <body className="font-sans antialiased bg-surface text-ink transition-colors">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <MarketingShell>{children}</MarketingShell>
         </NextIntlClientProvider>

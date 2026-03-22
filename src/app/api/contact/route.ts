@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     to: [operatorEmail],
     subject: `【WebMori】無料診断のお申し込み: ${safeName}`,
     html: buildEmail(
-      `<h2 style="margin:0 0 20px;color:#0F1923;font-size:18px;">新しい無料診断のお申し込みがあります</h2>` +
+      `<h2 style="margin:0 0 20px;color:#1C1917;font-size:18px;">新しい無料診断のお申し込みがあります</h2>` +
       buildKVTable([
         ["お名前", safeName],
         ["メールアドレス", safeEmail],

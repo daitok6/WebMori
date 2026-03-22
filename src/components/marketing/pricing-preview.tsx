@@ -14,13 +14,13 @@ export function PricingPreview() {
   const t = useTranslations("pricing");
 
   return (
-    <section className="bg-bg-warm py-12 sm:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="bg-surface-sunken py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
-          <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
+          <h2 className="text-center text-3xl font-bold text-ink sm:text-4xl">
             {t("title")}
           </h2>
-          <p className="mt-4 text-center text-text-muted">
+          <p className="mt-4 text-center text-ink-muted">
             {t("subtitle")}
           </p>
         </ScrollReveal>
@@ -33,34 +33,36 @@ export function PricingPreview() {
                 <Card
                   className={cn(
                     "relative flex flex-col h-full",
-                    highlighted && "border-gold ring-2 ring-gold/20 shadow-lg md:scale-105",
+                    highlighted && "border-primary ring-2 ring-primary/20 shadow-lg md:scale-105",
                   )}
                 >
                   {highlighted && (
-                    <Badge variant="growth" className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      {t("popular")}
-                    </Badge>
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <Badge variant="growth">
+                        {t("popular")}
+                      </Badge>
+                    </div>
                   )}
 
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-navy-dark">
+                    <h3 className="text-lg font-semibold text-ink">
                       {t(`plans.${i}.name`)}
                     </h3>
-                    <p className="mt-1 text-sm text-text-muted">
+                    <p className="mt-1 text-sm text-ink-muted">
                       {t(`plans.${i}.description`)}
                     </p>
                   </div>
 
                   <div className="mb-6">
-                    <span className="text-4xl font-bold text-navy-dark">
+                    <span className="text-4xl font-bold text-ink">
                       &yen;{t(`plans.${i}.price`)}
                     </span>
-                    <span className="text-text-muted">{t("perMonth")}</span>
+                    <span className="text-ink-muted">{t("perMonth")}</span>
                   </div>
 
                   <ul className="mb-8 flex-1 space-y-3">
                     {featureCounts[i].map((j) => (
-                        <li key={j} className="flex items-start gap-2 text-sm text-text-body">
+                        <li key={j} className="flex items-start gap-2 text-sm text-ink">
                           <Check className="mt-0.5 h-4 w-4 shrink-0 text-severity-good" />
                           {t(`plans.${i}.features.${j}`)}
                         </li>

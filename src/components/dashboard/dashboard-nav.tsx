@@ -55,8 +55,8 @@ export function DashboardNav() {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                 active
-                  ? "bg-gold/10 text-gold"
-                  : "text-text-muted hover:bg-bg-cream hover:text-text-body",
+                  ? "bg-primary/10 text-primary"
+                  : "text-ink-muted hover:bg-surface-raised hover:text-ink",
               )}
             >
               <item.icon className="h-5 w-5" />
@@ -76,17 +76,17 @@ export function DashboardNav() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex md:w-60 md:shrink-0 md:flex-col md:border-r md:border-border-light md:bg-white">
-        <div className="flex h-16 items-center border-b border-border-light px-6">
+      <aside className="hidden md:flex md:w-60 md:shrink-0 md:flex-col md:border-r md:border-border md:bg-surface">
+        <div className="flex h-16 items-center border-b border-border px-6">
           <Link href="/">
             <Image src="/logo-on-light.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto" />
           </Link>
         </div>
         <nav className="flex-1 overflow-y-auto p-4">{navContent}</nav>
-        <div className="border-t border-border-light p-4">
+        <div className="border-t border-border p-4">
           <button
             onClick={() => signOut({ callbackUrl: "/auth/signin" })}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-text-muted hover:bg-bg-cream hover:text-text-body transition-colors"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface-raised hover:text-ink transition-colors"
           >
             <LogOut className="h-5 w-5" />
             ログアウト
@@ -95,13 +95,13 @@ export function DashboardNav() {
       </aside>
 
       {/* Mobile header */}
-      <div className="flex w-full h-14 items-center justify-between border-b border-border-light bg-white px-4 md:hidden">
+      <div className="flex w-full h-14 items-center justify-between border-b border-border bg-surface px-4 md:hidden">
         <Link href="/">
           <Image src="/logo-on-light.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto" />
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 text-text-muted"
+          className="p-2 text-ink-muted"
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -110,12 +110,12 @@ export function DashboardNav() {
 
       {/* Mobile nav dropdown */}
       {mobileOpen && (
-        <div className="w-full border-b border-border-light bg-white p-4 md:hidden">
+        <div className="w-full border-b border-border bg-surface p-4 md:hidden">
           {navContent}
-          <div className="mt-2 border-t border-border-light pt-2">
+          <div className="mt-2 border-t border-border pt-2">
             <button
               onClick={() => signOut({ callbackUrl: "/auth/signin" })}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-text-muted hover:bg-bg-cream transition-colors"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface-raised transition-colors"
             >
               <LogOut className="h-5 w-5" />
               ログアウト

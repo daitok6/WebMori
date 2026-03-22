@@ -12,7 +12,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-bg-cream">
+    <div className="flex flex-col md:flex-row min-h-screen bg-surface-raised">
       <AdminNav />
       <main className="flex-1 overflow-x-hidden">
         <div className="mx-auto max-w-5xl px-4 sm:px-8 py-6 sm:py-8">{children}</div>

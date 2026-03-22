@@ -14,7 +14,7 @@ const lenses = [
   { icon: Zap, color: "text-severity-high", bg: "bg-severity-high/10" },
   { icon: MessageCircle, color: "text-severity-good", bg: "bg-severity-good/10" },
   { icon: Globe, color: "text-severity-low", bg: "bg-severity-low/10" },
-  { icon: Code, color: "text-navy-light", bg: "bg-navy-light/10" },
+  { icon: Code, color: "text-ink-muted", bg: "bg-ink-subtle/10" },
 ];
 
 const stackKeys = ["shopify", "wordpress", "nextjs", "line"] as const;
@@ -26,13 +26,13 @@ export default function FeaturesPage() {
   return (
     <>
       {/* Hero + Lenses */}
-      <section className="bg-gradient-to-b from-bg-cream to-white pt-24 sm:pt-32 pb-12 sm:pb-20">
+      <section className="bg-gradient-to-b from-surface-raised to-surface pt-24 sm:pt-32 pb-12 sm:pb-20">
         <div className="mx-auto max-w-7xl px-6">
           <ScrollReveal>
-            <h1 className="text-center text-4xl font-bold text-navy-dark sm:text-5xl">
+            <h1 className="text-center text-4xl font-bold text-ink sm:text-5xl">
               {t("title")}
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-text-muted">
+            <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-ink-muted">
               {t("subtitle")}
             </p>
           </ScrollReveal>
@@ -47,10 +47,10 @@ export default function FeaturesPage() {
                       <LensIcon className={`h-8 w-8 ${lenses[i].color}`} />
                     </div>
                     <div>
-                      <h2 className="text-xl font-semibold text-navy-dark">
+                      <h2 className="text-xl font-semibold text-ink">
                         {t(`lenses.${i}.title`)}
                       </h2>
-                      <p className="mt-2 text-text-muted leading-relaxed">
+                      <p className="mt-2 text-ink-muted leading-relaxed">
                         {t(`lenses.${i}.description`)}
                       </p>
                     </div>
@@ -63,7 +63,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* Report Showcase with Parallax */}
-      <section className="bg-navy-dark py-20 overflow-hidden">
+      <section className="bg-stone-900 py-20 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6">
           <ScrollReveal>
             <h2 className="text-center text-3xl font-bold text-white sm:text-4xl">
@@ -74,20 +74,20 @@ export default function FeaturesPage() {
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             <ParallaxSection speed={0.3}>
               <ScrollReveal delay={0.1}>
-                <div className="rounded-xl bg-navy p-6 border border-white/10">
+                <div className="rounded-2xl bg-stone-800 p-6 border border-white/10">
                   <div className="flex items-center gap-2 mb-4">
-                    <FileText className="h-5 w-5 text-gold" />
+                    <FileText className="h-5 w-5 text-primary" />
                     <span className="text-sm font-medium text-white/70">
                       {t("reportShowcase.markdownLabel")}
                     </span>
                   </div>
                   <div className="space-y-2 font-mono text-sm text-white/60">
-                    <p className="text-gold">## 重要な問題</p>
+                    <p className="text-primary">## 重要な問題</p>
                     <p>### <span className="text-severity-critical">Critical</span> — APIキーがハードコード</p>
                     <p className="text-white/40">- ファイル: src/config.ts:24</p>
                     <p className="text-white/40">- 影響: 第三者によるAPI悪用の可能性</p>
                     <p className="text-white/40">- 修正: 環境変数に移行</p>
-                    <p className="mt-4 text-gold">## 改善提案</p>
+                    <p className="mt-4 text-primary">## 改善提案</p>
                     <p>### <span className="text-severity-medium">Medium</span> — 画像の最適化</p>
                     <p className="text-white/40">- 未圧縮の画像が12件検出</p>
                     <p className="text-white/40">- 推定改善: LCP -1.2s</p>
@@ -98,27 +98,27 @@ export default function FeaturesPage() {
 
             <ParallaxSection speed={0.15}>
               <ScrollReveal delay={0.2}>
-                <div className="rounded-xl bg-white p-6 shadow-xl">
+                <div className="rounded-2xl bg-white p-6 shadow-xl">
                   <div className="flex items-center gap-2 mb-4">
-                    <FileText className="h-5 w-5 text-gold" />
-                    <span className="text-sm font-medium text-text-muted">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <span className="text-sm font-medium text-ink-muted">
                       {t("reportShowcase.pdfLabel")}
                     </span>
                   </div>
                   <div className="space-y-3">
-                    <div className="h-3 w-3/4 rounded bg-navy-dark/10" />
+                    <div className="h-3 w-3/4 rounded bg-ink/10" />
                     <div className="flex gap-3">
                       <div className="rounded-lg bg-severity-critical/10 px-3 py-2 text-xs font-medium text-severity-critical">Critical: 1</div>
                       <div className="rounded-lg bg-severity-medium/10 px-3 py-2 text-xs font-medium text-severity-medium">Medium: 3</div>
                       <div className="rounded-lg bg-severity-low/10 px-3 py-2 text-xs font-medium text-severity-low">Low: 2</div>
                     </div>
-                    <div className="h-2 w-full rounded bg-border-light" />
-                    <div className="h-2 w-5/6 rounded bg-border-light" />
-                    <div className="h-2 w-4/6 rounded bg-border-light" />
-                    <div className="mt-4 rounded-lg border border-border-light p-3">
-                      <div className="h-2 w-1/2 rounded bg-gold/30 mb-2" />
-                      <div className="h-2 w-full rounded bg-border-light" />
-                      <div className="h-2 w-3/4 rounded bg-border-light mt-1" />
+                    <div className="h-2 w-full rounded bg-border" />
+                    <div className="h-2 w-5/6 rounded bg-border" />
+                    <div className="h-2 w-4/6 rounded bg-border" />
+                    <div className="mt-4 rounded-lg border border-border p-3">
+                      <div className="h-2 w-1/2 rounded bg-primary/30 mb-2" />
+                      <div className="h-2 w-full rounded bg-border" />
+                      <div className="h-2 w-3/4 rounded bg-border mt-1" />
                     </div>
                   </div>
                 </div>
@@ -129,20 +129,20 @@ export default function FeaturesPage() {
       </section>
 
       {/* PR Diff Example */}
-      <section className="bg-white py-20">
+      <section className="bg-surface py-20">
         <div className="mx-auto max-w-4xl px-6">
           <ScrollReveal>
             <div className="flex items-center gap-3 mb-2">
-              <GitPullRequest className="h-6 w-6 text-gold" />
-              <h2 className="text-3xl font-bold text-navy-dark">{t("prExample.title")}</h2>
+              <GitPullRequest className="h-6 w-6 text-primary" />
+              <h2 className="text-3xl font-bold text-ink">{t("prExample.title")}</h2>
             </div>
-            <p className="text-text-muted mb-8">{t("prExample.description")}</p>
+            <p className="text-ink-muted mb-8">{t("prExample.description")}</p>
           </ScrollReveal>
 
           <ScrollReveal delay={0.1}>
-            <div className="rounded-xl border border-border-light overflow-hidden">
-              <div className="bg-bg-cream px-4 py-3 border-b border-border-light flex items-center gap-2">
-                <span className="text-sm font-mono text-text-muted">fix: move hardcoded API key to environment variable</span>
+            <div className="rounded-2xl border border-border overflow-hidden">
+              <div className="bg-surface-raised px-4 py-3 border-b border-border flex items-center gap-2">
+                <span className="text-sm font-mono text-ink-muted">fix: move hardcoded API key to environment variable</span>
               </div>
               <div className="font-mono text-sm">
                 <div className="bg-severity-critical/5 px-4 py-1 border-l-4 border-severity-critical/30">
@@ -160,10 +160,10 @@ export default function FeaturesPage() {
       </section>
 
       {/* Stack-specific Tabs */}
-      <section className="bg-bg-cream py-20">
+      <section className="bg-surface-raised py-20">
         <div className="mx-auto max-w-7xl px-6">
           <ScrollReveal>
-            <h2 className="text-center text-3xl font-bold text-navy-dark sm:text-4xl">
+            <h2 className="text-center text-3xl font-bold text-ink sm:text-4xl">
               {t("stacks.title")}
             </h2>
           </ScrollReveal>
@@ -176,8 +176,8 @@ export default function FeaturesPage() {
                 className={cn(
                   "rounded-lg px-5 py-2.5 text-sm font-medium transition-colors cursor-pointer",
                   activeStack === key
-                    ? "bg-navy-dark text-white"
-                    : "bg-white text-text-muted hover:text-text-body border border-border-light",
+                    ? "bg-stone-800 text-white"
+                    : "bg-surface text-ink-muted hover:text-ink border border-border",
                 )}
               >
                 {t(`stacks.${key}.title`)}
@@ -187,10 +187,10 @@ export default function FeaturesPage() {
 
           <ScrollReveal delay={0.1}>
             <Card className="mt-8 mx-auto max-w-3xl">
-              <h3 className="text-xl font-semibold text-navy-dark mb-3">
+              <h3 className="text-xl font-semibold text-ink mb-3">
                 {t(`stacks.${activeStack}.title`)}
               </h3>
-              <p className="text-text-muted leading-relaxed">
+              <p className="text-ink-muted leading-relaxed">
                 {t(`stacks.${activeStack}.description`)}
               </p>
             </Card>

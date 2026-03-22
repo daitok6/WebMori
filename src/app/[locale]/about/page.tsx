@@ -13,13 +13,13 @@ function AboutContent() {
 
   return (
     <>
-      <section className="bg-gradient-to-b from-bg-cream to-white pt-24 sm:pt-32 pb-12 sm:pb-20">
+      <section className="bg-gradient-to-b from-surface-raised to-surface pt-24 sm:pt-32 pb-12 sm:pb-20">
         <div className="mx-auto max-w-7xl px-6">
           <ScrollReveal>
-            <h1 className="text-center text-4xl font-bold text-navy-dark sm:text-5xl">
+            <h1 className="text-center text-4xl font-bold text-ink sm:text-5xl">
               {t("title")}
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-text-muted">
+            <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-ink-muted">
               {t("subtitle")}
             </p>
           </ScrollReveal>
@@ -30,14 +30,14 @@ function AboutContent() {
               return (
                 <ScrollReveal key={i} delay={i * 0.1}>
                   <Card className="flex flex-col gap-4 md:flex-row md:items-start md:gap-8">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gold/10">
-                      <Icon className="h-7 w-7 text-gold" />
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                      <Icon className="h-7 w-7 text-primary" />
                     </div>
                     <div>
-                      <h2 className="text-xl font-semibold text-navy-dark">
+                      <h2 className="text-xl font-semibold text-ink">
                         {t(`sections.${i}.title`)}
                       </h2>
-                      <p className="mt-2 text-text-muted leading-relaxed">
+                      <p className="mt-2 text-ink-muted leading-relaxed">
                         {t(`sections.${i}.description`)}
                       </p>
                     </div>

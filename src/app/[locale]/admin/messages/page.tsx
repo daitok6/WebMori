@@ -100,22 +100,22 @@ export default function AdminMessagesPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-navy-dark">Messages</h1>
+      <h1 className="text-2xl font-bold text-ink">Messages</h1>
 
       <div className="mt-6 flex gap-4 h-[calc(100vh-12rem)]">
         {/* Client list */}
         <div className={`w-64 flex-shrink-0 space-y-2 overflow-y-auto ${selectedOrg ? "hidden sm:block" : ""}`}>
           {orgs.length === 0 ? (
             <Card className="py-8 text-center">
-              <MessageSquare className="mx-auto mb-2 h-6 w-6 text-text-muted" />
-              <p className="text-sm text-text-muted">No clients yet</p>
+              <MessageSquare className="mx-auto mb-2 h-6 w-6 text-ink-muted" />
+              <p className="text-sm text-ink-muted">No clients yet</p>
             </Card>
           ) : (
             orgs.map((org) => (
@@ -124,12 +124,12 @@ export default function AdminMessagesPage() {
                 onClick={() => selectOrg(org)}
                 className={`w-full text-left rounded-lg border p-3 transition-colors ${
                   selectedOrg?.id === org.id
-                    ? "border-gold bg-gold/5"
-                    : "border-border bg-white hover:border-gold/50"
+                    ? "border-primary bg-primary/5"
+                    : "border-border bg-white hover:border-primary/50"
                 }`}
               >
                 <div className="flex items-center justify-between gap-2">
-                  <p className="font-medium text-navy-dark text-sm truncate">{org.name}</p>
+                  <p className="font-medium text-ink text-sm truncate">{org.name}</p>
                   {org.unreadCount > 0 && (
                     <span className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold">
                       {org.unreadCount > 9 ? "9+" : org.unreadCount}
@@ -137,10 +137,10 @@ export default function AdminMessagesPage() {
                   )}
                 </div>
                 {org.email && (
-                  <p className="text-xs text-text-muted mt-0.5 truncate">{org.email}</p>
+                  <p className="text-xs text-ink-muted mt-0.5 truncate">{org.email}</p>
                 )}
                 {org.lastMessage && (
-                  <p className={`text-xs mt-1 truncate ${org.unreadCount > 0 && !org.lastMessage.fromOperator ? "text-navy-dark font-medium" : "text-text-muted"}`}>
+                  <p className={`text-xs mt-1 truncate ${org.unreadCount > 0 && !org.lastMessage.fromOperator ? "text-ink font-medium" : "text-ink-muted"}`}>
                     {org.lastMessage.fromOperator ? "You: " : ""}
                     {org.lastMessage.content}
                   </p>
@@ -156,7 +156,7 @@ export default function AdminMessagesPage() {
             <div className="flex items-center gap-3 border-b border-border px-4 py-3">
               <button
                 onClick={() => setSelectedOrg(null)}
-                className="sm:hidden text-text-muted hover:text-navy-dark"
+                className="sm:hidden text-ink-muted hover:text-ink"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
@@ -164,22 +164,22 @@ export default function AdminMessagesPage() {
                 {selectedOrg.userId ? (
                   <Link
                     href={`/admin/users/${selectedOrg.userId}`}
-                    className="font-semibold text-navy-dark hover:text-gold transition-colors"
+                    className="font-semibold text-ink hover:text-primary transition-colors"
                   >
                     {selectedOrg.name}
                   </Link>
                 ) : (
-                  <p className="font-semibold text-navy-dark">{selectedOrg.name}</p>
+                  <p className="font-semibold text-ink">{selectedOrg.name}</p>
                 )}
                 {selectedOrg.email && (
-                  <p className="text-xs text-text-muted">{selectedOrg.email}</p>
+                  <p className="text-xs text-ink-muted">{selectedOrg.email}</p>
                 )}
               </div>
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-3 p-4">
               {messages.length === 0 ? (
-                <div className="flex h-full items-center justify-center text-sm text-text-muted">
+                <div className="flex h-full items-center justify-center text-sm text-ink-muted">
                   No messages yet
                 </div>
               ) : (
@@ -191,8 +191,8 @@ export default function AdminMessagesPage() {
                     <div
                       className={`max-w-[75%] rounded-lg px-4 py-2.5 ${
                         msg.fromOperator
-                          ? "bg-navy-dark text-white"
-                          : "bg-bg-cream text-navy-dark"
+                          ? "bg-stone-900 text-white"
+                          : "bg-surface-raised text-ink"
                       }`}
                     >
                       <p className="text-xs font-medium mb-1 opacity-60">
@@ -218,7 +218,7 @@ export default function AdminMessagesPage() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                className="flex-1 rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <Button type="submit" size="sm" disabled={sending || !content.trim()}>
                 {sending ? (
@@ -230,7 +230,7 @@ export default function AdminMessagesPage() {
             </form>
           </Card>
         ) : (
-          <div className="hidden sm:flex flex-1 items-center justify-center text-text-muted text-sm">
+          <div className="hidden sm:flex flex-1 items-center justify-center text-ink-muted text-sm">
             Select a client to view their messages
           </div>
         )}

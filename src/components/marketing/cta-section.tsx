@@ -9,8 +9,9 @@ export function CTASection() {
   const t = useTranslations("cta");
 
   return (
-    <section className="bg-navy-dark py-12 sm:py-20">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
+    <section className="bg-gradient-to-br from-stone-900 to-stone-800 py-16 sm:py-24 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(217,119,6,0.15),_transparent_70%)]" />
+      <div className="mx-auto max-w-3xl px-6 text-center relative">
         <ScrollReveal>
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
             {t("title")}
@@ -21,6 +22,9 @@ export function CTASection() {
           <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" className="mt-8 inline-block">
             <Button size="lg">{t("button")}</Button>
           </Link>
+          <p className="mt-4 text-sm text-white/50">
+            No credit card required
+          </p>
         </ScrollReveal>
       </div>
     </section>

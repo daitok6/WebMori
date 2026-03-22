@@ -47,7 +47,7 @@ export default function BillingPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
       </div>
     );
   }
@@ -65,19 +65,19 @@ export default function BillingPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-navy-dark">{t("title")}</h1>
+      <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
 
       {/* Subscription card */}
       <Card className="mt-6">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gold/10">
-              <CreditCard className="h-6 w-6 text-gold" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+              <CreditCard className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm text-text-muted">{t("currentPlan")}</p>
+              <p className="text-sm text-ink-muted">{t("currentPlan")}</p>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-xl font-bold text-navy-dark">
+                <span className="text-xl font-bold text-ink">
                   {data.plan ?? t("inactive")}
                 </span>
                 {data.plan && (
@@ -87,7 +87,7 @@ export default function BillingPage() {
                 )}
               </div>
               {data.currentPeriodEnd && (
-                <p className="text-xs text-text-muted mt-1">
+                <p className="text-xs text-ink-muted mt-1">
                   {data.billingCycle === "ANNUAL" ? t("annual") : t("monthly")} ·{" "}
                   {t("renews")}{" "}
                   {new Date(data.currentPeriodEnd).toLocaleDateString("ja-JP")}
@@ -116,8 +116,8 @@ export default function BillingPage() {
         <Card className="mt-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-navy-dark">{t("upgrade")}</p>
-              <p className="mt-1 text-xs text-text-muted">{t("upgradeDesc")}</p>
+              <p className="text-sm font-medium text-ink">{t("upgrade")}</p>
+              <p className="mt-1 text-xs text-ink-muted">{t("upgradeDesc")}</p>
             </div>
             <Button variant="secondary" size="sm" onClick={openPortal} disabled={portalLoading}>
               <ExternalLink className="mr-1.5 h-4 w-4" />
@@ -129,12 +129,12 @@ export default function BillingPage() {
 
       {/* Payment history */}
       <Card className="mt-6">
-        <h2 className="text-lg font-semibold text-navy-dark mb-4">
+        <h2 className="text-lg font-semibold text-ink mb-4">
           {t("history")}
         </h2>
 
         {!data.payments || data.payments.length === 0 ? (
-          <div className="text-center py-8 text-text-muted text-sm">
+          <div className="text-center py-8 text-ink-muted text-sm">
             {t("noHistory")}
           </div>
         ) : (
@@ -142,16 +142,16 @@ export default function BillingPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="pb-2 font-medium text-text-muted">
+                  <th className="pb-2 font-medium text-ink-muted">
                     {t("date")}
                   </th>
-                  <th className="pb-2 font-medium text-text-muted">
+                  <th className="pb-2 font-medium text-ink-muted">
                     {t("amount")}
                   </th>
-                  <th className="pb-2 font-medium text-text-muted">
+                  <th className="pb-2 font-medium text-ink-muted">
                     {t("status")}
                   </th>
-                  <th className="pb-2 font-medium text-text-muted">
+                  <th className="pb-2 font-medium text-ink-muted">
                     {t("invoice")}
                   </th>
                 </tr>
@@ -159,12 +159,12 @@ export default function BillingPage() {
               <tbody className="divide-y divide-border">
                 {data.payments.map((p) => (
                   <tr key={p.id}>
-                    <td className="py-3 text-navy-dark">
+                    <td className="py-3 text-ink">
                       {new Date(
                         p.paidAt ?? p.createdAt,
                       ).toLocaleDateString("ja-JP")}
                     </td>
-                    <td className="py-3 text-navy-dark">
+                    <td className="py-3 text-ink">
                       ¥{p.amount.toLocaleString()}
                     </td>
                     <td className="py-3">
@@ -190,13 +190,13 @@ export default function BillingPage() {
                           href={`/api/dashboard/billing/invoice?id=${p.stripeInvoiceId}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-gold hover:text-gold/80 transition-colors"
+                          className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary-light transition-colors"
                         >
                           <Download className="h-3.5 w-3.5" />
                           {t("download")}
                         </a>
                       ) : (
-                        <span className="text-xs text-text-muted">—</span>
+                        <span className="text-xs text-ink-muted">—</span>
                       )}
                     </td>
                   </tr>
