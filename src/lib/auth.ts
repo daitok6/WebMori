@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import Resend from "next-auth/providers/resend";
 import Google from "next-auth/providers/google";
 import { Resend as ResendClient } from "resend";
+import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 import { getResend, EMAIL_FROM } from "./email";
 
@@ -81,10 +82,39 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     verifyRequest: "/auth/verify",
   },
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
       }
+
+      // Set admin marker cookie for middleware (UI-level gate only).
+      const adminEmails = process.env.ADMIN_EMAIL?.split(",").map((e) => e.trim().toLowerCase()) ?? [];
+      let isAdminUser = !!(session.user?.email && adminEmails.includes(session.user.email.toLowerCase()));
+      if (!isAdminUser) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { role: true },
+        });
+        isAdminUser = dbUser?.role === "ADMIN";
+      }
+
+      try {
+        const cookieStore = await cookies();
+        if (isAdminUser) {
+          cookieStore.set("webmori-admin", "1", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 60 * 60 * 24 * 30, // 30 days
+          });
+        } else {
+          cookieStore.delete("webmori-admin");
+        }
+      } catch {
+        // cookies() throws in Edge runtime or non-request contexts — safe to ignore
+      }
+
       return session;
     },
   },

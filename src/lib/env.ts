@@ -10,7 +10,7 @@ const serverSchema = z.object({
   RESEND_API_KEY: z.string().startsWith("re_"),
   EMAIL_FROM: z.string().min(1),
   OPERATOR_EMAIL: z.email(),
-  ADMIN_EMAIL: z.email(),
+  ADMIN_EMAIL: z.string().min(1),
 
   // Stripe (optional at build time — validated at runtime in stripe.ts)
   STRIPE_SECRET_KEY: z.string().startsWith("sk_").optional(),
