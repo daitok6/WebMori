@@ -587,7 +587,7 @@
       "rows": [
         ["Business name", "WebMori"],
         ["Representative", "Daito Kojima"],
-        ["Location", "〒166-0004 3-47-28 Asagaya-Minami, Suginami-ku, Tokyo"],
+        ["Location", "〒166-0004 3-47-28 Nojima Heights 2F Room A, Asagaya-Minami, Suginami-ku, Tokyo"],
         ["Phone", "080-7998-6969 (Weekdays 10:00–18:00 JST)"],
         ["Email", "support@webmori.jp"],
         ["Inquiries", "support@webmori.jp or via the contact page"],
@@ -599,7 +599,11 @@
         ["Billing cycle", "Monthly plans: auto-renewed monthly via card. Annual plans: billed once per year via card."],
         ["Service availability", "Available immediately after payment"],
         ["How to subscribe", "Select your preferred plan on the pricing page and complete registration"],
-        ["Cancellation & refunds", "Monthly plans can be canceled at any time. Annual plans can be canceled at the end of the contract period. You retain access until the end of your paid period. Due to the nature of digital services, refunds are generally not provided. Exceptions apply when caused by our fault."],
+        ["Delivery method", "Audit reports (PDF) are delivered via the web dashboard and email. Pull request fix proposals are provided on GitHub."],
+        ["Offer validity", "No fixed period. You may subscribe at any time while the service is listed on our website."],
+        ["Cancellation", "Monthly plans can be canceled at any time. Annual plans can be canceled at the end of the contract period. You retain access until the end of your paid period."],
+        ["Returns & refund policy", "Due to the nature of digital services, returns are not accepted after service delivery. Refunds are generally not provided, except when the service could not be delivered due to our fault, in which case the applicable period will be refunded."],
+        ["Defective service", "If there is a defect in our service, we will promptly re-audit or provide corrections. Please contact support@webmori.jp if you notice any issues."],
         ["System requirements", "Latest versions of Chrome, Firefox, Safari, and Edge"]
       ]
     },
