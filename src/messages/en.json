@@ -602,8 +602,7 @@
         ["Delivery method", "Audit reports (PDF) are delivered via the web dashboard and email. Pull request fix proposals are provided on GitHub."],
         ["Offer validity", "No fixed period. You may subscribe at any time while the service is listed on our website."],
         ["Cancellation", "Monthly plans can be canceled at any time. Annual plans can be canceled at the end of the contract period. You retain access until the end of your paid period."],
-        ["Returns & refund policy", "Due to the nature of digital services, returns are not accepted after service delivery. Refunds are generally not provided, except when the service could not be delivered due to our fault, in which case the applicable period will be refunded."],
-        ["Defective service", "If there is a defect in our service, we will promptly re-audit or provide corrections. Please contact support@webmori.jp if you notice any issues."],
+        ["Exchanges & returns policy", "＜Returns and exchanges requested by customers＞ Due to the nature of digital services, returns and exchanges are not accepted after service delivery. Refunds are generally not provided. ＜Returns and exchanges for defective goods and services＞ If there is a defect in our service, we will promptly re-audit or provide corrections. If the service could not be delivered due to our fault, the applicable period will be refunded. Please contact support@webmori.jp if you notice any issues."],
         ["System requirements", "Latest versions of Chrome, Firefox, Safari, and Edge"]
       ]
     },
