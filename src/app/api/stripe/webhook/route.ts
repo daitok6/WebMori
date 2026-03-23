@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getStripe, getWebhookSecret } from "@/lib/stripe";
+import { getStripe, getStripePrices, getWebhookSecret } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import type Stripe from "stripe";
 import { Plan, BillingCycle, SubStatus, Prisma } from "@/generated/prisma/client";
@@ -79,6 +79,24 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     });
   }
 
+  // Fetch subscription from Stripe to get period dates
+  let periodStart: Date | undefined;
+  let periodEnd: Date | undefined;
+  if (session.subscription) {
+    try {
+      const stripeSub = await getStripe().subscriptions.retrieve(
+        session.subscription as string,
+      );
+      const firstItem = stripeSub.items?.data?.[0];
+      if (firstItem) {
+        periodStart = new Date(firstItem.current_period_start * 1000);
+        periodEnd = new Date(firstItem.current_period_end * 1000);
+      }
+    } catch {
+      // Non-fatal — period dates will be filled by subscription.updated
+    }
+  }
+
   await prisma.subscription.upsert({
     where: { organizationId: orgId },
     create: {
@@ -88,6 +106,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       status: "ACTIVE",
       stripeCustomerId: session.customer as string,
       stripeSubscriptionId: session.subscription as string,
+      ...(periodStart && { currentPeriodStart: periodStart }),
+      ...(periodEnd && { currentPeriodEnd: periodEnd }),
     },
     update: {
       plan: plan as Plan,
@@ -95,6 +115,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       status: "ACTIVE",
       stripeCustomerId: session.customer as string,
       stripeSubscriptionId: session.subscription as string,
+      ...(periodStart && { currentPeriodStart: periodStart }),
+      ...(periodEnd && { currentPeriodEnd: periodEnd }),
     },
   });
 }
@@ -112,11 +134,31 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     trialing: "TRIALING",
   };
 
+  // Detect plan changes from Stripe portal
   const firstItem = subscription.items?.data?.[0];
+  const priceId = firstItem?.price?.id;
+  let plan: Plan | undefined;
+  let billingCycle: BillingCycle | undefined;
+
+  if (priceId) {
+    const prices = getStripePrices();
+    for (const [planKey, cycles] of Object.entries(prices)) {
+      for (const [cycleKey, id] of Object.entries(cycles)) {
+        if (id === priceId) {
+          plan = planKey as Plan;
+          billingCycle = cycleKey as BillingCycle;
+        }
+      }
+    }
+  }
+
   await prisma.subscription.update({
     where: { id: sub.id },
     data: {
       status: statusMap[subscription.status] ?? "ACTIVE",
+      ...(plan && { plan }),
+      ...(billingCycle && { billingCycle }),
+      ...(priceId && { stripePriceId: priceId }),
       ...(firstItem && {
         currentPeriodStart: new Date(firstItem.current_period_start * 1000),
         currentPeriodEnd: new Date(firstItem.current_period_end * 1000),
