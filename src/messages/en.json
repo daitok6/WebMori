@@ -135,6 +135,7 @@
         "features": [
           "1 site",
           "Monthly audit (Security + Performance)",
+          "25+ days between audit cycles",
           "Basic LINE check included",
           "Japanese report",
           "All safe fixes as GitHub PRs",
@@ -149,6 +150,7 @@
         "features": [
           "1 site",
           "Monthly audit (all 5 lenses)",
+          "25+ days between audit cycles",
           "Full LINE API audit",
           "i18n + maintainability checks",
           "Japanese report + executive summary",
@@ -166,7 +168,8 @@
         "description": "Multi-site + deep audit",
         "features": [
           "2 sites",
-          "Monthly + ad-hoc audits",
+          "Monthly audit (all lenses, deep)",
+          "25+ days between audit cycles",
           "All 5 lenses (deep)",
           "Deep LINE API audit",
           "CVE tracking included",
@@ -376,7 +379,10 @@
       "findingsTrend": "Findings Trend",
       "findings": "findings",
       "noPlan": "No Plan",
-      "notScheduled": "Not scheduled"
+      "notScheduled": "Not scheduled",
+      "upgradeTitle": "Upgrade to a paid plan",
+      "upgradeDesc": "Get monthly audits, PR fixes, and priority support.",
+      "upgradeCta": "View Plans"
     },
     "reports": {
       "title": "Audit Reports",
@@ -482,6 +488,38 @@
       "repoDesc": "Register the site you want audited.",
       "evalTitle": "Request a free evaluation",
       "evalDesc": "Try a free site evaluation to get started."
+    },
+    "wizard": {
+      "title": "Welcome to WebMori",
+      "subtitle": "Let's set up your account in a few quick steps.",
+      "profileTitle": "Your Profile",
+      "profileDesc": "Tell us about yourself and your company.",
+      "name": "Your Name",
+      "namePlaceholder": "Taro Yamada",
+      "phone": "Phone Number",
+      "company": "Company / Business Name",
+      "companyPlaceholder": "Example Inc.",
+      "website": "Website URL",
+      "repoTitle": "Add Your Repository",
+      "repoDesc": "Register the repository you want audited monthly.",
+      "repoName": "Repository Name",
+      "repoNamePlaceholder": "my-website",
+      "repoUrl": "GitHub URL",
+      "stack": "Tech Stack (optional)",
+      "next": "Next",
+      "back": "Back",
+      "complete": "Complete Setup",
+      "successTitle": "You're all set!",
+      "successDesc": "Your first audit is being prepared. Here's your schedule:",
+      "yourPlan": "Plan",
+      "auditSchedule": "Monthly Audit Day",
+      "weekPrefix": "Week ",
+      "weekSuffix": "",
+      "nextAudit": "Next Scheduled Audit",
+      "welcomeAudit": "Welcome Audit",
+      "welcomeAuditRunning": "Running now",
+      "auditCycleNote": "Audits run on a 25+ day cycle to ensure thorough analysis.",
+      "goToDashboard": "Go to Dashboard"
     }
   },
   "blogPage": {

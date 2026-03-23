@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Check repo limit based on plan
-  const limits: Record<string, number> = { STARTER: 1, GROWTH: 2, PRO: 3 };
+  const limits: Record<string, number> = { STARTER: 1, GROWTH: 1, PRO: 2 };
   const maxRepos = limits[org.subscription?.plan ?? "STARTER"] ?? 1;
   const activeRepos = org.repos.filter((r) => r.isActive).length;
 

@@ -3,7 +3,11 @@
   "crons": [
     {
       "path": "/api/cron/check-audits",
-      "schedule": "0 9 * * *"
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/check-notifications",
+      "schedule": "0 1 * * *"
     }
   ],
   "headers": [

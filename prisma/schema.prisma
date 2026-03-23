@@ -84,13 +84,20 @@ model Organization {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users          User[]
-  subscription   Subscription?
-  repos          Repo[]
-  audits         Audit[]
-  messages       Message[]
+  // Onboarding & scheduling
+  onboardingComplete Boolean @default(false)
+  auditWeek          Int?    // 3 or 4 (3rd or 4th week of month)
+  auditDayOfWeek     Int?    // 1=Mon..5=Fri
+  welcomeAuditSent   Boolean @default(false)
+
+  users           User[]
+  subscription    Subscription?
+  repos           Repo[]
+  audits          Audit[]
+  messages        Message[]
   contactRequest  ContactRequest[]
   freeEvalReports FreeEvalReport[]
+  notifications   NotificationLog[]
 }
 
 model Subscription {
@@ -105,6 +112,10 @@ model Subscription {
   stripePriceId        String?
   currentPeriodStart   DateTime?
   currentPeriodEnd     DateTime?
+
+  // Grace period for failed payments
+  gracePeriodEnd DateTime?
+  pausedAt       DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -151,6 +162,13 @@ model Audit {
   reportPdfUrl   String?
   findingsPdfUrl String?
   prLinks        String[]
+
+  // Audit type and depth
+  isWelcome     Boolean  @default(false)
+  auditDepth    String?  // "lite" or "full"
+  retryCount    Int      @default(0)
+  failedAt      DateTime?
+  failureReason String?
 
   scheduledAt DateTime?
   startedAt   DateTime?
@@ -227,6 +245,18 @@ model FreeEvalReport {
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }
 
+model NotificationLog {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String?
+  type           String   // onboarding_24h, onboarding_72h, onboarding_7d, audit_scheduled, audit_complete, pr_fixes, monthly_digest, drip_1, drip_2, drip_3
+  sentAt         DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, type])
+}
+
 model StripeEvent {
   id        String   @id  // Stripe event ID (evt_xxx)
   createdAt DateTime @default(now())
@@ -273,6 +303,7 @@ enum AuditStatus {
   REVIEW
   DELIVERED
   COMPLETED
+  FAILED
 }
 
 enum Severity {

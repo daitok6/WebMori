@@ -37,12 +37,22 @@ export async function GET() {
   }));
 
   // Onboarding checklist state
-  const onboarding = {
-    profileComplete: !!user?.name,
-    hasRepo: org.repos.length > 0,
-    hasRequestedEval: !!freeEval,
-  };
-  const onboardingComplete = onboarding.profileComplete && onboarding.hasRepo && onboarding.hasRequestedEval;
+  const isFree = !org.subscription;
+  const hasPaidSubscription = !!org.subscription && org.subscription.status !== "CANCELED";
+  const hasCompletedFreeEval = !!freeEval;
+
+  // For paid users: use organization.onboardingComplete flag
+  // For free users: use legacy checklist
+  const onboarding = isFree
+    ? {
+        profileComplete: !!user?.name,
+        hasRepo: org.repos.length > 0,
+        hasRequestedEval: hasCompletedFreeEval,
+      }
+    : null;
+  const freeOnboardingComplete = onboarding
+    ? onboarding.profileComplete && onboarding.hasRepo && onboarding.hasRequestedEval
+    : true;
 
   return NextResponse.json({
     plan: org.subscription?.plan ?? null,
@@ -50,6 +60,10 @@ export async function GET() {
     repoCount: org.repos.length,
     stats,
     recentAudits,
-    onboarding: onboardingComplete ? null : onboarding,
+    onboarding: freeOnboardingComplete ? null : onboarding,
+    isFree,
+    hasPaidSubscription,
+    hasCompletedFreeEval,
+    needsOnboarding: hasPaidSubscription && !org.onboardingComplete,
   });
 }

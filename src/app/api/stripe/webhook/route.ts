@@ -238,8 +238,15 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
     throw e;
   }
 
+  // Set 3-day grace period before pausing audits
+  const gracePeriodEnd = new Date();
+  gracePeriodEnd.setDate(gracePeriodEnd.getDate() + 3);
+
   await prisma.subscription.update({
     where: { id: sub.id },
-    data: { status: "PAST_DUE" },
+    data: {
+      status: "PAST_DUE",
+      gracePeriodEnd,
+    },
   });
 }

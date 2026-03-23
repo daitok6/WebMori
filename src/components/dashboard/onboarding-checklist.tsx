@@ -14,6 +14,8 @@ interface OnboardingData {
 export function OnboardingChecklist({ data }: { data: OnboardingData }) {
   const t = useTranslations("dashboard.onboarding");
 
+  // For free tier: show profile + free eval steps
+  // Hide eval step if already completed
   const steps = [
     {
       key: "profile" as const,
@@ -21,19 +23,17 @@ export function OnboardingChecklist({ data }: { data: OnboardingData }) {
       icon: User,
       href: "/dashboard/profile",
     },
-    {
-      key: "repo" as const,
-      done: data.hasRepo,
-      icon: GitBranch,
-      href: "/dashboard/repos",
-    },
-    {
-      key: "eval" as const,
-      done: data.hasRequestedEval,
-      icon: FileSearch,
-      href: "/dashboard/free-eval",
-    },
-  ];
+    ...(!data.hasRequestedEval
+      ? [
+          {
+            key: "eval" as const,
+            done: data.hasRequestedEval,
+            icon: FileSearch,
+            href: "/dashboard/free-eval",
+          },
+        ]
+      : []),
+  ].filter(Boolean);
 
   const completedCount = steps.filter((s) => s.done).length;
 

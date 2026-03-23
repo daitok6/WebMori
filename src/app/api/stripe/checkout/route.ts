@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     mode: "subscription",
     allow_promotion_codes: true,
     line_items: lineItems,
-    success_url: `${request.nextUrl.origin}/${locale}/dashboard?checkout=success`,
+    success_url: `${request.nextUrl.origin}/${locale}/dashboard/onboarding?checkout=success`,
     cancel_url: `${request.nextUrl.origin}/${locale}/pricing`,
     customer_email: user.email,
     locale: locale === "ja" ? "ja" : "en",

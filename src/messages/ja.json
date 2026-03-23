@@ -135,6 +135,7 @@
         "features": [
           "サイト1つ",
           "月1回の監査（セキュリティ＋パフォーマンス）",
+          "25日以上の監査サイクル",
           "LINE基本チェック付き",
           "日本語レポート",
           "安全な修正をGitHub PRで提供",
@@ -149,6 +150,7 @@
         "features": [
           "サイト1つ",
           "月1回の監査（全5レンズ）",
+          "25日以上の監査サイクル",
           "LINE API完全監査",
           "国際化・保守性チェック",
           "日本語レポート＋エグゼクティブサマリー",
@@ -166,7 +168,8 @@
         "description": "複数サイト＋深い監査",
         "features": [
           "サイト2つ",
-          "月1回＋アドホック監査",
+          "月1回の監査（全レンズ・深層）",
+          "25日以上の監査サイクル",
           "全5レンズ（深い監査）",
           "LINE API深層監査",
           "CVEトラッキング付き",
@@ -376,7 +379,10 @@
       "findingsTrend": "検出傾向",
       "findings": "件の問題",
       "noPlan": "未契約",
-      "notScheduled": "未定"
+      "notScheduled": "未定",
+      "upgradeTitle": "有料プランにアップグレード",
+      "upgradeDesc": "月次監査、PR修正、優先サポートをご利用いただけます。",
+      "upgradeCta": "プランを見る"
     },
     "reports": {
       "title": "監査レポート",
@@ -482,6 +488,38 @@
       "repoDesc": "監査対象のサイトを登録しましょう。",
       "evalTitle": "無料診断をリクエストする",
       "evalDesc": "まずは無料でサイトの診断を受けてみましょう。"
+    },
+    "wizard": {
+      "title": "WebMoriへようこそ",
+      "subtitle": "簡単なステップでアカウントを設定しましょう。",
+      "profileTitle": "プロフィール設定",
+      "profileDesc": "お名前と会社情報を入力してください。",
+      "name": "お名前",
+      "namePlaceholder": "山田 太郎",
+      "phone": "電話番号",
+      "company": "会社名 / 屋号",
+      "companyPlaceholder": "株式会社〇〇",
+      "website": "ウェブサイトURL",
+      "repoTitle": "リポジトリを追加",
+      "repoDesc": "毎月監査するリポジトリを登録してください。",
+      "repoName": "リポジトリ名",
+      "repoNamePlaceholder": "my-website",
+      "repoUrl": "GitHub URL",
+      "stack": "技術スタック（任意）",
+      "next": "次へ",
+      "back": "戻る",
+      "complete": "セットアップ完了",
+      "successTitle": "準備完了！",
+      "successDesc": "初回監査の準備を進めています。スケジュールはこちらです：",
+      "yourPlan": "プラン",
+      "auditSchedule": "月次監査日",
+      "weekPrefix": "第",
+      "weekSuffix": "週",
+      "nextAudit": "次回予定日",
+      "welcomeAudit": "ウェルカム監査",
+      "welcomeAuditRunning": "実行中",
+      "auditCycleNote": "監査は25日以上の間隔で実施され、徹底的な分析を行います。",
+      "goToDashboard": "ダッシュボードへ"
     }
   },
   "blogPage": {

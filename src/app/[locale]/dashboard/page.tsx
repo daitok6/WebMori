@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +20,7 @@ import {
   GitBranch,
   FileText,
   ArrowRight,
+  ArrowUp,
   Loader2,
 } from "lucide-react";
 
@@ -30,6 +33,10 @@ interface OverviewData {
     hasRepo: boolean;
     hasRequestedEval: boolean;
   } | null;
+  isFree: boolean;
+  hasPaidSubscription: boolean;
+  hasCompletedFreeEval: boolean;
+  needsOnboarding: boolean;
   stats: {
     totalFindings: number;
     fixedFindings: number;
@@ -56,7 +63,15 @@ interface OverviewData {
 export default function DashboardPage() {
   const t = useTranslations("dashboard.overview");
   const tStatus = useTranslations("dashboard.auditStatus");
+  const router = useRouter();
   const { data, loading, error, retry } = useDashboardData<OverviewData>("/api/dashboard/overview");
+
+  // Redirect paid users who haven't completed onboarding wizard
+  useEffect(() => {
+    if (data?.needsOnboarding) {
+      router.replace("./dashboard/onboarding");
+    }
+  }, [data?.needsOnboarding, router]);
 
   if (loading) {
     return (
@@ -67,6 +82,14 @@ export default function DashboardPage() {
   }
 
   if (error || !data) return <DashboardError message={error ?? "Unknown error"} onRetry={retry} />;
+
+  if (data.needsOnboarding) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-ink-muted" />
+      </div>
+    );
+  }
 
   const hasAudits = data.recentAudits.length > 0;
 
@@ -192,6 +215,24 @@ export default function DashboardPage() {
           <Link href="/dashboard/repos" className="mt-6 inline-block">
             <Button>{t("addRepo")}</Button>
           </Link>
+        </Card>
+      )}
+
+      {/* Upgrade CTA for free-tier users */}
+      {data.isFree && (
+        <Card className="mt-8 border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-ink">{t("upgradeTitle")}</h3>
+              <p className="mt-1 text-sm text-ink-muted">{t("upgradeDesc")}</p>
+            </div>
+            <Link href="/pricing">
+              <Button size="sm">
+                <ArrowUp className="mr-2 h-4 w-4" />
+                {t("upgradeCta")}
+              </Button>
+            </Link>
+          </div>
         </Card>
       )}
 
