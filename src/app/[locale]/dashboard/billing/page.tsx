@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DashboardError } from "@/components/dashboard/dashboard-error";
 import { useDashboardData } from "@/lib/use-dashboard-data";
+import { Link } from "@/i18n/navigation";
 import { CreditCard, ExternalLink, Loader2, Download } from "lucide-react";
 
 interface BillingData {
@@ -95,19 +96,27 @@ export default function BillingPage() {
               )}
             </div>
           </div>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={openPortal}
-            disabled={portalLoading || !data.plan}
-          >
-            {portalLoading ? (
-              <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
-            ) : (
-              <ExternalLink className="mr-1.5 h-4 w-4" />
-            )}
-            {t("manage")}
-          </Button>
+          {data.plan ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={openPortal}
+              disabled={portalLoading}
+            >
+              {portalLoading ? (
+                <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+              ) : (
+                <ExternalLink className="mr-1.5 h-4 w-4" />
+              )}
+              {t("manage")}
+            </Button>
+          ) : (
+            <Link href="/pricing">
+              <Button variant="primary" size="sm">
+                {t("choosePlan")}
+              </Button>
+            </Link>
+          )}
         </div>
       </Card>
 

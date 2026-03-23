@@ -456,7 +456,8 @@
       "upgradeDesc": "プランのアップグレード・ダウングレードはStripeの管理画面で行えます。",
       "annual": "年額",
       "monthly": "月額",
-      "renews": "更新日"
+      "renews": "更新日",
+      "choosePlan": "プランを選ぶ"
     },
     "settings": {
       "title": "設定",

@@ -456,7 +456,8 @@
       "upgradeDesc": "You can upgrade or downgrade your plan via the Stripe management portal.",
       "annual": "Annual",
       "monthly": "Monthly",
-      "renews": "Renews"
+      "renews": "Renews",
+      "choosePlan": "Choose a Plan"
     },
     "settings": {
       "title": "Settings",
