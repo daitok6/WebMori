@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
 
   const checkoutSession = await getStripe().checkout.sessions.create({
     mode: "subscription",
+    allow_promotion_codes: true,
     line_items: lineItems,
     success_url: `${request.nextUrl.origin}/${locale}/dashboard?checkout=success`,
     cancel_url: `${request.nextUrl.origin}/${locale}/pricing`,
