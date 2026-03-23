@@ -431,7 +431,11 @@
       "requested": "リクエスト済み",
       "findingsCount": "{count}件の問題",
       "repoLimit": "リポジトリ上限",
-      "of": "/"
+      "of": "/",
+      "repoCount": "{active}/{max} 登録済み",
+      "changesUsed": "変更回数: {used}/{allowed}",
+      "changesLocked": "リポジトリの変更回数が上限に達しました。変更が必要な場合はサポートまでご連絡ください。",
+      "contactSupport": "サポートに連絡"
     },
     "messages": {
       "title": "メッセージ",

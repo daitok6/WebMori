@@ -12,6 +12,27 @@ const repoSchema = z.object({
   stack: z.string().max(50).optional(),
 });
 
+const REPO_LIMITS: Record<string, number> = { STARTER: 1, GROWTH: 1, PRO: 2 };
+
+function getRepoLimits(org: NonNullable<Awaited<ReturnType<typeof getCurrentOrg>>>) {
+  const maxRepos = REPO_LIMITS[org.subscription?.plan ?? "STARTER"] ?? 1;
+  const activeRepos = org.repos.filter((r) => r.isActive).length;
+  const changesRemaining = Math.max(0, org.repoChangesAllowed - org.repoChangesUsed);
+  return {
+    maxRepos,
+    activeRepos,
+    repoChangesUsed: org.repoChangesUsed,
+    repoChangesAllowed: org.repoChangesAllowed,
+    changesRemaining,
+    locked: changesRemaining === 0,
+  };
+}
+
+function isInitialSetup(org: NonNullable<Awaited<ReturnType<typeof getCurrentOrg>>>) {
+  const activeRepos = org.repos.filter((r) => r.isActive).length;
+  return activeRepos === 0 && org.repoChangesUsed === 0;
+}
+
 export async function GET() {
   const org = await getCurrentOrg();
   if (!org) {
@@ -30,8 +51,8 @@ export async function GET() {
     orderBy: { createdAt: "desc" },
   });
 
-  return NextResponse.json(
-    repos.map((r) => ({
+  return NextResponse.json({
+    repos: repos.map((r) => ({
       id: r.id,
       name: r.name,
       url: r.url,
@@ -45,7 +66,8 @@ export async function GET() {
           }
         : null,
     })),
-  );
+    limits: getRepoLimits(org),
+  });
 }
 
 export async function POST(request: NextRequest) {
@@ -62,14 +84,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No organization" }, { status: 400 });
   }
 
-  // Check repo limit based on plan
-  const limits: Record<string, number> = { STARTER: 1, GROWTH: 1, PRO: 2 };
-  const maxRepos = limits[org.subscription?.plan ?? "STARTER"] ?? 1;
-  const activeRepos = org.repos.filter((r) => r.isActive).length;
+  const limits = getRepoLimits(org);
 
-  if (activeRepos >= maxRepos) {
+  // Check repo count limit
+  if (limits.activeRepos >= limits.maxRepos) {
     return NextResponse.json(
       { error: "Repo limit reached for your plan" },
+      { status: 403 },
+    );
+  }
+
+  // Check repo change limit (initial setup is free)
+  if (!isInitialSetup(org) && limits.locked) {
+    return NextResponse.json(
+      { error: "Repo changes exhausted. Contact support to request more changes." },
       { status: 403 },
     );
   }
@@ -87,14 +115,36 @@ export async function POST(request: NextRequest) {
   const { name, url, stack } = result.data;
 
   const stackValue = (stack?.toUpperCase() as Stack) ?? "OTHER";
+  const initial = isInitialSetup(org);
 
-  const repo = await prisma.repo.create({
-    data: {
-      organizationId: org.id,
-      name,
-      url,
-      stack: Object.values(Stack).includes(stackValue) ? stackValue : "OTHER",
-    },
+  const repo = await prisma.$transaction(async (tx) => {
+    const created = await tx.repo.create({
+      data: {
+        organizationId: org.id,
+        name,
+        url,
+        stack: Object.values(Stack).includes(stackValue) ? stackValue : "OTHER",
+      },
+    });
+
+    // Log the change and increment counter (skip for initial setup)
+    await tx.repoChangeLog.create({
+      data: {
+        organizationId: org.id,
+        repoId: created.id,
+        action: "ADD",
+        isInitialSetup: initial,
+      },
+    });
+
+    if (!initial) {
+      await tx.organization.update({
+        where: { id: org.id },
+        data: { repoChangesUsed: { increment: 1 } },
+      });
+    }
+
+    return created;
   });
 
   return NextResponse.json(repo, { status: 201 });
@@ -111,6 +161,15 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Check repo change limit
+  const limits = getRepoLimits(org);
+  if (limits.locked) {
+    return NextResponse.json(
+      { error: "Repo changes exhausted. Contact support to request more changes." },
+      { status: 403 },
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const repoId = searchParams.get("id");
   if (!repoId) {
@@ -119,16 +178,31 @@ export async function DELETE(request: NextRequest) {
 
   // Verify repo belongs to org
   const repo = await prisma.repo.findFirst({
-    where: { id: repoId, organizationId: org.id },
+    where: { id: repoId, organizationId: org.id, isActive: true },
   });
 
   if (!repo) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  await prisma.repo.update({
-    where: { id: repoId },
-    data: { isActive: false },
+  await prisma.$transaction(async (tx) => {
+    await tx.repo.update({
+      where: { id: repoId },
+      data: { isActive: false },
+    });
+
+    await tx.repoChangeLog.create({
+      data: {
+        organizationId: org.id,
+        repoId,
+        action: "REMOVE",
+      },
+    });
+
+    await tx.organization.update({
+      where: { id: org.id },
+      data: { repoChangesUsed: { increment: 1 } },
+    });
   });
 
   return NextResponse.json({ success: true });

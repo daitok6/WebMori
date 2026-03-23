@@ -36,6 +36,22 @@ export async function uploadPdf(
   return `${PUBLIC_URL}/${key}`;
 }
 
+export async function uploadFile(
+  key: string,
+  body: Buffer,
+  contentType: string,
+): Promise<string> {
+  await getR2().send(
+    new PutObjectCommand({
+      Bucket: BUCKET,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+    }),
+  );
+  return `${PUBLIC_URL}/${key}`;
+}
+
 export async function getSignedDownloadUrl(key: string): Promise<string> {
   const command = new GetObjectCommand({ Bucket: BUCKET, Key: key });
   return getSignedUrl(getR2(), command, { expiresIn: 3600 });

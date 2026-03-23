@@ -90,6 +90,10 @@ model Organization {
   auditDayOfWeek     Int?    // 1=Mon..5=Fri
   welcomeAuditSent   Boolean @default(false)
 
+  // Repo change policy
+  repoChangesUsed    Int     @default(0)   // lifetime changes consumed
+  repoChangesAllowed Int     @default(3)   // admin-adjustable cap
+
   users           User[]
   subscription    Subscription?
   repos           Repo[]
@@ -98,6 +102,7 @@ model Organization {
   contactRequest  ContactRequest[]
   freeEvalReports FreeEvalReport[]
   notifications   NotificationLog[]
+  repoChangeLogs  RepoChangeLog[]
 }
 
 model Subscription {
@@ -159,8 +164,10 @@ model Audit {
   repoId         String
   status         AuditStatus @default(SCHEDULED)
 
+  reportCode     String?   @unique   // WM-YYYYMM-XXX
   reportPdfUrl   String?
   findingsPdfUrl String?
+  reportMdKey    String?             // R2 key for report-ja.md source
   prLinks        String[]
 
   // Audit type and depth
@@ -260,6 +267,19 @@ model NotificationLog {
 model StripeEvent {
   id        String   @id  // Stripe event ID (evt_xxx)
   createdAt DateTime @default(now())
+}
+
+model RepoChangeLog {
+  id             String   @id @default(cuid())
+  organizationId String
+  repoId         String?
+  action         String   // "ADD" | "REMOVE" | "REPLACE"
+  isInitialSetup Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
 }
 
 // ──────────────────────────────────────────────

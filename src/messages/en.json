@@ -431,7 +431,11 @@
       "requested": "Requested",
       "findingsCount": "{count} findings",
       "repoLimit": "Repo limit",
-      "of": "/"
+      "of": "/",
+      "repoCount": "{active}/{max} registered",
+      "changesUsed": "Changes: {used}/{allowed}",
+      "changesLocked": "You have used all repo changes. Contact support if you need to make additional changes.",
+      "contactSupport": "Contact support"
     },
     "messages": {
       "title": "Messages",

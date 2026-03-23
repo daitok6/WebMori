@@ -17,6 +17,7 @@ import {
   Loader2,
   Play,
   Check,
+  AlertTriangle,
 } from "lucide-react";
 
 interface Repo {
@@ -32,6 +33,20 @@ interface Repo {
   } | null;
 }
 
+interface Limits {
+  maxRepos: number;
+  activeRepos: number;
+  repoChangesUsed: number;
+  repoChangesAllowed: number;
+  changesRemaining: number;
+  locked: boolean;
+}
+
+interface ReposResponse {
+  repos: Repo[];
+  limits: Limits;
+}
+
 const stackLabels: Record<string, string> = {
   SHOPIFY: "Shopify",
   WORDPRESS: "WordPress",
@@ -42,7 +57,7 @@ const stackLabels: Record<string, string> = {
 
 export default function ReposPage() {
   const t = useTranslations("dashboard.repos");
-  const { data: repos, loading, error, retry, mutate } = useDashboardData<Repo[]>("/api/dashboard/repos");
+  const { data, loading, error, retry, mutate } = useDashboardData<ReposResponse>("/api/dashboard/repos");
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: "", url: "", stack: "OTHER" });
   const [submitting, setSubmitting] = useState(false);
@@ -51,6 +66,12 @@ export default function ReposPage() {
   const [requestingId, setRequestingId] = useState<string | null>(null);
   const [requestedIds, setRequestedIds] = useState<Set<string>>(new Set());
   const tConfirm = useTranslations("dashboard.confirm");
+
+  const repos = data?.repos ?? [];
+  const limits = data?.limits;
+
+  const canAddRepo = limits ? limits.activeRepos < limits.maxRepos && !limits.locked : false;
+  const canRemoveRepo = limits ? !limits.locked : false;
 
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
@@ -80,7 +101,7 @@ export default function ReposPage() {
         method: "DELETE",
       });
       if (res.ok) {
-        mutate((prev) => prev?.filter((r) => r.id !== id) ?? null);
+        retry();
       }
     } finally {
       setRemovingId(null);
@@ -111,17 +132,40 @@ export default function ReposPage() {
     );
   }
 
-  if (error || !repos) return <DashboardError message={error ?? "Unknown error"} onRetry={retry} />;
+  if (error || !data) return <DashboardError message={error ?? "Unknown error"} onRetry={retry} />;
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
-        <Button size="sm" onClick={() => setShowForm(!showForm)}>
-          <Plus className="mr-1.5 h-4 w-4" />
-          {t("addRepo")}
-        </Button>
+        <div>
+          <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
+          {limits && (
+            <div className="mt-1 flex items-center gap-3 text-sm text-ink-muted">
+              <span>{t("repoCount", { active: limits.activeRepos, max: limits.maxRepos })}</span>
+              <span className="text-border">|</span>
+              <span>{t("changesUsed", { used: limits.repoChangesUsed, allowed: limits.repoChangesAllowed })}</span>
+            </div>
+          )}
+        </div>
+        {canAddRepo && (
+          <Button size="sm" onClick={() => setShowForm(!showForm)}>
+            <Plus className="mr-1.5 h-4 w-4" />
+            {t("addRepo")}
+          </Button>
+        )}
       </div>
+
+      {/* Locked banner */}
+      {limits?.locked && (
+        <Card className="mt-4 border-amber-200 bg-amber-50">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+            <div>
+              <p className="text-sm text-amber-800">{t("changesLocked")}</p>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Add repo form */}
       {showForm && (
@@ -238,19 +282,21 @@ export default function ReposPage() {
                     )}
                   </Button>
                   {/* Delete button */}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setConfirmDelete(repo.id)}
-                    disabled={removingId === repo.id}
-                    className="text-ink-muted hover:text-severity-critical"
-                  >
-                    {removingId === repo.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Trash2 className="h-4 w-4" />
-                    )}
-                  </Button>
+                  {canRemoveRepo && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setConfirmDelete(repo.id)}
+                      disabled={removingId === repo.id}
+                      className="text-ink-muted hover:text-severity-critical"
+                    >
+                      {removingId === repo.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
             </Card>
