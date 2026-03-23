@@ -69,7 +69,7 @@ export function PricingPreview() {
                       ))}
                   </ul>
 
-                  <Link href="/contact" className="mt-auto">
+                  <Link href="/pricing" className="mt-auto">
                     <Button
                       variant={highlighted ? "primary" : "secondary"}
                       className="w-full"
