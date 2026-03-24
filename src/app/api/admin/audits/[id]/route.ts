@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
+import { generateReportCode } from "@/lib/report-code";
 import { sendAuditCompleteEmail } from "@/lib/notifications";
 import type { AuditStatus } from "@/generated/prisma/client";
 
@@ -39,6 +40,7 @@ export async function PATCH(
 
   const updateData: Record<string, unknown> = {};
   if (newStatus) updateData.status = newStatus;
+  if (newStatus === "IN_PROGRESS") updateData.startedAt = new Date();
   if (newStatus === "DELIVERED") updateData.deliveredAt = new Date();
   if (newStatus === "COMPLETED") updateData.completedAt = new Date();
   if (newStatus === "FAILED") {
@@ -46,11 +48,24 @@ export async function PATCH(
     if (body.failureReason) updateData.failureReason = body.failureReason;
   }
 
-  const updated = await prisma.audit.update({
-    where: { id },
-    data: updateData,
-    include: { repo: true, findings: true },
-  });
+  // Generate report code in a transaction when transitioning to IN_PROGRESS
+  let updated;
+  if (newStatus === "IN_PROGRESS" && !audit.reportCode) {
+    updated = await prisma.$transaction(async (tx) => {
+      const reportCode = await generateReportCode(tx);
+      return tx.audit.update({
+        where: { id },
+        data: { ...updateData, reportCode },
+        include: { repo: true, findings: true },
+      });
+    });
+  } else {
+    updated = await prisma.audit.update({
+      where: { id },
+      data: updateData,
+      include: { repo: true, findings: true },
+    });
+  }
 
   // Auto-send email when approved (DELIVERED)
   if (newStatus === "DELIVERED") {

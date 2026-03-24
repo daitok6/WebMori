@@ -27,6 +27,10 @@ export interface AuditRow {
   findingsCount: number;
   isWelcome: boolean;
   auditDepth: string | null;
+  reportCode: string | null;
+  reportPdfUrl: string | null;
+  findingsPdfUrl: string | null;
+  prLinks: string[];
   scheduledAt: string | null;
   createdAt: string;
   deliveredAt: string | null;

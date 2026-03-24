@@ -12,6 +12,8 @@ import {
   XCircle,
   Clock,
   Star,
+  FileText,
+  GitPullRequest,
 } from "lucide-react";
 
 const statusVariant: Record<string, "default" | "medium" | "low" | "good" | "growth"> = {
@@ -96,6 +98,13 @@ export function AuditDetailModal({
             <span className="font-medium text-ink">{audit.findingsCount}</span>
           </div>
 
+          {audit.reportCode && (
+            <div className="flex justify-between">
+              <span className="text-ink-muted">Report Code</span>
+              <span className="font-mono text-xs font-medium text-ink">{audit.reportCode}</span>
+            </div>
+          )}
+
           <div className="flex justify-between">
             <span className="text-ink-muted">Depth</span>
             <span className="font-medium text-ink capitalize">{audit.auditDepth ?? "standard"}</span>
@@ -126,6 +135,54 @@ export function AuditDetailModal({
             </div>
           )}
         </div>
+
+        {/* Report & PR links */}
+        {(audit.reportPdfUrl || audit.findingsPdfUrl || audit.prLinks.length > 0) && (
+          <div className="mt-4 space-y-2 border-t border-border pt-4">
+            {audit.reportPdfUrl && (
+              <a
+                href={`/api/admin/audits/${audit.id}/pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-ink hover:bg-surface-raised transition-colors"
+              >
+                <FileText className="h-4 w-4 text-primary" />
+                View Report PDF
+                <ExternalLink className="ml-auto h-3 w-3 text-ink-muted" />
+              </a>
+            )}
+            {audit.findingsPdfUrl && (
+              <a
+                href={`/api/admin/audits/${audit.id}/pdf?type=findings`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-ink hover:bg-surface-raised transition-colors"
+              >
+                <FileText className="h-4 w-4 text-ink-muted" />
+                View Findings PDF
+                <ExternalLink className="ml-auto h-3 w-3 text-ink-muted" />
+              </a>
+            )}
+            {audit.prLinks.length > 0 && (
+              <div className="space-y-1">
+                <p className="text-xs font-medium text-ink-muted">Pull Requests</p>
+                {audit.prLinks.map((url, i) => (
+                  <a
+                    key={i}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-ink hover:bg-surface-raised transition-colors"
+                  >
+                    <GitPullRequest className="h-4 w-4 text-green-600" />
+                    <span className="truncate">{url.split("/").slice(-2).join("/")}</span>
+                    <ExternalLink className="ml-auto h-3 w-3 text-ink-muted" />
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Actions */}
         <div className="mt-6 flex gap-2 border-t border-border pt-4">
