@@ -1,0 +1,110 @@
+---
+title: "How We Audit a Shopify Store"
+excerpt: "Shopify handles hosting, but your themes, apps, and checkout customizations are your responsibility. Here's what we check and why it matters."
+date: "2026-03-24"
+category: "Shopify"
+locale: "en"
+---
+
+## "It's Shopify, so it's safe" — half right, half wrong
+
+Since Shopify manages hosting and server security, many store owners assume they're fully covered. And at the server level, that's true.
+
+But **your theme customizations, installed apps, and checkout settings** are your responsibility. That's where we find the most issues.
+
+## Checkpoint 1: Theme security
+
+### What we check
+
+Shopify themes are built with a templating language called Liquid. Custom or third-party themes can introduce problems the Shopify platform itself doesn't protect you from.
+
+**Common issues we find:**
+
+- **Unescaped customer input** — When search bars or forms display user input directly on the page, it opens the door to XSS attacks. In the worst case, a customer's payment details or login credentials could be stolen.
+
+- **Vulnerable unofficial themes** — Themes purchased outside Shopify's official store may not have undergone security review. They sometimes contain outdated code or even backdoors.
+
+### Why it matters
+
+A theme vulnerability can let attackers run malicious code in your customers' browsers. If payment information gets stolen, your store's reputation takes a hit that's hard to recover from.
+
+## Checkpoint 2: App permissions and safety
+
+### What we check
+
+Shopify apps add powerful features, but each one requests access to your store's data during installation.
+
+**Common issues we find:**
+
+- **Over-permissioned apps** — A simple reviews widget that requests full access to customer data and orders is a red flag. Apps should only have the minimum permissions they need.
+
+- **Abandoned apps** — Apps that haven't been updated in a long time won't have patches for newly discovered vulnerabilities.
+
+- **Third-party data sharing** — Some apps send your customer data to external servers. This needs to be consistent with your privacy policy.
+
+### Why it matters
+
+Apps with excessive permissions increase the risk of data exposure. Under Japan's amended Personal Information Protection Act (2022), breach notification requirements are strict — and the compliance costs aren't trivial.
+
+## Checkpoint 3: Storefront API and access tokens
+
+### What we check
+
+If you're using headless commerce or custom features, you may be using Shopify's Storefront API.
+
+**Common issues we find:**
+
+- **API tokens visible in browser code** — If storefront API tokens aren't properly scoped, attackers can abuse the API to access product or customer data.
+
+- **Admin API token exposure** — Admin-level API keys accidentally included in frontend code is one of the most serious issues we encounter.
+
+### Why it matters
+
+A leaked API token is like handing your store's keys to a stranger. It can lead to unauthorized product changes, stolen order data, or complete store takeover.
+
+## Checkpoint 4: Checkout flow security
+
+### What we check
+
+Shopify's standard checkout is secure, but customizations introduce additional risk.
+
+**Common issues we find:**
+
+- **Checkout script vulnerabilities** — Shopify Plus users can customize checkout.liquid, which sometimes introduces security gaps.
+
+- **External script loading** — Loading third-party JavaScript on your payment page means that if that script gets compromised, customer payment data could be intercepted.
+
+- **Discount validation gaps** — Flawed coupon logic can allow unauthorized discounts to be applied.
+
+### Why it matters
+
+Checkout issues lead directly to financial losses — unauthorized discounts eating into revenue, or payment data breaches triggering penalties from card networks.
+
+## Checkpoint 5: Performance and SEO
+
+### What we check
+
+Beyond security, we also evaluate your store's speed and search visibility.
+
+**Common issues we find:**
+
+- **Unoptimized images** — Large product images slow down page loads, especially on mobile where most Japanese shoppers browse.
+
+- **App-induced slowdowns** — Scripts added by installed apps can significantly increase load times without you realizing it.
+
+- **Japan CDN optimization** — We verify that content delivery is optimized for Japanese visitors.
+
+### Why it matters
+
+A 1-second delay in page load reduces conversion rates by an average of 7%. For a store doing 1 million yen per month, that's 840,000 yen in lost opportunity per year.
+
+## What you get from a WebMori Shopify audit
+
+Our audit delivers:
+
+- **Prioritized findings** — Issues organized by severity (Critical / High / Medium / Low) in a clear Japanese report
+- **Business impact** — Explained in terms of revenue and customer trust, not technical jargon
+- **Actionable fix list** — What to fix and in what order
+- **Auto-fix PRs** — For issues that can be safely corrected, we provide ready-to-apply fixes
+
+If you're wondering whether your Shopify store might have hidden risks, start with a free evaluation.

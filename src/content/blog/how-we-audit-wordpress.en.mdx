@@ -1,0 +1,112 @@
+---
+title: "How We Audit a WordPress Site"
+excerpt: "The world's most popular CMS is also the most targeted. Here's what we check — from plugins to admin access to config files."
+date: "2026-03-24"
+category: "WordPress"
+locale: "en"
+---
+
+## WordPress is powerful. That's why it's targeted
+
+About 40% of all websites run on WordPress. That's a massive advantage — but also a massive target. For attackers, finding a WordPress vulnerability means gaining a tool that works against millions of sites at once.
+
+In Japan especially, we see many SMB and freelancer sites that were built by an agency years ago and haven't been touched since. This is the most dangerous state a WordPress site can be in.
+
+## Checkpoint 1: Plugin and theme vulnerabilities
+
+### What we check
+
+The most common entry point for WordPress attacks is **outdated plugins and themes**.
+
+**Common issues we find:**
+
+- **Stale plugins** — Plugin vulnerabilities are discovered constantly. If updates have been skipped for 6+ months, there may already be published exploits available for attackers.
+
+- **Abandoned plugins** — If WordPress.org shows "This plugin hasn't been updated in over 2 years," it should be replaced.
+
+- **Inactive plugins still installed** — Deactivated plugins still have their code on your server. That code can still be exploited.
+
+### Why it matters
+
+A compromised plugin can redirect your visitors to phishing sites, turn your server into a spam relay, or get your site penalized by Google — disappearing from search results entirely.
+
+## Checkpoint 2: Admin panel security
+
+### What we check
+
+The WordPress admin panel (/wp-admin) controls everything on your site.
+
+**Common issues we find:**
+
+- **Login page wide open** — Default /wp-admin and /wp-login.php URLs are hammered 24/7 by bots running brute-force password attacks.
+
+- **Weak passwords** — Passwords like "admin," "password," or "companyname123" get cracked in minutes.
+
+- **No two-factor authentication** — Password-only login is no longer sufficient in today's threat landscape.
+
+- **Everyone is an admin** — When every user has administrator privileges, one compromised account means the whole site is at risk.
+
+### Why it matters
+
+If an attacker gets admin access, they can change anything — deface your site, inject malware, or steal data. Professional cleanup typically costs hundreds of thousands of yen.
+
+## Checkpoint 3: Configuration file protection
+
+### What we check
+
+WordPress stores database credentials and security keys in critical configuration files.
+
+**Common issues we find:**
+
+- **wp-config.php accessible from outside** — This file contains your database password. Having it publicly accessible is like posting your safe's combination on your front door.
+
+- **Debug mode left on** — Debug features meant for development can expose your site's internal structure through error messages when left on in production.
+
+- **File editing enabled** — If the WordPress admin can edit theme and plugin code directly, an admin panel breach means attackers can modify files on your server too.
+
+### Why it matters
+
+If configuration data leaks, attackers get direct database access — customer information, order history, and member data are all at risk.
+
+## Checkpoint 4: REST API authentication
+
+### What we check
+
+WordPress includes a REST API that allows external access to your site's data.
+
+**Common issues we find:**
+
+- **User information exposed** — By default, visiting /wp-json/wp/v2/users reveals admin usernames. Attackers use these for targeted login attacks.
+
+- **Unauthenticated custom endpoints** — Custom API endpoints added by plugins or agencies sometimes lack any authentication.
+
+### Why it matters
+
+API-based data leaks often go undetected for a long time. There are cases where customer data was continuously exfiltrated for months before anyone noticed.
+
+## Checkpoint 5: Performance and Japan optimization
+
+### What we check
+
+**Common issues we find:**
+
+- **Plugin bloat** — Each plugin may be fine alone, but stack 10+ together and page load times suffer dramatically.
+
+- **No caching** — Without caching, your server rebuilds every page from scratch on each visit.
+
+- **Unoptimized images** — Large, uncompressed photos are one of the most common performance issues we see.
+
+- **Overseas hosting** — If your server is outside Japan, every visit from a Japanese customer has built-in latency.
+
+### Why it matters
+
+Slow sites have higher bounce rates and lower Google rankings — both directly impact your revenue.
+
+## What you get from a WebMori WordPress audit
+
+- **Prioritized findings** — From "fix immediately" to "address when convenient," clearly ranked by severity
+- **Plain-language explanations** — Business impact, not technical jargon
+- **Step-by-step fix guidance** — What to do and in what order
+- **Auto-fix PRs** — For safely fixable issues, we provide ready-to-apply code changes
+
+If you're running a WordPress site, try our free evaluation to see where you stand.

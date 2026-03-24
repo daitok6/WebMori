@@ -1,0 +1,106 @@
+---
+title: "How We Audit a Next.js Site"
+excerpt: "A modern framework doesn't mean automatic security. Environment variables, API routes, server actions — here's what we check and why."
+date: "2026-03-24"
+category: "Next.js"
+locale: "en"
+---
+
+## Next.js is safe? That depends on your code
+
+Next.js is a popular React-based framework, increasingly adopted by startups and digital agencies in Japan. It's fast, SEO-friendly, and productive to develop with.
+
+But Next.js's flexibility means security depends heavily on how it's used. The framework itself is solid, but mistakes in implementation create serious risks.
+
+## Checkpoint 1: Environment variable management
+
+### What we check
+
+Next.js has a `NEXT_PUBLIC_` prefix system. Variables with this prefix are **sent to the customer's browser**.
+
+**Common issues we find:**
+
+- **Secrets with NEXT_PUBLIC_ prefix** — Adding `NEXT_PUBLIC_` to API keys or database credentials makes them visible to anyone via browser dev tools. It's like putting your keys on a billboard.
+
+- **Secrets bundled into client code** — Even without `NEXT_PUBLIC_`, certain coding patterns can cause secrets to end up in the built JavaScript files.
+
+### Why it matters
+
+Leaked API keys let anyone use your services at your expense. If a payment API key leaks, unauthorized charges become possible. External service bills can also spike unexpectedly.
+
+## Checkpoint 2: API route authentication
+
+### What we check
+
+Next.js makes it easy to create API endpoints (server-side handlers). Convenient — but easy to forget authentication.
+
+**Common issues we find:**
+
+- **Unauthenticated API routes** — APIs that read or modify user data without any authentication let anyone with the URL access your data.
+
+- **Missing auth middleware** — Without a shared authentication layer, every new API route risks being shipped without auth checks.
+
+- **Missing authorization checks** — Confirming a user is logged in isn't enough. "Is this user allowed to perform this specific action?" is often left unchecked.
+
+### Why it matters
+
+Missing authentication leads to unauthorized data access or modification. In multi-user apps, this often manifests as privilege escalation — one user viewing or changing another's data.
+
+## Checkpoint 3: Server Actions and Server Components
+
+### What we check
+
+Next.js's newer features — Server Actions and Server Components — simplify server-side logic.
+
+**Common issues we find:**
+
+- **Server Actions without auth checks** — Server Actions used for form submissions sometimes skip user verification. Since they can be called directly, hiding a button in the UI doesn't provide protection.
+
+- **Server-only data leaking to client** — Without proper management of the Server/Client Component boundary, server-side data can end up in the browser.
+
+### Why it matters
+
+Server Action auth gaps allow unauthorized data manipulation. For e-commerce, this could mean tampered orders. For membership sites, it could mean accessing other users' private information.
+
+## Checkpoint 4: Client-side information leakage
+
+### What we check
+
+Next.js runs code on both server and client (browser). Managing this boundary is critical.
+
+**Common issues we find:**
+
+- **Secrets in JavaScript bundles** — Analyzing built JavaScript files sometimes reveals API keys or internal URLs.
+
+- **Error message leakage** — Stack traces shown in production reveal your site's internal architecture.
+
+- **Public source maps** — Development source maps published in production expose your entire source code.
+
+### Why it matters
+
+Visible code internals let attackers efficiently hunt for vulnerabilities. Exposed source maps also risk leaking proprietary business logic and algorithms.
+
+## Checkpoint 5: Performance and Japan optimization
+
+### What we check
+
+**Common issues we find:**
+
+- **Excessive client-side JavaScript** — Overusing "use client" sends processing to the browser that should stay on the server, making pages heavier.
+
+- **Unoptimized images** — Next.js has a built-in Image component for optimization, but it's often underused.
+
+- **Tokyo region deployment** — We verify that Vercel or Cloudflare deployments leverage Japan-based edge locations.
+
+### Why it matters
+
+Next.js is inherently fast, but poor implementation can negate that advantage. Proper optimization often delivers dramatic improvements in perceived speed.
+
+## What you get from a WebMori Next.js audit
+
+- **Risk visualization** — Environment variables, API auth, and information leakage risks ranked by severity
+- **Business impact translation** — Technical issues explained as business risks
+- **Prioritized action list** — Separating "fix now" from "fix in next release"
+- **Auto-fix PRs** — Safe fixes provided as ready-to-apply code changes
+
+If you're running a site or app on Next.js, try our free evaluation to check your security posture.

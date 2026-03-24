@@ -1,0 +1,109 @@
+---
+title: "How We Audit a LINE Mini App"
+excerpt: "With 95 million LINE users in Japan, security on this platform is critical. Here's what we check — webhooks, tokens, LIFF, and user data handling."
+date: "2026-03-24"
+category: "LINE API"
+locale: "en"
+---
+
+## On LINE's ecosystem, the stakes are high
+
+LINE is used by over 95 million people in Japan — it's essential infrastructure. Services built on LINE Mini Apps and LINE Official Accounts are incredibly close to customers, which means security issues have an outsized impact.
+
+"LINE is secure, so my app is too" doesn't hold up. The risks live in **the connection between the LINE platform and your application**.
+
+## Checkpoint 1: Webhook signature verification
+
+### What we check
+
+When LINE sends messages and events to your server, it uses a mechanism called webhooks. The critical question is: **how do you know the request actually came from LINE?**
+
+**Common issues we find:**
+
+- **No signature verification** — LINE attaches a digital signature ("X-Line-Signature") to every request. Without verifying it, attackers can impersonate LINE and send fake requests to your server.
+
+- **Broken verification** — The signature check code exists but is implemented incorrectly, making it effectively useless.
+
+### Why it matters
+
+Without signature verification, attackers can send fake message events to make your bot do unintended things — create fraudulent orders, send unauthorized messages to customers, or worse. It may also violate LINE's terms of service.
+
+## Checkpoint 2: Channel access token management
+
+### What we check
+
+A "channel access token" is the key that lets you use the LINE API. How it's managed is critical.
+
+**Common issues we find:**
+
+- **Long-lived tokens** — Tokens with no expiration date mean a single leak gives attackers unlimited access. Short-lived tokens that refresh regularly are safer.
+
+- **Tokens hardcoded in source code** — If the token is in your GitHub repository, anyone with repo access can impersonate your LINE account.
+
+- **Token exposed in frontend code** — If the channel access token is visible in browser JavaScript, anyone can send messages from your LINE Official Account.
+
+### Why it matters
+
+A leaked token lets attackers hijack your LINE Official Account — broadcasting unauthorized messages, harvesting your friend list, or worse. Beyond the instant trust damage, LINE may suspend your account entirely.
+
+## Checkpoint 3: LIFF (LINE Front-end Framework) configuration
+
+### What we check
+
+LIFF lets you display web apps inside LINE. It's the core technology behind LINE Mini Apps.
+
+**Common issues we find:**
+
+- **Non-HTTPS LIFF URLs** — LIFF URLs must use HTTPS (encrypted communication). Using HTTP means the connection can be intercepted.
+
+- **LIFF ID abuse prevention gaps** — If your LIFF ID becomes known, it could be used to exploit LIFF features from unintended web pages.
+
+- **Unvalidated user info** — Trusting user IDs obtained from LIFF on the client side without server-side verification. The data could be tampered with in the browser.
+
+### Why it matters
+
+LIFF misconfigurations can lead to LINE account information leakage or impersonation. Customers using LINE-based services assume "it's LINE, so it's safe." Betraying that assumption is devastating for any business.
+
+## Checkpoint 4: User data storage and protection
+
+### What we check
+
+We examine how LINE user information (user ID, display name, profile image, etc.) is stored.
+
+**Common issues we find:**
+
+- **Insecure user ID storage** — Storing LINE user IDs in a database without proper access controls means all user data is at risk during a breach or insider incident.
+
+- **Excessive data retention** — Collecting and storing more information than your service actually needs. Privacy best practices call for minimal data collection.
+
+- **Personal data in logs** — Debug logs that record user IDs or personal information, creating a leak vector through log files.
+
+### Why it matters
+
+Japan's Personal Information Protection Act requires breach notification to affected individuals and the PPC (Personal Information Protection Commission). The cost of incident response and lost trust makes preventive measures far more cost-effective.
+
+## Checkpoint 5: Rate limiting and error handling
+
+### What we check
+
+LINE API has usage limits (rate limits). We verify these are handled properly.
+
+**Common issues we find:**
+
+- **No rate limit handling** — When API calls hit the limit (HTTP 429), unhandled errors cause message delivery failures.
+
+- **Flawed retry logic** — No retry mechanism on API failures, or infinite retry loops that compound the problem.
+
+### Why it matters
+
+Hitting rate limits means messages stop reaching your customers. Booking confirmations, order notifications, campaign messages — business-critical communications get silently dropped.
+
+## What you get from a WebMori LINE Mini App audit
+
+- **LINE-specific security checks** — Comprehensive verification of webhook signatures, token management, and LIFF configuration
+- **Clear risk explanations** — Framed as customer impact and business risk
+- **LINE best practice comparison** — Gap analysis against LINE's official security recommendations
+- **Prioritized action list** — "Fix now" vs. "plan for next release"
+- **Auto-fix PRs** — Safe fixes provided as ready-to-apply code changes
+
+If you're running a LINE Mini App or LINE-connected service, try our free evaluation to check your security posture.
