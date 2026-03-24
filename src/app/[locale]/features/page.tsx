@@ -4,10 +4,10 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import { ParallaxSection } from "@/components/motion/parallax-section";
 import { CTASection } from "@/components/marketing/cta-section";
-import { Shield, Zap, MessageCircle, Globe, Code, FileText, GitPullRequest } from "lucide-react";
+import { Shield, Zap, MessageCircle, Globe, Code, GitPullRequest, AlertTriangle, XCircle, CheckCircle, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
 
 const lenses = [
   { icon: Shield, color: "text-severity-critical", bg: "bg-severity-critical/10" },
@@ -62,69 +62,128 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      {/* Report Showcase with Parallax */}
+      {/* Report Preview */}
       <section className="bg-stone-900 py-20 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-5xl px-6">
           <ScrollReveal>
             <h2 className="text-center text-3xl font-bold text-white sm:text-4xl">
               {t("reportShowcase.title")}
             </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-white/60">
+              {t("reportShowcase.subtitle")}
+            </p>
           </ScrollReveal>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-2">
-            <ParallaxSection speed={0.3}>
-              <ScrollReveal delay={0.1}>
-                <div className="rounded-2xl bg-stone-800 p-6 border border-white/10">
-                  <div className="flex items-center gap-2 mb-4">
-                    <FileText className="h-5 w-5 text-primary" />
-                    <span className="text-sm font-medium text-white/70">
-                      {t("reportShowcase.markdownLabel")}
-                    </span>
+          {/* PDF Report Mockup */}
+          <ScrollReveal delay={0.1}>
+            <div className="mt-12 mx-auto max-w-3xl">
+              <div className="rounded-2xl bg-white shadow-2xl overflow-hidden">
+                {/* Cover strip */}
+                <div className="bg-gradient-to-r from-stone-900 to-stone-800 px-8 py-6 flex items-center justify-between">
+                  <div>
+                    <p className="text-primary font-bold text-lg tracking-wide">WebMori</p>
+                    <p className="text-white/90 text-sm mt-1">{t("reportShowcase.coverTitle")}</p>
                   </div>
-                  <div className="space-y-2 font-mono text-sm text-white/60">
-                    <p className="text-primary">## 重要な問題</p>
-                    <p>### <span className="text-severity-critical">Critical</span> — APIキーがハードコード</p>
-                    <p className="text-white/40">- ファイル: src/config.ts:24</p>
-                    <p className="text-white/40">- 影響: 第三者によるAPI悪用の可能性</p>
-                    <p className="text-white/40">- 修正: 環境変数に移行</p>
-                    <p className="mt-4 text-primary">## 改善提案</p>
-                    <p>### <span className="text-severity-medium">Medium</span> — 画像の最適化</p>
-                    <p className="text-white/40">- 未圧縮の画像が12件検出</p>
-                    <p className="text-white/40">- 推定改善: LCP -1.2s</p>
+                  <div className="text-right text-xs text-white/50 space-y-0.5">
+                    <p>example-store.jp</p>
+                    <p>2026-03-15</p>
+                    <p>Growth Plan</p>
                   </div>
                 </div>
-              </ScrollReveal>
-            </ParallaxSection>
 
-            <ParallaxSection speed={0.15}>
-              <ScrollReveal delay={0.2}>
-                <div className="rounded-2xl bg-white p-6 shadow-xl">
-                  <div className="flex items-center gap-2 mb-4">
-                    <FileText className="h-5 w-5 text-primary" />
-                    <span className="text-sm font-medium text-ink-muted">
-                      {t("reportShowcase.pdfLabel")}
-                    </span>
+                <div className="px-8 py-6 space-y-6">
+                  {/* Summary dashboard */}
+                  <div>
+                    <h3 className="text-sm font-bold text-ink mb-3">{t("reportShowcase.summaryLabel")}</h3>
+                    <div className="flex flex-wrap gap-2">
+                      <div className="flex items-center gap-1.5 rounded-lg bg-severity-critical/10 px-3 py-1.5 text-xs font-medium text-severity-critical">
+                        <XCircle className="h-3.5 w-3.5" /> Critical: 1
+                      </div>
+                      <div className="flex items-center gap-1.5 rounded-lg bg-severity-high/10 px-3 py-1.5 text-xs font-medium text-severity-high">
+                        <AlertTriangle className="h-3.5 w-3.5" /> High: 2
+                      </div>
+                      <div className="flex items-center gap-1.5 rounded-lg bg-severity-medium/10 px-3 py-1.5 text-xs font-medium text-severity-medium">
+                        Medium: 3
+                      </div>
+                      <div className="flex items-center gap-1.5 rounded-lg bg-severity-low/10 px-3 py-1.5 text-xs font-medium text-severity-low">
+                        Low: 2
+                      </div>
+                      <div className="ml-auto flex items-center gap-1.5 rounded-lg bg-severity-good/10 px-3 py-1.5 text-xs font-medium text-severity-good">
+                        <CheckCircle className="h-3.5 w-3.5" /> PR: 4
+                      </div>
+                    </div>
                   </div>
-                  <div className="space-y-3">
-                    <div className="h-3 w-3/4 rounded bg-ink/10" />
-                    <div className="flex gap-3">
-                      <div className="rounded-lg bg-severity-critical/10 px-3 py-2 text-xs font-medium text-severity-critical">Critical: 1</div>
-                      <div className="rounded-lg bg-severity-medium/10 px-3 py-2 text-xs font-medium text-severity-medium">Medium: 3</div>
-                      <div className="rounded-lg bg-severity-low/10 px-3 py-2 text-xs font-medium text-severity-low">Low: 2</div>
+
+                  {/* Sample finding */}
+                  <div className="rounded-xl border border-border p-4">
+                    <div className="flex items-start gap-2.5">
+                      <XCircle className="h-4 w-4 mt-0.5 shrink-0 text-severity-critical" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm font-semibold text-ink">{t("reportShowcase.findingTitle")}</span>
+                          <span className="rounded bg-severity-critical/10 px-2 py-0.5 text-[10px] font-bold text-severity-critical uppercase">Critical</span>
+                        </div>
+                        <p className="text-xs text-ink-muted mt-1.5">{t("reportShowcase.findingEvidence")}</p>
+                        <p className="text-xs text-ink-muted mt-1">{t("reportShowcase.findingImpact")}</p>
+                        <div className="mt-2.5 rounded-lg bg-surface-raised px-3 py-2">
+                          <p className="text-[10px] font-medium text-ink-muted uppercase tracking-wide mb-0.5">{t("reportShowcase.fixLabel")}</p>
+                          <p className="text-xs text-ink">{t("reportShowcase.findingFix")}</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="h-2 w-full rounded bg-border" />
-                    <div className="h-2 w-5/6 rounded bg-border" />
-                    <div className="h-2 w-4/6 rounded bg-border" />
-                    <div className="mt-4 rounded-lg border border-border p-3">
-                      <div className="h-2 w-1/2 rounded bg-primary/30 mb-2" />
-                      <div className="h-2 w-full rounded bg-border" />
-                      <div className="h-2 w-3/4 rounded bg-border mt-1" />
+                  </div>
+
+                  {/* Sample medium finding (condensed) */}
+                  <div className="rounded-xl border border-border p-4">
+                    <div className="flex items-start gap-2.5">
+                      <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0 text-severity-high" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm font-semibold text-ink">{t("reportShowcase.finding2Title")}</span>
+                          <span className="rounded bg-severity-high/10 px-2 py-0.5 text-[10px] font-bold text-severity-high uppercase">High</span>
+                          <span className="rounded bg-severity-good/10 px-2 py-0.5 text-[10px] font-medium text-severity-good">{t("reportShowcase.prReady")}</span>
+                        </div>
+                        <p className="text-xs text-ink-muted mt-1.5">{t("reportShowcase.finding2Impact")}</p>
+                      </div>
                     </div>
+                  </div>
+
+                  {/* Priorities */}
+                  <div>
+                    <h3 className="text-sm font-bold text-ink mb-2">{t("reportShowcase.prioritiesLabel")}</h3>
+                    <ol className="space-y-1.5">
+                      {[0, 1, 2].map((i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+                            {i + 1}
+                          </span>
+                          <span className="text-xs text-ink-muted">
+                            {t(`reportShowcase.priorities.${i}`)}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+
+                  {/* Fade out effect */}
+                  <div className="relative h-8">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white" />
                   </div>
                 </div>
-              </ScrollReveal>
-            </ParallaxSection>
-          </div>
+              </div>
+
+              {/* CTA below the report */}
+              <div className="mt-6 text-center">
+                <Link
+                  href="/sample-report"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                >
+                  {t("reportShowcase.viewSample")}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 

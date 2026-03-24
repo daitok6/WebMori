@@ -214,9 +214,25 @@
       }
     ],
     "reportShowcase": {
-      "title": "レポートの流れ",
-      "markdownLabel": "監査結果 (Markdown)",
-      "pdfLabel": "クライアントレポート (PDF)"
+      "title": "レポートイメージ",
+      "subtitle": "毎月届くPDFレポートのサンプルです。問題の重要度、証拠、ビジネス影響、修正方法まで一目で分かります。",
+      "coverTitle": "ウェブサイト監査レポート",
+      "summaryLabel": "概要ダッシュボード",
+      "findingTitle": "APIキーがソースコードにハードコード",
+      "findingEvidence": "ファイル: src/config.ts:24 — const API_KEY = \"sk_live_...\"",
+      "findingImpact": "影響: 第三者によるAPI悪用・不正課金のリスク",
+      "fixLabel": "推奨修正",
+      "findingFix": "環境変数（process.env.API_KEY）に移行し、.envファイルを.gitignoreに追加",
+      "finding2Title": "認証なしの管理APIエンドポイント",
+      "finding2Impact": "影響: 未認証ユーザーがユーザーデータにアクセス可能",
+      "prReady": "PR対応済み",
+      "prioritiesLabel": "今月の優先対応",
+      "priorities": [
+        "APIキーを環境変数に移行する（Critical — 即時対応）",
+        "管理APIに認証ミドルウェアを追加する（High — PR確認待ち）",
+        "画像アセットを最適化してLCPを改善する（Medium）"
+      ],
+      "viewSample": "サンプルレポートの全文を見る"
     },
     "prExample": {
       "title": "自動修正PRの例",

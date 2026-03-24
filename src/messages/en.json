@@ -214,9 +214,25 @@
       }
     ],
     "reportShowcase": {
-      "title": "Report Flow",
-      "markdownLabel": "Audit Findings (Markdown)",
-      "pdfLabel": "Client Report (PDF)"
+      "title": "Report Preview",
+      "subtitle": "Here's what the monthly PDF report looks like. Severity, evidence, business impact, and fixes — all in one document.",
+      "coverTitle": "Website Audit Report",
+      "summaryLabel": "Summary Dashboard",
+      "findingTitle": "API key hardcoded in source code",
+      "findingEvidence": "File: src/config.ts:24 — const API_KEY = \"sk_live_...\"",
+      "findingImpact": "Impact: Risk of API abuse and unauthorized charges by third parties",
+      "fixLabel": "Recommended Fix",
+      "findingFix": "Move to environment variable (process.env.API_KEY) and add .env to .gitignore",
+      "finding2Title": "Admin API endpoint without authentication",
+      "finding2Impact": "Impact: Unauthenticated users can access user data",
+      "prReady": "PR Ready",
+      "prioritiesLabel": "This Month's Priorities",
+      "priorities": [
+        "Move API key to environment variables (Critical — immediate action)",
+        "Add auth middleware to admin API (High — PR pending review)",
+        "Optimize image assets to improve LCP (Medium)"
+      ],
+      "viewSample": "View full sample report"
     },
     "prExample": {
       "title": "Auto-fix PR Example",
