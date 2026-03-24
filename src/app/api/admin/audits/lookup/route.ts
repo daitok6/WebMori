@@ -66,6 +66,7 @@ async function lookupByEmail(email: string) {
               name: true,
               url: true,
               stack: true,
+              isRepoless: true,
             },
           },
           audits: {
@@ -144,6 +145,7 @@ async function lookupByReportCode(reportCode: string) {
           name: true,
           url: true,
           stack: true,
+          isRepoless: true,
         },
       },
       findings: {

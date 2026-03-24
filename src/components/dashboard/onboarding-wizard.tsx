@@ -59,6 +59,7 @@ export function OnboardingWizard() {
   });
 
   // Step 2: Repo
+  const [noRepo, setNoRepo] = useState(false);
   const [repo, setRepo] = useState({
     name: "",
     url: "",
@@ -98,6 +99,7 @@ export function OnboardingWizard() {
   }
 
   function isStep2Valid() {
+    if (noRepo) return true;
     return repo.name.trim() && repo.url.trim();
   }
 
@@ -116,12 +118,26 @@ export function OnboardingWizard() {
           body: JSON.stringify(profile),
         });
 
-        // Save repo
-        await fetch("/api/dashboard/repos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(repo),
-        });
+        // Save repo (or create URL-only entry if no repo)
+        if (noRepo) {
+          const domain = profile.website.replace(/^https?:\/\//, "").replace(/\/.*$/, "");
+          await fetch("/api/dashboard/repos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: domain,
+              url: profile.website,
+              stack: "OTHER",
+              isRepoless: true,
+            }),
+          });
+        } else {
+          await fetch("/api/dashboard/repos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(repo),
+          });
+        }
 
         // Complete onboarding
         const res = await fetch("/api/dashboard/onboarding/complete", {
@@ -265,42 +281,68 @@ export function OnboardingWizard() {
           <h2 className="text-lg font-semibold text-ink mb-1">{t("repoTitle")}</h2>
           <p className="text-sm text-ink-muted mb-6">{t("repoDesc")}</p>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-ink mb-1">{t("repoName")} *</label>
-              <input
-                type="text"
-                value={repo.name}
-                onChange={(e) => setRepo((r) => ({ ...r, name: e.target.value }))}
-                placeholder={t("repoNamePlaceholder")}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-            </div>
+          {/* No-repo toggle */}
+          <button
+            type="button"
+            onClick={() => setNoRepo((v) => !v)}
+            className="mb-6 text-sm text-primary hover:text-primary/80 underline underline-offset-2"
+          >
+            {noRepo ? t("hasRepo") : t("noRepo")}
+          </button>
 
-            <div>
-              <label className="block text-sm font-medium text-ink mb-1">{t("repoUrl")} *</label>
-              <input
-                type="url"
-                value={repo.url}
-                onChange={(e) => setRepo((r) => ({ ...r, url: e.target.value }))}
-                placeholder="https://github.com/your-org/your-repo"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              />
+          {noRepo ? (
+            <div className="space-y-4">
+              <div className="rounded-lg border border-border bg-surface-raised p-4">
+                <p className="text-sm text-ink-muted mb-3">{t("noRepoDesc")}</p>
+                <div>
+                  <label className="block text-sm font-medium text-ink mb-1">{t("noRepoSiteUrl")}</label>
+                  <input
+                    type="url"
+                    value={profile.website}
+                    readOnly
+                    className="w-full rounded-lg border border-border bg-white/50 px-3 py-2 text-sm text-ink-muted cursor-not-allowed"
+                  />
+                </div>
+              </div>
             </div>
+          ) : (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-ink mb-1">{t("repoName")} *</label>
+                <input
+                  type="text"
+                  value={repo.name}
+                  onChange={(e) => setRepo((r) => ({ ...r, name: e.target.value }))}
+                  placeholder={t("repoNamePlaceholder")}
+                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-ink mb-1">{t("stack")}</label>
-              <select
-                value={repo.stack}
-                onChange={(e) => setRepo((r) => ({ ...r, stack: e.target.value }))}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              >
-                {STACK_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
+              <div>
+                <label className="block text-sm font-medium text-ink mb-1">{t("repoUrl")} *</label>
+                <input
+                  type="url"
+                  value={repo.url}
+                  onChange={(e) => setRepo((r) => ({ ...r, url: e.target.value }))}
+                  placeholder="https://github.com/your-org/your-repo"
+                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-ink mb-1">{t("stack")}</label>
+                <select
+                  value={repo.stack}
+                  onChange={(e) => setRepo((r) => ({ ...r, stack: e.target.value }))}
+                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  {STACK_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="mt-6 flex justify-between">
             <Button variant="outline" onClick={handleBack}>

@@ -150,6 +150,7 @@ model Repo {
   name           String
   url            String
   stack          Stack    @default(OTHER)
+  isRepoless     Boolean  @default(false)
   isActive       Boolean  @default(true)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt

@@ -451,7 +451,8 @@
       "repoCount": "{active}/{max} registered",
       "changesUsed": "Changes: {used}/{allowed}",
       "changesLocked": "You have used all repo changes. Contact support if you need to make additional changes.",
-      "contactSupport": "Contact support"
+      "contactSupport": "Contact support",
+      "surfaceOnly": "Surface audit"
     },
     "messages": {
       "title": "Messages",
@@ -522,6 +523,10 @@
       "website": "Website URL",
       "repoTitle": "Add Your Repository",
       "repoDesc": "Register the repository you want audited monthly.",
+      "noRepo": "I don't have a repository",
+      "noRepoDesc": "We'll run monthly surface audits using your website URL.",
+      "noRepoSiteUrl": "Site URL to audit",
+      "hasRepo": "Add a repository",
       "repoName": "Repository Name",
       "repoNamePlaceholder": "my-website",
       "repoUrl": "GitHub URL",

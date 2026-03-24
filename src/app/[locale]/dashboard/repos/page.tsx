@@ -11,6 +11,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useDashboardData } from "@/lib/use-dashboard-data";
 import {
   GitBranch,
+  Globe,
   Plus,
   Trash2,
   ExternalLink,
@@ -26,6 +27,7 @@ interface Repo {
   url: string;
   stack: string;
   isActive: boolean;
+  isRepoless: boolean;
   lastAudit: {
     date: string;
     status: string;
@@ -236,9 +238,16 @@ export default function ReposPage() {
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <GitBranch className="h-4 w-4 text-ink-muted" />
+                    {repo.isRepoless ? (
+                      <Globe className="h-4 w-4 text-ink-muted" />
+                    ) : (
+                      <GitBranch className="h-4 w-4 text-ink-muted" />
+                    )}
                     <h3 className="font-semibold text-ink">{repo.name}</h3>
                     <Badge>{stackLabels[repo.stack] ?? repo.stack}</Badge>
+                    {repo.isRepoless && (
+                      <Badge className="border border-border bg-white text-ink-muted">{t("surfaceOnly")}</Badge>
+                    )}
                   </div>
                   <a
                     href={repo.url}

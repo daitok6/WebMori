@@ -10,6 +10,7 @@ const repoSchema = z.object({
   name: z.string().min(1).max(200),
   url: z.string().url().max(500),
   stack: z.string().max(50).optional(),
+  isRepoless: z.boolean().optional(),
 });
 
 const REPO_LIMITS: Record<string, number> = { STARTER: 1, GROWTH: 1, PRO: 2 };
@@ -58,6 +59,7 @@ export async function GET() {
       url: r.url,
       stack: r.stack,
       isActive: r.isActive,
+      isRepoless: r.isRepoless,
       lastAudit: r.audits[0]
         ? {
             date: r.audits[0].createdAt.toISOString(),
@@ -112,7 +114,7 @@ export async function POST(request: NextRequest) {
   if (!result.success) {
     return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
   }
-  const { name, url, stack } = result.data;
+  const { name, url, stack, isRepoless } = result.data;
 
   const stackValue = (stack?.toUpperCase() as Stack) ?? "OTHER";
   const initial = isInitialSetup(org);
@@ -124,6 +126,7 @@ export async function POST(request: NextRequest) {
         name,
         url,
         stack: Object.values(Stack).includes(stackValue) ? stackValue : "OTHER",
+        isRepoless: isRepoless ?? false,
       },
     });
 

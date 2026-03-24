@@ -451,7 +451,8 @@
       "repoCount": "{active}/{max} 登録済み",
       "changesUsed": "変更回数: {used}/{allowed}",
       "changesLocked": "リポジトリの変更回数が上限に達しました。変更が必要な場合はサポートまでご連絡ください。",
-      "contactSupport": "サポートに連絡"
+      "contactSupport": "サポートに連絡",
+      "surfaceOnly": "サーフェス監査"
     },
     "messages": {
       "title": "メッセージ",
@@ -522,6 +523,10 @@
       "website": "ウェブサイトURL",
       "repoTitle": "リポジトリを追加",
       "repoDesc": "毎月監査するリポジトリを登録してください。",
+      "noRepo": "リポジトリがありません",
+      "noRepoDesc": "ウェブサイトURLを使って毎月のサーフェス監査を行います。",
+      "noRepoSiteUrl": "監査対象のURL",
+      "hasRepo": "リポジトリを追加する",
       "repoName": "リポジトリ名",
       "repoNamePlaceholder": "my-website",
       "repoUrl": "GitHub URL",
