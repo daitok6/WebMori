@@ -23,6 +23,10 @@ const serverSchema = z.object({
   STRIPE_PRICE_PRO_ANNUAL: z.string().startsWith("price_").optional(),
   STRIPE_PRICE_ONBOARDING_GROWTH: z.string().startsWith("price_").optional(),
   STRIPE_PRICE_ONBOARDING_PRO: z.string().startsWith("price_").optional(),
+  // Add-on one-time prices
+  STRIPE_PRICE_ADDON_QUICK_WIN: z.string().startsWith("price_").optional(),
+  STRIPE_PRICE_ADDON_MODERATE: z.string().startsWith("price_").optional(),
+  STRIPE_PRICE_ADDON_LARGE: z.string().startsWith("price_").optional(),
 
   // Cloudflare R2
   R2_ACCOUNT_ID: z.string().min(1),
@@ -38,6 +42,7 @@ const serverSchema = z.object({
 const clientSchema = z.object({
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_").optional(),
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_CALCOM_LINK: z.string().url().optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverSchema>;
@@ -58,6 +63,7 @@ function validateClientEnv() {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_CALCOM_LINK: process.env.NEXT_PUBLIC_CALCOM_LINK,
   });
   if (!result.success) {
     const formatted = z.prettifyError(result.error);

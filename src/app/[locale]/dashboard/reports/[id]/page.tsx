@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,8 @@ import {
   ExternalLink,
   FileText,
   Loader2,
+  Wrench,
+  CheckCircle2,
 } from "lucide-react";
 
 interface Finding {
@@ -25,6 +27,7 @@ interface Finding {
   fix: string;
   effort: string;
   prUrl: string | null;
+  addonStatus: string | null;
 }
 
 interface AuditDetail {
@@ -53,8 +56,11 @@ export default function ReportDetailPage() {
   const tSev = useTranslations("dashboard.severity");
   const tEff = useTranslations("dashboard.effort");
   const params = useParams();
+  const searchParams = useSearchParams();
   const [audit, setAudit] = useState<AuditDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [requestingAddon, setRequestingAddon] = useState<string | null>(null);
+  const addonSuccess = searchParams.get("addon") === "success";
 
   useEffect(() => {
     fetch(`/api/dashboard/reports/${params.id}`)
@@ -62,6 +68,28 @@ export default function ReportDetailPage() {
       .then(setAudit)
       .finally(() => setLoading(false));
   }, [params.id]);
+
+  async function requestAddon(finding: Finding) {
+    setRequestingAddon(finding.id);
+    try {
+      const res = await fetch("/api/dashboard/addons/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          auditId: params.id,
+          findingId: finding.id,
+          effort: finding.effort,
+          findingTitle: finding.title,
+        }),
+      });
+      if (res.ok) {
+        const { url } = await res.json();
+        if (url) window.location.href = url;
+      }
+    } finally {
+      setRequestingAddon(null);
+    }
+  }
 
   if (loading) {
     return (
@@ -88,6 +116,14 @@ export default function ReportDetailPage() {
 
   return (
     <>
+      {/* Add-on success banner */}
+      {addonSuccess && (
+        <div className="mb-4 flex items-center gap-2 rounded-lg border border-severity-good/30 bg-severity-good/10 px-4 py-3 text-sm text-severity-good">
+          <CheckCircle2 className="h-4 w-4 shrink-0" />
+          {t("addonSuccess")}
+        </div>
+      )}
+
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-1 text-sm text-ink-muted">
         <Link href="/dashboard" className="hover:text-ink transition-colors">
@@ -235,6 +271,32 @@ export default function ReportDetailPage() {
                   {t("prLink")}
                 </a>
               )}
+
+              {/* Fix It For Me */}
+              <div className="pt-2 border-t border-border">
+                {finding.addonStatus === "PAID" || finding.addonStatus === "IN_PROGRESS" || finding.addonStatus === "COMPLETED" ? (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-severity-good font-medium">
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    {finding.addonStatus === "COMPLETED"
+                      ? t("addonCompleted")
+                      : t("addonOrdered")}
+                  </span>
+                ) : (
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => requestAddon(finding)}
+                    disabled={requestingAddon === finding.id}
+                  >
+                    {requestingAddon === finding.id ? (
+                      <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Wrench className="mr-1.5 h-3.5 w-3.5" />
+                    )}
+                    {t("requestAddon")}
+                  </Button>
+                )}
+              </div>
             </div>
           </Card>
         ))}

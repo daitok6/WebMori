@@ -5,7 +5,12 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const settingsSchema = z.object({
-  emailNotifications: z.boolean(),
+  emailNotifications: z.boolean().optional(),
+  notifyAuditComplete: z.boolean().optional(),
+  notifyAlerts: z.boolean().optional(),
+  notifyQuarterly: z.boolean().optional(),
+  notifyFollowUp: z.boolean().optional(),
+  notifyMarketing: z.boolean().optional(),
 });
 
 export async function GET() {
@@ -14,10 +19,24 @@ export async function GET() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { emailNotifications: true },
+    select: {
+      emailNotifications: true,
+      notifyAuditComplete: true,
+      notifyAlerts: true,
+      notifyQuarterly: true,
+      notifyFollowUp: true,
+      notifyMarketing: true,
+    },
   });
 
-  return NextResponse.json(user ?? { emailNotifications: true });
+  return NextResponse.json(user ?? {
+    emailNotifications: true,
+    notifyAuditComplete: true,
+    notifyAlerts: true,
+    notifyQuarterly: true,
+    notifyFollowUp: true,
+    notifyMarketing: true,
+  });
 }
 
 export async function PATCH(request: NextRequest) {
@@ -37,11 +56,10 @@ export async function PATCH(request: NextRequest) {
   if (!result.success) {
     return NextResponse.json({ error: "Invalid input", details: result.error.flatten().fieldErrors }, { status: 400 });
   }
-  const { emailNotifications } = result.data;
 
   await prisma.user.update({
     where: { id: session.user.id },
-    data: { emailNotifications },
+    data: result.data,
   });
 
   return NextResponse.json({ ok: true });

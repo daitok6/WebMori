@@ -7,9 +7,34 @@ import { buildEmail } from "./email-template";
 async function getOrgUser(organizationId: string) {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
-    include: { users: { select: { id: true, email: true, emailNotifications: true }, take: 1 } },
+    include: {
+      users: {
+        select: {
+          id: true,
+          email: true,
+          emailNotifications: true,
+          notifyAuditComplete: true,
+          notifyAlerts: true,
+          notifyQuarterly: true,
+          notifyFollowUp: true,
+          notifyMarketing: true,
+        },
+        take: 1,
+      },
+    },
   });
   return org?.users[0] ?? null;
+}
+
+function canNotify(user: Awaited<ReturnType<typeof getOrgUser>>, category: "audit" | "alerts" | "quarterly" | "followUp" | "marketing"): boolean {
+  if (!user?.email) return false;
+  if (user.emailNotifications === false) return false;
+  if (category === "audit" && user.notifyAuditComplete === false) return false;
+  if (category === "alerts" && user.notifyAlerts === false) return false;
+  if (category === "quarterly" && user.notifyQuarterly === false) return false;
+  if (category === "followUp" && user.notifyFollowUp === false) return false;
+  if (category === "marketing" && user.notifyMarketing === false) return false;
+  return true;
 }
 
 async function hasNotificationBeenSent(organizationId: string, type: string): Promise<boolean> {
@@ -134,7 +159,7 @@ export async function sendOnboardingReminderEmail(
   if (await hasNotificationBeenSent(organizationId, stage)) return;
 
   const user = await getOrgUser(organizationId);
-  if (!user?.email || user.emailNotifications === false) return;
+  if (!canNotify(user, "marketing")) return;
 
   const subjects: Record<string, string> = {
     onboarding_24h: "【WebMori】セットアップを完了しましょう",
@@ -194,7 +219,7 @@ export async function sendAuditScheduledEmail(
   if (await hasNotificationBeenSent(organizationId, notifKey)) return;
 
   const user = await getOrgUser(organizationId);
-  if (!user?.email || user.emailNotifications === false) return;
+  if (!canNotify(user, "audit")) return;
 
   const dateStr = auditDate.toLocaleDateString("ja-JP", {
     year: "numeric",
@@ -278,7 +303,7 @@ export async function sendMonthlySummaryEmail(organizationId: string) {
   if (await hasNotificationBeenSent(organizationId, `monthly_digest_${monthKey}`)) return;
 
   const user = await getOrgUser(organizationId);
-  if (!user?.email || user.emailNotifications === false) return;
+  if (!canNotify(user, "quarterly")) return;
 
   // Gather stats for the month
   const now = new Date();
@@ -335,6 +360,286 @@ export async function sendMonthlySummaryEmail(organizationId: string) {
   await logNotification(organizationId, `monthly_digest_${monthKey}`, user.id);
 }
 
+// ─── Alert notification ───────────────────────────────────
+
+const CHECK_TYPE_LABELS: Record<string, string> = {
+  uptime: "サイトの応答",
+  ssl_expiry: "SSL証明書",
+  security_headers: "セキュリティヘッダー",
+  performance: "パフォーマンス",
+};
+
+/**
+ * Send an alert email when a daily health check degrades to WARNING or CRITICAL.
+ */
+export async function sendAlertEmail(
+  organizationId: string,
+  alert: { checkType: string; severity: string; message: string; siteUrl: string; alertId: string },
+) {
+  const resend = getResend();
+  if (!resend) return;
+
+  const user = await getOrgUser(organizationId);
+  if (!canNotify(user, "alerts")) return;
+
+  const checkLabel = CHECK_TYPE_LABELS[alert.checkType] ?? alert.checkType;
+  const isCritical = alert.severity === "CRITICAL";
+  const severityColor = isCritical ? "#DC2626" : "#D97706";
+  const severityLabel = isCritical ? "🔴 緊急" : "🟠 警告";
+
+  const html = buildEmail(`
+    <h2 style="margin:0 0 12px;color:#1C1917;font-size:18px;">サイト監視アラート</h2>
+    <div style="border-left:4px solid ${severityColor};padding:12px 16px;background:#FEF2F2;border-radius:0 8px 8px 0;margin:0 0 20px;">
+      <p style="margin:0;font-size:14px;font-weight:600;color:${severityColor};">${severityLabel} — ${esc(checkLabel)}</p>
+      <p style="margin:4px 0 0;font-size:14px;color:#1C1917;">${esc(alert.message)}</p>
+    </div>
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 8px;">
+      <strong>対象サイト:</strong> ${esc(alert.siteUrl)}
+    </p>
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 24px;">
+      問題が解決されると、自動的にアラートはクリアされます。<br>
+      ご不明な点はダッシュボードのメッセージからお問い合わせください。
+    </p>
+    <a href="https://webmori.jp/ja/dashboard"
+      style="background:#D97706;color:#1C1917;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;">
+      ダッシュボードを確認する
+    </a>
+  `);
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [user!.email!],
+    subject: `【WebMori】サイト監視アラート — ${checkLabel}`,
+    html,
+  }).catch(() => {});
+}
+
+// ─── Post-delivery follow-up (7 days after audit) ───────
+
+/**
+ * Send a follow-up email 7 days after an audit is delivered.
+ * Reminds the client to review the report and act on the top 3 priorities.
+ * Deduped per auditId so it fires exactly once.
+ */
+export async function sendPostDeliveryFollowUpEmail(
+  organizationId: string,
+  auditId: string,
+  auditDetails: { repoName: string; reportUrl: string; topPriorities: string[] },
+) {
+  const resend = getResend();
+  if (!resend) return;
+
+  const notifKey = `post_delivery_followup_${auditId}`;
+  if (await hasNotificationBeenSent(organizationId, notifKey)) return;
+
+  const user = await getOrgUser(organizationId);
+  if (!canNotify(user, "followUp")) return;
+
+  const safeRepo = esc(auditDetails.repoName);
+  const priorityItems = auditDetails.topPriorities
+    .slice(0, 3)
+    .map((p, i) => `<li style="margin:6px 0;color:#1C1917;font-size:14px;">${i + 1}. ${esc(p)}</li>`)
+    .join("");
+
+  const html = buildEmail(`
+    <h2 style="margin:0 0 12px;color:#1C1917;font-size:18px;">レポートはご確認いただけましたか？</h2>
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 16px;">
+      先日お届けした <strong>${safeRepo}</strong> の監査レポートについて、
+      今月の優先対応事項を改めてご案内いたします。
+    </p>
+    ${priorityItems.length > 0 ? `
+    <div style="background:#F8F5EE;border-radius:8px;padding:16px 20px;margin:0 0 24px;">
+      <p style="margin:0 0 8px;font-size:13px;font-weight:600;color:#1C1917;">今月の優先対応</p>
+      <ol style="margin:0;padding-left:20px;">
+        ${priorityItems}
+      </ol>
+    </div>` : ""}
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 24px;">
+      ご不明な点やご相談がございましたら、ダッシュボードのメッセージからお気軽にお声がけください。
+    </p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="${esc(auditDetails.reportUrl)}"
+        style="background:#D97706;color:#1C1917;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;">
+        レポートを確認する
+      </a>
+      <a href="https://webmori.jp/ja/dashboard/feedback?auditId=${esc(auditId)}"
+        style="background:white;color:#D97706;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;border:1.5px solid #D97706;">
+        ★ 今月の評価をする
+      </a>
+    </div>
+  `);
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [user.email],
+    subject: "【WebMori】監査レポートのフォローアップ",
+    html,
+  }).catch(() => {});
+
+  await logNotification(organizationId, notifKey, user.id);
+}
+
+// ─── Post-onboarding welcome email ───────────────────────
+
+/**
+ * Send a welcome email immediately after onboarding is completed.
+ * Sets expectations: plan name, timeline, what to expect.
+ * Fires once per org (deduped).
+ */
+export async function sendWelcomeEmail(
+  organizationId: string,
+  plan: string,
+) {
+  const resend = getResend();
+  if (!resend) return;
+
+  if (await hasNotificationBeenSent(organizationId, "welcome_email")) return;
+
+  const user = await getOrgUser(organizationId);
+  if (!canNotify(user, "audit")) return;
+
+  const planNames: Record<string, string> = {
+    STARTER: "Starterプラン",
+    GROWTH: "Growthプラン",
+    PRO: "Proプラン",
+  };
+  const planDescriptions: Record<string, string> = {
+    STARTER: "セキュリティとパフォーマンスの2つの視点から毎月監査いたします。",
+    GROWTH: "セキュリティ・パフォーマンス・LINE API・国際化・保守性の5つの視点から毎月監査いたします。",
+    PRO: "全6レンズの深層監査で、2サイトを毎月しっかりと守ります。",
+  };
+
+  const planName = planNames[plan] ?? plan;
+  const planDesc = planDescriptions[plan] ?? "";
+
+  const html = buildEmail(`
+    <h2 style="margin:0 0 12px;color:#1C1917;font-size:18px;">WebMoriへようこそ！</h2>
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 16px;">
+      ご登録ありがとうございます。<strong>${esc(planName)}</strong>でのご利用が始まりました。
+    </p>
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 16px;">
+      ${esc(planDesc)}
+    </p>
+    <div style="background:#F8F5EE;border-radius:8px;padding:16px 20px;margin:0 0 24px;">
+      <p style="margin:0 0 8px;font-size:13px;font-weight:600;color:#1C1917;">これからの流れ</p>
+      <ol style="margin:0;padding-left:20px;color:#1C1917;font-size:14px;line-height:2;">
+        <li>ウェルカム監査を実施します（通常1〜2営業日以内）</li>
+        <li>監査が完了したらレポートとPRをお届けします</li>
+        <li>その後は毎月同じ曜日に定期監査を行います</li>
+      </ol>
+    </div>
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 24px;">
+      ご不明な点がございましたら、ダッシュボードのメッセージからいつでもご連絡ください。
+    </p>
+    <a href="https://webmori.jp/ja/dashboard"
+      style="background:#D97706;color:#1C1917;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;">
+      ダッシュボードを確認する
+    </a>
+  `);
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [user.email],
+    subject: "【WebMori】ご登録ありがとうございます",
+    html,
+  }).catch(() => {});
+
+  await logNotification(organizationId, "welcome_email", user.id);
+}
+
+// ─── Quarterly progress summary ──────────────────────────
+
+/**
+ * Send a quarterly progress summary on the last day of Mar/Jun/Sep/Dec.
+ * Aggregates 3 months of audit data: total found vs fixed, severity trend.
+ * All tiers receive this.
+ */
+export async function sendQuarterlyProgressEmail(organizationId: string) {
+  const resend = getResend();
+  if (!resend) return;
+
+  const now = new Date();
+  const quarter = Math.floor(now.getMonth() / 3) + 1;
+  const year = now.getFullYear();
+  const notifKey = `quarterly_progress_${year}_Q${quarter}`;
+  if (await hasNotificationBeenSent(organizationId, notifKey)) return;
+
+  const user = await getOrgUser(organizationId);
+  if (!canNotify(user, "quarterly")) return;
+
+  // 3-month window
+  const quarterStart = new Date(year, (quarter - 1) * 3, 1);
+  const quarterEnd = new Date(year, quarter * 3, 1);
+
+  const [totalFindings, fixedFindings, criticalFindings, auditsCount] = await Promise.all([
+    prisma.finding.count({
+      where: { audit: { organizationId, createdAt: { gte: quarterStart, lt: quarterEnd } } },
+    }),
+    prisma.finding.count({
+      where: { audit: { organizationId, createdAt: { gte: quarterStart, lt: quarterEnd } }, prUrl: { not: null } },
+    }),
+    prisma.finding.count({
+      where: { audit: { organizationId, createdAt: { gte: quarterStart, lt: quarterEnd } }, severity: "CRITICAL" },
+    }),
+    prisma.audit.count({
+      where: { organizationId, createdAt: { gte: quarterStart, lt: quarterEnd }, status: { in: ["DELIVERED", "COMPLETED"] } },
+    }),
+  ]);
+
+  if (auditsCount === 0) return; // No audits this quarter — skip
+
+  const fixRate = totalFindings > 0 ? Math.round((fixedFindings / totalFindings) * 100) : 0;
+  const quarterLabel = `${year}年 第${quarter}四半期`;
+
+  const html = buildEmail(`
+    <h2 style="margin:0 0 12px;color:#1C1917;font-size:18px;">${esc(quarterLabel)} 進捗サマリー</h2>
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 20px;">
+      この3ヶ月間の監査結果をまとめました。
+    </p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+      <tr>
+        <td style="padding:12px;background:#F8F5EE;border-radius:8px;text-align:center;">
+          <p style="margin:0;font-size:28px;font-weight:bold;color:#1C1917;">${auditsCount}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#78716C;">実施した監査</p>
+        </td>
+        <td style="width:8px;"></td>
+        <td style="padding:12px;background:#F8F5EE;border-radius:8px;text-align:center;">
+          <p style="margin:0;font-size:28px;font-weight:bold;color:#1C1917;">${totalFindings}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#78716C;">検出された問題</p>
+        </td>
+        <td style="width:8px;"></td>
+        <td style="padding:12px;background:#F8F5EE;border-radius:8px;text-align:center;">
+          <p style="margin:0;font-size:28px;font-weight:bold;color:#D97706;">${fixRate}%</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#78716C;">修正率</p>
+        </td>
+      </tr>
+    </table>
+    ${criticalFindings === 0 ? `
+    <p style="color:#16A34A;font-size:14px;font-weight:600;margin:0 0 16px;">
+      この3ヶ月間、緊急（Critical）の問題はありませんでした。
+    </p>` : `
+    <p style="color:#DC2626;font-size:14px;font-weight:600;margin:0 0 16px;">
+      この3ヶ月間で${criticalFindings}件の緊急問題が検出されました。対応状況をご確認ください。
+    </p>`}
+    <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 24px;">
+      詳細はダッシュボードでご確認いただけます。ご不明な点はいつでもメッセージでお問い合わせください。
+    </p>
+    <a href="https://webmori.jp/ja/dashboard"
+      style="background:#D97706;color:#1C1917;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;">
+      ダッシュボードで詳細を確認
+    </a>
+  `);
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [user.email],
+    subject: `【WebMori】${quarterLabel} 進捗サマリー`,
+    html,
+  }).catch(() => {});
+
+  await logNotification(organizationId, notifKey, user.id);
+}
+
 // ─── Free tier email drip ────────────────────────────────
 
 export async function sendDripEmail(
@@ -346,7 +651,7 @@ export async function sendDripEmail(
   if (await hasNotificationBeenSent(organizationId, stage)) return;
 
   const user = await getOrgUser(organizationId);
-  if (!user?.email || user.emailNotifications === false) return;
+  if (!canNotify(user, "marketing")) return;
 
   const configs: Record<string, { subject: string; body: string }> = {
     drip_1: {

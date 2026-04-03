@@ -15,6 +15,7 @@ import {
   X,
   Sparkles,
   LogOut,
+  Activity,
 } from "lucide-react";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/dashboard", key: "overview", icon: LayoutDashboard, exact: true },
   { href: "/dashboard/reports", key: "reports", icon: FileText },
   { href: "/dashboard/repos", key: "repos", icon: GitBranch },
+  { href: "/dashboard/monitoring", key: "monitoring", icon: Activity },
   { href: "/dashboard/billing", key: "billing", icon: CreditCard },
   { href: "/dashboard/messages", key: "messages", icon: MessageSquare },
   { href: "/dashboard/free-eval", key: "freeEval", icon: Sparkles },

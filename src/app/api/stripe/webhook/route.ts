@@ -3,6 +3,8 @@ import { getStripe, getStripePrices, getWebhookSecret } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import type Stripe from "stripe";
 import { Plan, BillingCycle, SubStatus, Prisma } from "@/generated/prisma/client";
+import { env } from "@/lib/env";
+import { Resend } from "resend";
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -35,9 +37,15 @@ export async function POST(request: NextRequest) {
   }
 
   switch (event.type) {
-    case "checkout.session.completed":
-      await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
+    case "checkout.session.completed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      if (session.metadata?.type === "addon") {
+        await handleAddonCheckoutCompleted(session);
+      } else {
+        await handleCheckoutCompleted(session);
+      }
       break;
+    }
     case "customer.subscription.updated":
       await handleSubscriptionUpdated(event.data.object as Stripe.Subscription);
       break;
@@ -249,4 +257,50 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
       gracePeriodEnd,
     },
   });
+}
+
+async function handleAddonCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const { organizationId, auditId, findingId, effort } = session.metadata ?? {};
+  if (!organizationId || !auditId) return;
+
+  const paymentIntentId =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id ?? null;
+
+  // Update the pre-created AddOn record to PAID
+  await prisma.addOn.updateMany({
+    where: { stripeSessionId: session.id },
+    data: {
+      status: "PAID",
+      stripePaymentIntentId: paymentIntentId,
+    },
+  });
+
+  // Notify operator
+  const resend = new Resend(env.RESEND_API_KEY);
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: { name: true },
+  });
+
+  const effortLabel =
+    effort === "QUICK_WIN" ? "クイック対応 (¥5,000)" :
+    effort === "MODERATE" ? "標準対応 (¥15,000)" :
+    effort === "LARGE" ? "大規模対応 (¥30,000)" : effort ?? "—";
+
+  await resend.emails.send({
+    from: env.EMAIL_FROM,
+    to: env.OPERATOR_EMAIL,
+    subject: `[WebMori] 修正代行の依頼が入りました — ${org?.name ?? organizationId}`,
+    html: `
+      <h2>修正代行の依頼</h2>
+      <p><strong>クライアント:</strong> ${org?.name ?? organizationId}</p>
+      <p><strong>対応レベル:</strong> ${effortLabel}</p>
+      <p><strong>監査ID:</strong> ${auditId}</p>
+      ${findingId ? `<p><strong>指摘ID:</strong> ${findingId}</p>` : ""}
+      <p><strong>Stripe Session:</strong> ${session.id}</p>
+      <p>管理画面からAddOnのステータスを更新してください。</p>
+    `.trim(),
+  }).catch(() => {});
 }

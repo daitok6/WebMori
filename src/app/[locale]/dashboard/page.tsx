@@ -22,12 +22,24 @@ import {
   ArrowRight,
   ArrowUp,
   Loader2,
+  ShieldCheck,
+  Video,
 } from "lucide-react";
+
+interface HealthScore {
+  score: number;
+  grade: string;
+  label: string;
+  labelEn: string;
+  fixRate: number;
+  allChecksOk: boolean;
+}
 
 interface OverviewData {
   plan: string | null;
   status: string | null;
   repoCount: number;
+  healthScore: HealthScore | null;
   onboarding: {
     profileComplete: boolean;
     hasRepo: boolean;
@@ -145,6 +157,67 @@ export default function DashboardPage() {
           </Card>
         ))}
       </div>
+
+      {/* Health score card */}
+      {data.healthScore && data.hasPaidSubscription && (
+        <Card className="mt-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div
+                className="flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-white shrink-0"
+                style={{
+                  background:
+                    data.healthScore.score >= 75 ? "#16A34A" :
+                    data.healthScore.score >= 55 ? "#D97706" :
+                    "#DC2626",
+                }}
+              >
+                {data.healthScore.grade}
+              </div>
+              <div>
+                <p className="text-xs text-ink-muted mb-0.5">{t("healthScore")}</p>
+                <p className="text-2xl font-bold text-ink leading-none">{data.healthScore.score}<span className="text-base font-normal text-ink-muted">/100</span></p>
+                <p className="text-sm text-ink-muted mt-0.5">
+                  {locale === "ja" ? data.healthScore.label : data.healthScore.labelEn}
+                  {" · "}{t("fixRate")}: {data.healthScore.fixRate}%
+                  {data.healthScore.allChecksOk && (
+                    <span className="ml-2 text-severity-good">✓ {t("checksOk")}</span>
+                  )}
+                </p>
+              </div>
+            </div>
+            <ShieldCheck className="h-8 w-8 text-ink-muted/30 shrink-0" />
+          </div>
+        </Card>
+      )}
+
+      {/* Consultation booking — Pro only */}
+      {data.plan === "PRO" && process.env.NEXT_PUBLIC_CALCOM_LINK && (
+        <Card className="mt-6 border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                <Video className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-ink">{t("consultationTitle")}</h3>
+                <p className="mt-0.5 text-sm text-ink-muted">{t("consultationDesc")}</p>
+              </div>
+            </div>
+            <a
+              href={process.env.NEXT_PUBLIC_CALCOM_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0"
+            >
+              <Button size="sm">
+                <Video className="mr-2 h-4 w-4" />
+                {t("consultationCta")}
+              </Button>
+            </a>
+          </div>
+        </Card>
+      )}
 
       {hasAudits ? (
         <>

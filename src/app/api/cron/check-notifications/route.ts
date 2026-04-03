@@ -5,6 +5,8 @@ import {
   sendAuditScheduledEmail,
   sendMonthlySummaryEmail,
   sendDripEmail,
+  sendPostDeliveryFollowUpEmail,
+  sendQuarterlyProgressEmail,
 } from "@/lib/notifications";
 
 export async function GET(request: NextRequest) {
@@ -19,6 +21,8 @@ export async function GET(request: NextRequest) {
     auditReminders: 0,
     monthlyDigests: 0,
     dripEmails: 0,
+    followUpEmails: 0,
+    quarterlyEmails: 0,
   };
 
   // ─── 1. Onboarding reminders ───────────────────────────
@@ -117,7 +121,61 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // ─── 5. Grace period → pause audits ───────────────────
+  // ─── 5. Post-delivery follow-up (7 days after delivery) ──
+  const sevenDaysAgo = new Date(now);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const sevenDaysAgoStart = new Date(sevenDaysAgo.getFullYear(), sevenDaysAgo.getMonth(), sevenDaysAgo.getDate());
+  const sevenDaysAgoEnd = new Date(sevenDaysAgoStart);
+  sevenDaysAgoEnd.setDate(sevenDaysAgoEnd.getDate() + 1);
+
+  const deliveredAudits = await prisma.audit.findMany({
+    where: {
+      status: "DELIVERED",
+      deliveredAt: { gte: sevenDaysAgoStart, lt: sevenDaysAgoEnd },
+    },
+    select: {
+      id: true,
+      organizationId: true,
+      findings: {
+        select: { title: true, severity: true },
+        orderBy: [{ severity: "asc" }, { createdAt: "asc" }],
+        take: 3,
+      },
+      repo: { select: { name: true } },
+    },
+  });
+
+  for (const audit of deliveredAudits) {
+    const repoName = audit.repo?.name ?? "サイト";
+    const topPriorities = audit.findings.map((f) => f.title);
+    const reportUrl = `https://webmori.jp/ja/dashboard/reports/${audit.id}`;
+    await sendPostDeliveryFollowUpEmail(audit.organizationId, audit.id, {
+      repoName,
+      reportUrl,
+      topPriorities,
+    });
+    results.followUpEmails++;
+  }
+
+  // ─── 6. Quarterly progress (last day of Mar/Jun/Sep/Dec) ──
+  const isQuarterEnd = isLastDayOfMonth && [2, 5, 8, 11].includes(now.getMonth());
+
+  if (isQuarterEnd) {
+    const quarterlyOrgs = await prisma.organization.findMany({
+      where: {
+        onboardingComplete: true,
+        subscription: { status: "ACTIVE" },
+      },
+      select: { id: true },
+    });
+
+    for (const org of quarterlyOrgs) {
+      await sendQuarterlyProgressEmail(org.id);
+      results.quarterlyEmails++;
+    }
+  }
+
+  // ─── 7. Grace period → pause audits ───────────────────
   await prisma.subscription.updateMany({
     where: {
       status: "PAST_DUE",

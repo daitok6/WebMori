@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrg } from "@/lib/dashboard";
 import { assignAuditDay, getNextAuditDate, triggerWelcomeAudit } from "@/lib/audit-scheduler";
+import { sendWelcomeEmail } from "@/lib/notifications";
 
 export async function POST() {
   const session = await auth();
@@ -31,6 +32,9 @@ export async function POST() {
   // Trigger welcome audit
   const plan = org.subscription?.plan ?? "STARTER";
   await triggerWelcomeAudit(org.id, plan);
+
+  // Send welcome email (non-blocking)
+  sendWelcomeEmail(org.id, plan).catch(() => {});
 
   // Calculate next monthly audit date
   const nextAuditDate = getNextAuditDate(auditWeek, auditDayOfWeek);

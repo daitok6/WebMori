@@ -51,5 +51,21 @@ export function getStripeOnboarding() {
   } as const;
 }
 
+// Add-on one-time prices by effort level
+export function getStripeAddonPrices() {
+  return {
+    QUICK_WIN: env.STRIPE_PRICE_ADDON_QUICK_WIN,
+    MODERATE: env.STRIPE_PRICE_ADDON_MODERATE,
+    LARGE: env.STRIPE_PRICE_ADDON_LARGE,
+  } as const;
+}
+
+// Amount in JPY by effort level (fallback if price IDs not configured)
+export const ADDON_AMOUNTS = {
+  QUICK_WIN: 5000,
+  MODERATE: 15000,
+  LARGE: 30000,
+} as const;
+
 export type PlanKey = "STARTER" | "GROWTH" | "PRO";
 export type BillingCycleKey = "MONTHLY" | "ANNUAL";

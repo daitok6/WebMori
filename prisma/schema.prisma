@@ -21,6 +21,12 @@ model User {
   bio           String?
   locale        String    @default("ja")
   emailNotifications Boolean @default(true)
+  // Granular notification preferences (master switch: emailNotifications)
+  notifyAuditComplete Boolean @default(true)
+  notifyAlerts        Boolean @default(true)
+  notifyQuarterly     Boolean @default(true)
+  notifyFollowUp      Boolean @default(true)
+  notifyMarketing     Boolean @default(true)
   role          Role      @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -94,15 +100,19 @@ model Organization {
   repoChangesUsed    Int     @default(0)   // lifetime changes consumed
   repoChangesAllowed Int     @default(3)   // admin-adjustable cap
 
-  users           User[]
-  subscription    Subscription?
-  repos           Repo[]
-  audits          Audit[]
-  messages        Message[]
-  contactRequest  ContactRequest[]
-  freeEvalReports FreeEvalReport[]
-  notifications   NotificationLog[]
-  repoChangeLogs  RepoChangeLog[]
+  users               User[]
+  subscription        Subscription?
+  repos               Repo[]
+  audits              Audit[]
+  messages            Message[]
+  contactRequest      ContactRequest[]
+  freeEvalReports     FreeEvalReport[]
+  notifications       NotificationLog[]
+  repoChangeLogs      RepoChangeLog[]
+  monitorChecks       MonitorCheck[]
+  alerts              Alert[]
+  satisfactionRatings SatisfactionRating[]
+  addOns              AddOn[]
 }
 
 model Subscription {
@@ -155,8 +165,10 @@ model Repo {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  audits       Audit[]
+  organization  Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  audits        Audit[]
+  monitorChecks MonitorCheck[]
+  alerts        Alert[]
 }
 
 model Audit {
@@ -284,6 +296,79 @@ model RepoChangeLog {
 }
 
 // ──────────────────────────────────────────────
+// Monitoring models
+// ──────────────────────────────────────────────
+
+model MonitorCheck {
+  id             String   @id @default(cuid())
+  organizationId String
+  repoId         String
+  checkType      String   // "uptime" | "ssl_expiry" | "security_headers" | "performance"
+  status         String   // "OK" | "WARNING" | "CRITICAL"
+  value          String?  // e.g. "HTTP 200 (320ms)", "Expires in 45 days", "Missing: HSTS"
+  responseTimeMs Int?
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repo         Repo         @relation(fields: [repoId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@index([repoId, checkType, createdAt])
+}
+
+model Alert {
+  id             String    @id @default(cuid())
+  organizationId String
+  repoId         String
+  checkType      String    // "uptime" | "ssl_expiry" | "security_headers" | "performance"
+  severity       String    // "WARNING" | "CRITICAL"
+  message        String
+  resolvedAt     DateTime?
+  notifiedAt     DateTime?
+  createdAt      DateTime  @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repo         Repo         @relation(fields: [repoId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, resolvedAt])
+  @@index([repoId, checkType])
+}
+
+model SatisfactionRating {
+  id             String   @id @default(cuid())
+  organizationId String
+  auditId        String?
+  score          Int      // 1–5
+  comment        String?
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model AddOn {
+  id               String      @id @default(cuid())
+  organizationId   String
+  auditId          String?
+  findingId        String?
+  type             AddOnType   @default(FIX_IT)
+  status           AddOnStatus @default(PENDING)
+  effort           Effort?
+  amount           Int         // in JPY
+  stripeSessionId  String?     @unique
+  stripePaymentIntentId String?
+  notes            String?     // operator notes
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([stripeSessionId])
+}
+
+// ──────────────────────────────────────────────
 // Enums
 // ──────────────────────────────────────────────
 
@@ -345,4 +430,17 @@ enum EvalStatus {
   REVIEWING
   COMPLETED
   REJECTED
+}
+
+enum AddOnType {
+  FIX_IT
+  CONSULTATION
+}
+
+enum AddOnStatus {
+  PENDING
+  PAID
+  IN_PROGRESS
+  COMPLETED
+  REFUNDED
 }

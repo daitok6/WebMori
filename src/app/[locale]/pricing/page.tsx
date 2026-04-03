@@ -92,6 +92,11 @@ export default function PricingPage() {
                         &yen;{annual ? t(`plans.${i}.annualPrice`) : t(`plans.${i}.price`)}
                       </span>
                       <span className="text-ink-muted">{t("perMonth")}</span>
+                      {annual && (
+                        <p className="mt-1 text-xs font-medium text-severity-good">
+                          {(t.raw("annualSavings") as string[])[i]}
+                        </p>
+                      )}
                       {t.has(`plans.${i}.onboarding`) && (
                         <p className="mt-2 text-xs text-ink-muted">
                           {t("onboardingFee", { amount: t(`plans.${i}.onboarding`) })}

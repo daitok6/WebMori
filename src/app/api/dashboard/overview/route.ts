@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrg, getOrgStats, getOrgAudits } from "@/lib/dashboard";
+import { computeHealthScore } from "@/lib/health-score";
 
 export async function GET() {
   const session = await auth();
@@ -14,7 +15,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [stats, audits, user, freeEval] = await Promise.all([
+  const [stats, audits, user, freeEval, healthScore] = await Promise.all([
     getOrgStats(org.id),
     getOrgAudits(org.id),
     prisma.user.findUnique({
@@ -25,6 +26,7 @@ export async function GET() {
       where: { organizationId: org.id },
       select: { id: true },
     }),
+    computeHealthScore(org.id),
   ]);
 
   const recentAudits = audits.slice(0, 5).map((a) => ({
@@ -60,6 +62,7 @@ export async function GET() {
     repoCount: org.repos.length,
     stats,
     recentAudits,
+    healthScore,
     onboarding: freeOnboardingComplete ? null : onboarding,
     isFree,
     hasPaidSubscription,

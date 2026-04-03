@@ -13,13 +13,20 @@ export default function SettingsPage() {
   const pathname = usePathname();
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [emailNotifications, setEmailNotifications] = useState(true);
   const [loadingPrefs, setLoadingPrefs] = useState(true);
+  const [prefs, setPrefs] = useState({
+    emailNotifications: true,
+    notifyAuditComplete: true,
+    notifyAlerts: true,
+    notifyQuarterly: true,
+    notifyFollowUp: true,
+    notifyMarketing: true,
+  });
 
   useEffect(() => {
     fetch("/api/dashboard/settings")
       .then((r) => (r.ok ? r.json() : null))
-      .then((d) => { if (d) setEmailNotifications(d.emailNotifications); })
+      .then((d) => { if (d) setPrefs((p) => ({ ...p, ...d })); })
       .finally(() => setLoadingPrefs(false));
   }, []);
 
@@ -27,12 +34,16 @@ export default function SettingsPage() {
     router.replace(pathname, { locale });
   }
 
+  function setPref(key: keyof typeof prefs, value: boolean) {
+    setPrefs((p) => ({ ...p, [key]: value }));
+  }
+
   async function handleSave() {
     setSaving(true);
     await fetch("/api/dashboard/settings", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ emailNotifications }),
+      body: JSON.stringify(prefs),
     }).catch(() => {});
     setSaving(false);
     setSaved(true);
@@ -77,32 +88,54 @@ export default function SettingsPage() {
             <Bell className="h-5 w-5 text-ink-muted" />
           </div>
           <div className="flex-1">
-            <h2 className="font-semibold text-ink">
-              {t("notifications")}
-            </h2>
-            <p className="mt-0.5 text-sm text-ink-muted">
-              {t("notificationsDesc")}
-            </p>
+            <h2 className="font-semibold text-ink">{t("notifications")}</h2>
+            <p className="mt-0.5 text-sm text-ink-muted">{t("notificationsDesc")}</p>
+
             {loadingPrefs ? (
               <Loader2 className="mt-3 h-4 w-4 animate-spin text-ink-muted" />
             ) : (
-              <div className="mt-3">
-                <label className="flex items-center gap-3 cursor-pointer">
+              <div className="mt-4 space-y-4">
+                {/* Master switch */}
+                <label className="flex items-center gap-3 cursor-pointer pb-4 border-b border-border">
                   <input
                     type="checkbox"
-                    checked={emailNotifications}
-                    onChange={(e) => setEmailNotifications(e.target.checked)}
+                    checked={prefs.emailNotifications}
+                    onChange={(e) => setPref("emailNotifications", e.target.checked)}
                     className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                   />
                   <div>
-                    <span className="text-sm text-ink">
-                      {t("emailNotifications")}
-                    </span>
-                    <p className="text-xs text-ink-muted">
-                      {t("emailNotificationsDesc")}
-                    </p>
+                    <span className="text-sm font-medium text-ink">{t("emailNotifications")}</span>
+                    <p className="text-xs text-ink-muted">{t("emailNotificationsDesc")}</p>
                   </div>
                 </label>
+
+                {/* Category toggles */}
+                {prefs.emailNotifications && (
+                  <div className="space-y-3 pl-1">
+                    {(
+                      [
+                        ["notifyAuditComplete", "notifyAuditCompleteLabel", "notifyAuditCompleteDesc"],
+                        ["notifyAlerts",        "notifyAlertsLabel",        "notifyAlertsDesc"],
+                        ["notifyQuarterly",     "notifyQuarterlyLabel",     "notifyQuarterlyDesc"],
+                        ["notifyFollowUp",      "notifyFollowUpLabel",      "notifyFollowUpDesc"],
+                        ["notifyMarketing",     "notifyMarketingLabel",     "notifyMarketingDesc"],
+                      ] as const
+                    ).map(([key, labelKey, descKey]) => (
+                      <label key={key} className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={prefs[key]}
+                          onChange={(e) => setPref(key, e.target.checked)}
+                          className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+                        />
+                        <div>
+                          <span className="text-sm text-ink">{t(labelKey)}</span>
+                          <p className="text-xs text-ink-muted">{t(descKey)}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>

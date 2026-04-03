@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentOrg, getAuditById } from "@/lib/dashboard";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(
   _request: NextRequest,
@@ -11,11 +12,22 @@ export async function GET(
   }
 
   const { id } = await params;
-  const audit = await getAuditById(id, org.id);
+  const [audit, addons] = await Promise.all([
+    getAuditById(id, org.id),
+    prisma.addOn.findMany({
+      where: { auditId: id, organizationId: org.id },
+      select: { findingId: true, status: true, effort: true, amount: true },
+    }),
+  ]);
 
   if (!audit) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
+
+  // Map findingId → addon status for quick UI lookup
+  const addonByFinding = Object.fromEntries(
+    addons.filter((a) => a.findingId).map((a) => [a.findingId!, a.status]),
+  );
 
   return NextResponse.json({
     id: audit.id,
@@ -35,6 +47,7 @@ export async function GET(
       fix: f.fix,
       effort: f.effort,
       prUrl: f.prUrl,
+      addonStatus: addonByFinding[f.id] ?? null,
     })),
   });
 }

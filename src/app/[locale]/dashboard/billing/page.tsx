@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { DashboardError } from "@/components/dashboard/dashboard-error";
 import { useDashboardData } from "@/lib/use-dashboard-data";
 import { Link } from "@/i18n/navigation";
-import { CreditCard, ExternalLink, Loader2, Download } from "lucide-react";
+import { CreditCard, ExternalLink, Loader2, Download, Check, ArrowUpRight } from "lucide-react";
 
 interface BillingData {
   plan: string | null;
@@ -120,19 +120,42 @@ export default function BillingPage() {
         </div>
       </Card>
 
-      {/* Plan upgrade hint */}
-      {data.plan && (
-        <Card className="mt-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-ink">{t("upgrade")}</p>
-              <p className="mt-1 text-xs text-ink-muted">{t("upgradeDesc")}</p>
+      {/* Plan upgrade comparison */}
+      {data.plan && data.plan !== "PRO" && (() => {
+        const isStarter = data.plan === "STARTER";
+        const title = isStarter ? t("upgradeToGrowthTitle") : t("upgradeToProTitle");
+        const price = isStarter ? t("upgradeToGrowthPrice") : t("upgradeToProPrice");
+        const features = (t.raw(isStarter ? "upgradeToGrowthFeatures" : "upgradeToProFeatures") as string[]);
+        return (
+          <Card className="mt-4 border-primary/30 bg-primary/5">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-ink">{title}</p>
+                <p className="mt-0.5 text-xs font-medium text-primary mb-3">{price}</p>
+                <ul className="space-y-1.5">
+                  {features.map((feature: string, i: number) => (
+                    <li key={i} className="flex items-center gap-2 text-xs text-ink">
+                      <Check className="h-3.5 w-3.5 shrink-0 text-severity-good" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="shrink-0">
+                <Link href="/pricing">
+                  <Button variant="primary" size="sm">
+                    <ArrowUpRight className="mr-1.5 h-4 w-4" />
+                    {t("viewPlans")}
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <Button variant="secondary" size="sm" onClick={openPortal} disabled={portalLoading}>
-              <ExternalLink className="mr-1.5 h-4 w-4" />
-              {t("upgrade")}
-            </Button>
-          </div>
+          </Card>
+        );
+      })()}
+      {data.plan === "PRO" && (
+        <Card className="mt-4">
+          <p className="text-sm text-ink-muted text-center py-1">{t("onTopTier")}</p>
         </Card>
       )}
 
