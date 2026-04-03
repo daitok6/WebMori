@@ -243,7 +243,7 @@ export default function MonitoringPage() {
                     width={55}
                   />
                   <Tooltip
-                    formatter={(val: number) => [`${val}ms`, t("responseTime")]}
+                    formatter={(val) => [`${val}ms`, t("responseTime")]}
                     contentStyle={{
                       fontSize: 12,
                       borderRadius: 8,
