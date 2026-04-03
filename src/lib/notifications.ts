@@ -26,7 +26,7 @@ async function getOrgUser(organizationId: string) {
   return org?.users[0] ?? null;
 }
 
-function canNotify(user: Awaited<ReturnType<typeof getOrgUser>>, category: "audit" | "alerts" | "quarterly" | "followUp" | "marketing"): boolean {
+function canNotify(user: Awaited<ReturnType<typeof getOrgUser>>, category: "audit" | "alerts" | "quarterly" | "followUp" | "marketing"): user is NonNullable<Awaited<ReturnType<typeof getOrgUser>>> {
   if (!user?.email) return false;
   if (user.emailNotifications === false) return false;
   if (category === "audit" && user.notifyAuditComplete === false) return false;
