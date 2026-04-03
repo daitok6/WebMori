@@ -36,16 +36,20 @@ export function DashboardNav() {
   const t = useTranslations("dashboard.nav");
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { unreadCount } = useUnreadCount();
+  const { unreadCount, showFreeEval } = useUnreadCount();
 
   function isActive(href: string, exact?: boolean) {
     if (exact) return pathname === href;
     return pathname.startsWith(href);
   }
 
+  const visibleNavItems = navItems.filter(
+    (item) => item.key !== "freeEval" || showFreeEval,
+  );
+
   const navContent = (
     <ul className="space-y-1">
-      {navItems.map((item) => {
+      {visibleNavItems.map((item) => {
         const active = isActive(item.href, "exact" in item ? item.exact : false);
         return (
           <li key={item.key}>

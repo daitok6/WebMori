@@ -45,12 +45,18 @@ export async function POST(request: NextRequest) {
   const org = await getCurrentOrg();
   if (!org) return NextResponse.json({ error: "No organization" }, { status: 400 });
 
-  // Prevent duplicate active requests
+  // Block paid subscribers from using free eval
+  const subscription = await prisma.subscription.findFirst({
+    where: { organizationId: org.id, status: { not: "CANCELED" } },
+    select: { id: true },
+  });
+  if (subscription) {
+    return NextResponse.json({ error: "paid_subscriber" }, { status: 403 });
+  }
+
+  // Prevent duplicate requests (any status)
   const existing = await prisma.contactRequest.findFirst({
-    where: {
-      organizationId: org.id,
-      status: { in: ["PENDING", "REVIEWING"] },
-    },
+    where: { organizationId: org.id },
   });
   if (existing) {
     return NextResponse.json({ error: "already_submitted" }, { status: 409 });
