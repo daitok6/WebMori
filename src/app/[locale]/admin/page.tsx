@@ -145,7 +145,7 @@ export default function AdminContactsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search name, email, URL..."
-            className="w-full sm:w-64 rounded-lg border border-border bg-white pl-9 pr-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full sm:w-64 rounded-lg border border-border bg-surface pl-9 pr-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
@@ -247,7 +247,7 @@ export default function AdminContactsPage() {
                         onClick={() => { setEditingNotes(c.id); setNotesDraft(c.notes ?? ""); }}
                         className="text-xs text-ink-muted hover:text-ink transition-colors"
                       >
-                        {c.notes ? `📝 ${c.notes}` : "+ Add notes"}
+                        {c.notes ? c.notes : "+ Add notes"}
                       </button>
                     )}
                   </div>

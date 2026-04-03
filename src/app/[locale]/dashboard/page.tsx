@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -63,6 +63,7 @@ interface OverviewData {
 export default function DashboardPage() {
   const t = useTranslations("dashboard.overview");
   const tStatus = useTranslations("dashboard.auditStatus");
+  const locale = useLocale();
   const router = useRouter();
   const { data, loading, error, retry } = useDashboardData<OverviewData>("/api/dashboard/overview");
 
@@ -184,7 +185,7 @@ export default function DashboardPage() {
                         {audit.repoName}
                       </p>
                       <p className="text-xs text-ink-muted">
-                        {new Date(audit.date).toLocaleDateString("ja-JP")}
+                        {new Date(audit.date).toLocaleDateString(locale)}
                         {" · "}
                         {audit.findingsCount} {t("findings")}
                         {audit.criticalCount > 0 && (

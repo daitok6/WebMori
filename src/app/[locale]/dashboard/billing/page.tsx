@@ -91,7 +91,7 @@ export default function BillingPage() {
                 <p className="text-xs text-ink-muted mt-1">
                   {data.billingCycle === "ANNUAL" ? t("annual") : t("monthly")} ·{" "}
                   {t("renews")}{" "}
-                  {new Date(data.currentPeriodEnd).toLocaleDateString("ja-JP")}
+                  {new Date(data.currentPeriodEnd).toLocaleDateString()}
                 </p>
               )}
             </div>
@@ -171,7 +171,7 @@ export default function BillingPage() {
                     <td className="py-3 text-ink">
                       {new Date(
                         p.paidAt ?? p.createdAt,
-                      ).toLocaleDateString("ja-JP")}
+                      ).toLocaleDateString()}
                     </td>
                     <td className="py-3 text-ink">
                       ¥{p.amount.toLocaleString()}

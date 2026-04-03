@@ -193,7 +193,7 @@ export function OnboardingWizard() {
                 i < step
                   ? "border-primary bg-primary text-white"
                   : i === step
-                    ? "border-primary bg-white text-primary"
+                    ? "border-primary bg-surface text-primary"
                     : "border-border bg-surface text-ink-muted"
               }`}
             >
@@ -228,7 +228,7 @@ export function OnboardingWizard() {
                 value={profile.name}
                 onChange={(e) => setProfile((p) => ({ ...p, name: e.target.value }))}
                 placeholder={t("namePlaceholder")}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
@@ -239,7 +239,7 @@ export function OnboardingWizard() {
                 value={profile.phone}
                 onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))}
                 placeholder="090-0000-0000"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
@@ -250,7 +250,7 @@ export function OnboardingWizard() {
                 value={profile.company}
                 onChange={(e) => setProfile((p) => ({ ...p, company: e.target.value }))}
                 placeholder={t("companyPlaceholder")}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
@@ -261,7 +261,7 @@ export function OnboardingWizard() {
                 value={profile.website}
                 onChange={(e) => setProfile((p) => ({ ...p, website: e.target.value }))}
                 placeholder="https://example.com"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>
@@ -300,7 +300,7 @@ export function OnboardingWizard() {
                     type="url"
                     value={profile.website}
                     readOnly
-                    className="w-full rounded-lg border border-border bg-white/50 px-3 py-2 text-sm text-ink-muted cursor-not-allowed"
+                    className="w-full rounded-lg border border-border bg-surface/50 px-3 py-2 text-sm text-ink-muted cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -314,7 +314,7 @@ export function OnboardingWizard() {
                   value={repo.name}
                   onChange={(e) => setRepo((r) => ({ ...r, name: e.target.value }))}
                   placeholder={t("repoNamePlaceholder")}
-                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -325,7 +325,7 @@ export function OnboardingWizard() {
                   value={repo.url}
                   onChange={(e) => setRepo((r) => ({ ...r, url: e.target.value }))}
                   placeholder="https://github.com/your-org/your-repo"
-                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -334,7 +334,7 @@ export function OnboardingWizard() {
                 <select
                   value={repo.stack}
                   onChange={(e) => setRepo((r) => ({ ...r, stack: e.target.value }))}
-                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 >
                   {STACK_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>

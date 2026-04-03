@@ -159,11 +159,11 @@ export default function ReposPage() {
 
       {/* Locked banner */}
       {limits?.locked && (
-        <Card className="mt-4 border-amber-200 bg-amber-50">
+        <Card className="mt-4 border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/50">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" />
             <div>
-              <p className="text-sm text-amber-800">{t("changesLocked")}</p>
+              <p className="text-sm text-amber-800 dark:text-amber-200">{t("changesLocked")}</p>
             </div>
           </div>
         </Card>
@@ -182,7 +182,7 @@ export default function ReposPage() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder={t("namePlaceholder")}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 required
               />
             </div>
@@ -195,7 +195,7 @@ export default function ReposPage() {
                 value={formData.url}
                 onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                 placeholder={t("urlPlaceholder")}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 required
               />
             </div>
@@ -206,7 +206,7 @@ export default function ReposPage() {
               <select
                 value={formData.stack}
                 onChange={(e) => setFormData({ ...formData, stack: e.target.value })}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               >
                 {Object.entries(stackLabels).map(([value, label]) => (
                   <option key={value} value={value}>
@@ -246,7 +246,7 @@ export default function ReposPage() {
                     <h3 className="font-semibold text-ink">{repo.name}</h3>
                     <Badge>{stackLabels[repo.stack] ?? repo.stack}</Badge>
                     {repo.isRepoless && (
-                      <Badge className="border border-border bg-white text-ink-muted">{t("surfaceOnly")}</Badge>
+                      <Badge className="border border-border bg-surface text-ink-muted">{t("surfaceOnly")}</Badge>
                     )}
                   </div>
                   <a
@@ -262,7 +262,7 @@ export default function ReposPage() {
                     {repo.lastAudit ? (
                       <span className="flex items-center gap-2">
                         {t("lastAudit")}:{" "}
-                        {new Date(repo.lastAudit.date).toLocaleDateString("ja-JP")}
+                        {new Date(repo.lastAudit.date).toLocaleDateString()}
                         {" · "}
                         {t("findingsCount", { count: repo.lastAudit.findingsCount })}
                         <AuditStatusBadge status={repo.lastAudit.status} />

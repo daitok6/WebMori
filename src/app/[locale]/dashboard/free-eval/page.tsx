@@ -190,7 +190,7 @@ export default function FreeEvalPage() {
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                   required
                   placeholder="山田 太郎"
-                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -205,7 +205,7 @@ export default function FreeEvalPage() {
                   onChange={(e) => setForm((f) => ({ ...f, website: e.target.value }))}
                   required
                   placeholder="https://example.com"
-                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -217,7 +217,7 @@ export default function FreeEvalPage() {
                 <select
                   value={form.stack}
                   onChange={(e) => setForm((f) => ({ ...f, stack: e.target.value }))}
-                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none"
                 >
                   {STACK_OPTIONS.map((o) => (
                     <option key={o.value} value={o.value}>{o.label}</option>
@@ -235,7 +235,7 @@ export default function FreeEvalPage() {
                   onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                   placeholder="サイトについて気になっていることがあれば教えてください..."
                   rows={3}
-                  className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
                 />
               </div>
             </div>

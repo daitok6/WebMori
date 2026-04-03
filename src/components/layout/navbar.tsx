@@ -57,7 +57,15 @@ export function Navbar() {
               alt="WebMori"
               width={110}
               height={44}
-              className="h-[44px] w-auto"
+              className="h-[44px] w-auto dark:hidden"
+              priority
+            />
+            <Image
+              src="/logo-on-dark.png"
+              alt="WebMori"
+              width={110}
+              height={44}
+              className="h-[44px] w-auto hidden dark:block"
               priority
             />
           </Link>

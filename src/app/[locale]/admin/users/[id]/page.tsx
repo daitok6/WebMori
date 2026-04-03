@@ -235,7 +235,7 @@ export default function AdminUserDetailPage() {
                 value={uploadSiteUrl}
                 onChange={(e) => setUploadSiteUrl(e.target.value)}
                 placeholder="https://example.com"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none"
               />
             </div>
             <div>

@@ -15,9 +15,9 @@ export function PricingPreview() {
 
   return (
     <section className="bg-surface-sunken py-16 sm:py-24">
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <ScrollReveal>
-          <h2 className="text-center text-3xl font-bold text-ink sm:text-4xl">
+          <h2 className="text-center text-2xl font-bold text-ink sm:text-3xl lg:text-4xl [text-wrap:balance]">
             {t("title")}
           </h2>
           <p className="mt-4 text-center text-ink-muted">
@@ -33,7 +33,7 @@ export function PricingPreview() {
                 <Card
                   className={cn(
                     "relative flex flex-col h-full",
-                    highlighted && "border-primary ring-2 ring-primary/20 shadow-lg md:scale-105",
+                    highlighted && "border-primary ring-2 ring-primary/20 shadow-xl bg-primary-subtle/10",
                   )}
                 >
                   {highlighted && (

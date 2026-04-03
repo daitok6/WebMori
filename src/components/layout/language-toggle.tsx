@@ -20,7 +20,7 @@ export function LanguageToggle() {
         className={cn(
           "px-3 py-2 rounded-l-lg transition-colors cursor-pointer min-h-[44px]",
           locale === "ja"
-            ? "bg-stone-800 text-white"
+            ? "bg-stone-800 text-white dark:bg-primary dark:text-stone-900"
             : "text-ink-muted hover:text-ink",
         )}
       >
@@ -31,7 +31,7 @@ export function LanguageToggle() {
         className={cn(
           "px-3 py-2 rounded-r-lg transition-colors cursor-pointer min-h-[44px]",
           locale === "en"
-            ? "bg-stone-800 text-white"
+            ? "bg-stone-800 text-white dark:bg-primary dark:text-stone-900"
             : "text-ink-muted hover:text-ink",
         )}
       >

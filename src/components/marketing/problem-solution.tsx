@@ -30,14 +30,14 @@ export function ProblemSolution() {
         {/* Side-by-side Before / After comparison */}
         <div className="mt-14 grid gap-10 lg:grid-cols-2">
           {/* Before (Problem) side */}
-          <ScrollReveal>
+          <ScrollReveal direction="left">
             <div className="rounded-2xl border-2 border-severity-high/20 bg-severity-high/5 p-6 sm:p-8 h-full">
               <div className="mb-6 flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-severity-high/10">
                   <X className="h-4 w-4 text-severity-high" />
                 </div>
                 <span className="text-sm font-semibold uppercase tracking-wider text-severity-high">
-                  Before
+                  {tProblem("label")}
                 </span>
               </div>
               <div className="space-y-5">
@@ -64,14 +64,14 @@ export function ProblemSolution() {
           </ScrollReveal>
 
           {/* After (Solution) side */}
-          <ScrollReveal delay={0.15}>
+          <ScrollReveal delay={0.15} direction="right">
             <div className="rounded-2xl border-2 border-primary/20 bg-primary-subtle/30 p-6 sm:p-8 h-full">
               <div className="mb-6 flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
                   <Check className="h-4 w-4 text-primary" />
                 </div>
                 <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-                  After
+                  {tSolution("label")}
                 </span>
               </div>
               <div className="space-y-5">

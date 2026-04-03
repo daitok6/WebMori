@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./language-toggle";
+import { ThemeToggle } from "./theme-toggle";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
@@ -55,7 +56,14 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 alt="WebMori"
                 width={110}
                 height={44}
-                className="h-[44px] w-auto"
+                className="h-[44px] w-auto dark:hidden"
+              />
+              <Image
+                src="/logo-on-dark.png"
+                alt="WebMori"
+                width={110}
+                height={44}
+                className="h-[44px] w-auto hidden dark:block"
               />
               <button onClick={onClose} className="p-2 text-ink-muted" aria-label="Close menu">
                 <X className="h-5 w-5" />
@@ -82,7 +90,10 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             </div>
 
             <div className="border-t border-border p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] flex flex-col gap-3">
-              <LanguageToggle />
+              <div className="flex items-center gap-2">
+                <LanguageToggle />
+                <ThemeToggle />
+              </div>
               <Link href="/auth/signin" onClick={onClose}>
                 <Button variant="secondary" className="w-full">
                   {t("login")}

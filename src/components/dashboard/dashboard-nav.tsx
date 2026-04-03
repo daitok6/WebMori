@@ -79,7 +79,8 @@ export function DashboardNav() {
       <aside className="hidden md:flex md:w-60 md:shrink-0 md:flex-col md:border-r md:border-border md:bg-surface">
         <div className="flex h-16 items-center border-b border-border px-6">
           <Link href="/">
-            <Image src="/logo-on-light.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto" />
+            <Image src="/logo-on-light.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto dark:hidden" />
+            <Image src="/logo-on-dark.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto hidden dark:block" />
           </Link>
         </div>
         <nav className="flex-1 overflow-y-auto p-4">{navContent}</nav>
@@ -89,7 +90,7 @@ export function DashboardNav() {
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface-raised hover:text-ink transition-colors"
           >
             <LogOut className="h-5 w-5" />
-            ログアウト
+            {t("signOut")}
           </button>
         </div>
       </aside>
@@ -97,7 +98,8 @@ export function DashboardNav() {
       {/* Mobile header */}
       <div className="flex w-full h-14 items-center justify-between border-b border-border bg-surface px-4 md:hidden">
         <Link href="/">
-          <Image src="/logo-on-light.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto" />
+          <Image src="/logo-on-light.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto dark:hidden" />
+          <Image src="/logo-on-dark.png" alt="WebMori" width={110} height={44} className="h-[44px] w-auto hidden dark:block" />
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -118,7 +120,7 @@ export function DashboardNav() {
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface-raised transition-colors"
             >
               <LogOut className="h-5 w-5" />
-              ログアウト
+              {t("signOut")}
             </button>
           </div>
         </div>

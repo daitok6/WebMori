@@ -49,13 +49,13 @@ export function AdminNav() {
         })}
       </nav>
       <div className="px-3 py-4 border-t border-white/10">
-        <a
-          href="/api/auth/signout"
-          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-white/50 hover:text-white transition-colors"
+        <button
+          onClick={() => { window.location.href = "/api/auth/signout"; }}
+          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-white/50 hover:text-white transition-colors cursor-pointer"
         >
           <LogOut className="h-4 w-4" />
           Sign out
-        </a>
+        </button>
       </div>
     </>
   );

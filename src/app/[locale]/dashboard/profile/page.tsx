@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, Check } from "lucide-react";
@@ -16,6 +17,7 @@ interface ProfileData {
 }
 
 export default function DashboardProfilePage() {
+  const t = useTranslations("dashboard.profile");
   const [data, setData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -78,19 +80,19 @@ export default function DashboardProfilePage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-ink">プロフィール</h1>
+      <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
       <p className="mt-1 text-sm text-ink-muted">
-        あなたのアカウント情報と組織情報を管理します。
+        {t("subtitle")}
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4 max-w-2xl">
         {/* Personal Info */}
         <Card>
-          <h2 className="text-sm font-semibold text-ink mb-4">個人情報</h2>
+          <h2 className="text-sm font-semibold text-ink mb-4">{t("personalInfo")}</h2>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-ink mb-1">
-                メールアドレス
+                {t("email")}
               </label>
               <input
                 type="email"
@@ -99,46 +101,46 @@ export default function DashboardProfilePage() {
                 className="w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-ink-muted cursor-not-allowed"
               />
               <p className="mt-1 text-xs text-ink-muted">
-                メールアドレスは変更できません。
+                {t("emailDisabled")}
               </p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-ink mb-1">
-                お名前
+                {t("name")}
               </label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => handleChange("name", e.target.value)}
-                placeholder="山田 太郎"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                placeholder={t("namePlaceholder")}
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-ink mb-1">
-                電話番号
+                {t("phone")}
               </label>
               <input
                 type="tel"
                 value={form.phone}
                 onChange={(e) => handleChange("phone", e.target.value)}
-                placeholder="090-0000-0000"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                placeholder={t("phonePlaceholder")}
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-ink mb-1">
-                自己紹介
+                {t("bio")}
               </label>
               <textarea
                 value={form.bio}
                 onChange={(e) => handleChange("bio", e.target.value)}
-                placeholder="簡単な自己紹介を入力してください..."
+                placeholder={t("bioPlaceholder")}
                 rows={3}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
               />
             </div>
           </div>
@@ -146,44 +148,44 @@ export default function DashboardProfilePage() {
 
         {/* Organization Info */}
         <Card>
-          <h2 className="text-sm font-semibold text-ink mb-4">組織情報</h2>
+          <h2 className="text-sm font-semibold text-ink mb-4">{t("orgInfo")}</h2>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-ink mb-1">
-                会社名 / 屋号
+                {t("company")}
               </label>
               <input
                 type="text"
                 value={form.company}
                 onChange={(e) => handleChange("company", e.target.value)}
-                placeholder="株式会社〇〇"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                placeholder={t("companyPlaceholder")}
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-ink mb-1">
-                ウェブサイト
+                {t("website")}
               </label>
               <input
                 type="url"
                 value={form.website}
                 onChange={(e) => handleChange("website", e.target.value)}
                 placeholder="https://example.com"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-ink mb-1">
-                組織の電話番号
+                {t("orgPhone")}
               </label>
               <input
                 type="tel"
                 value={form.orgPhone}
                 onChange={(e) => handleChange("orgPhone", e.target.value)}
-                placeholder="03-0000-0000"
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                placeholder={t("orgPhonePlaceholder")}
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>
@@ -194,12 +196,12 @@ export default function DashboardProfilePage() {
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
             ) : null}
-            保存する
+            {t("save")}
           </Button>
           {saved && (
             <span className="flex items-center gap-1 text-sm text-green-600">
               <Check className="h-4 w-4" />
-              保存しました
+              {t("saved")}
             </span>
           )}
         </div>

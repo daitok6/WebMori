@@ -76,7 +76,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-12rem)] flex-col">
+    <div className="flex flex-col" style={{ height: "calc(100dvh - 10rem)" }}>
       <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
 
       {/* Message thread */}
@@ -108,7 +108,7 @@ export default function MessagesPage() {
                   </p>
                   <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                   <p className="mt-1 text-[10px] opacity-50">
-                    {new Date(msg.createdAt).toLocaleString("ja-JP")}
+                    {new Date(msg.createdAt).toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -127,7 +127,7 @@ export default function MessagesPage() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder={t("placeholder")}
-            className="flex-1 rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
           <Button type="submit" disabled={sending || !content.trim()} size="sm">
             {sending ? (

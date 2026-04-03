@@ -214,7 +214,7 @@ export function AuditCalendar() {
           <div className="grid grid-cols-7">
             {/* Empty cells before first day */}
             {Array.from({ length: startDay }, (_, i) => (
-              <div key={`empty-${i}`} className="min-h-[100px] border-b border-r border-border bg-surface-raised/50" />
+              <div key={`empty-${i}`} className="min-h-[60px] sm:min-h-[100px] border-b border-r border-border bg-surface-raised/50" />
             ))}
 
             {/* Day cells */}
@@ -227,8 +227,8 @@ export function AuditCalendar() {
               return (
                 <div
                   key={day}
-                  className={`min-h-[100px] border-b border-r border-border p-1 ${
-                    isWeekend ? "bg-surface-raised/30" : "bg-white"
+                  className={`min-h-[60px] sm:min-h-[100px] border-b border-r border-border p-1 ${
+                    isWeekend ? "bg-surface-raised/30" : "bg-surface"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
@@ -247,7 +247,7 @@ export function AuditCalendar() {
                   </div>
 
                   <div className="space-y-1">
-                    {dayAudits.slice(0, 3).map((audit) => (
+                    {dayAudits.slice(0, 2).map((audit) => (
                       <button
                         key={audit.id}
                         onClick={() => setSelectedAudit(audit)}
@@ -260,9 +260,9 @@ export function AuditCalendar() {
                         <span className="truncate text-[10px] opacity-70">{audit.repoName}</span>
                       </button>
                     ))}
-                    {dayAudits.length > 3 && (
+                    {dayAudits.length > 2 && (
                       <p className="text-[10px] text-ink-muted text-center">
-                        +{dayAudits.length - 3} more
+                        +{dayAudits.length - 2} more
                       </p>
                     )}
                   </div>
@@ -274,7 +274,7 @@ export function AuditCalendar() {
             {Array.from(
               { length: (7 - ((startDay + daysInMonth) % 7)) % 7 },
               (_, i) => (
-                <div key={`end-${i}`} className="min-h-[100px] border-b border-r border-border bg-surface-raised/50" />
+                <div key={`end-${i}`} className="min-h-[60px] sm:min-h-[100px] border-b border-r border-border bg-surface-raised/50" />
               ),
             )}
           </div>

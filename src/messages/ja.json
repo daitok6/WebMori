@@ -22,6 +22,7 @@
   },
   "problem": {
     "title": "こんなお悩みありませんか？",
+    "label": "現状",
     "items": [
       {
         "title": "セキュリティが不安",
@@ -39,6 +40,7 @@
   },
   "solution": {
     "title": "WebMoriが解決します",
+    "label": "導入後",
     "items": [
       {
         "title": "5つの視点で徹底監査",
@@ -186,7 +188,8 @@
   "cta": {
     "title": "まずは無料診断から",
     "description": "あなたのウェブサイトの現状を把握しましょう。無料の初回診断で、改善の第一歩を踏み出せます。",
-    "button": "無料診断を申し込む"
+    "button": "無料診断を申し込む",
+    "noCreditCard": "クレジットカード不要"
   },
   "featuresPage": {
     "title": "主な機能",
@@ -375,7 +378,8 @@
       "messages": "メッセージ",
       "freeEval": "無料診断",
       "settings": "設定",
-      "profile": "プロフィール"
+      "profile": "プロフィール",
+      "signOut": "ログアウト"
     },
     "overview": {
       "title": "ダッシュボード",
@@ -545,6 +549,28 @@
       "welcomeAuditRunning": "実行中",
       "auditCycleNote": "監査は25日以上の間隔で実施され、徹底的な分析を行います。",
       "goToDashboard": "ダッシュボードへ"
+    },
+    "profile": {
+      "title": "プロフィール",
+      "subtitle": "あなたのアカウント情報と組織情報を管理します。",
+      "personalInfo": "個人情報",
+      "email": "メールアドレス",
+      "emailDisabled": "メールアドレスは変更できません。",
+      "name": "お名前",
+      "namePlaceholder": "山田 太郎",
+      "phone": "電話番号",
+      "phonePlaceholder": "090-0000-0000",
+      "bio": "自己紹介",
+      "bioPlaceholder": "簡単な自己紹介を入力してください...",
+      "orgInfo": "組織情報",
+      "company": "会社名 / 屋号",
+      "companyPlaceholder": "株式会社〇〇",
+      "website": "ウェブサイト",
+      "websitePlaceholder": "https://example.com",
+      "orgPhone": "組織の電話番号",
+      "orgPhonePlaceholder": "03-0000-0000",
+      "save": "保存する",
+      "saved": "保存しました"
     }
   },
   "blogPage": {

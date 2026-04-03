@@ -22,6 +22,7 @@
   },
   "problem": {
     "title": "Sound familiar?",
+    "label": "Before",
     "items": [
       {
         "title": "Security concerns",
@@ -39,6 +40,7 @@
   },
   "solution": {
     "title": "WebMori solves this",
+    "label": "After",
     "items": [
       {
         "title": "5-angle comprehensive audit",
@@ -186,7 +188,8 @@
   "cta": {
     "title": "Start with a free audit",
     "description": "Understand the current state of your website. Take the first step toward improvement with a free initial audit.",
-    "button": "Request Free Audit"
+    "button": "Request Free Audit",
+    "noCreditCard": "No credit card required"
   },
   "featuresPage": {
     "title": "Key Features",
@@ -375,7 +378,8 @@
       "messages": "Messages",
       "freeEval": "Free Audit",
       "settings": "Settings",
-      "profile": "Profile"
+      "profile": "Profile",
+      "signOut": "Sign out"
     },
     "overview": {
       "title": "Dashboard",
@@ -545,6 +549,28 @@
       "welcomeAuditRunning": "Running now",
       "auditCycleNote": "Audits run on a 25+ day cycle to ensure thorough analysis.",
       "goToDashboard": "Go to Dashboard"
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Manage your account and organization information.",
+      "personalInfo": "Personal Information",
+      "email": "Email Address",
+      "emailDisabled": "Email address cannot be changed.",
+      "name": "Full Name",
+      "namePlaceholder": "John Doe",
+      "phone": "Phone Number",
+      "phonePlaceholder": "090-0000-0000",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell us about yourself...",
+      "orgInfo": "Organization",
+      "company": "Company / Business Name",
+      "companyPlaceholder": "Example Inc.",
+      "website": "Website",
+      "websitePlaceholder": "https://example.com",
+      "orgPhone": "Organization Phone",
+      "orgPhonePlaceholder": "03-0000-0000",
+      "save": "Save",
+      "saved": "Saved"
     }
   },
   "blogPage": {

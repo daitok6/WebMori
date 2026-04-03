@@ -109,7 +109,7 @@ export default function AdminMessagesPage() {
     <>
       <h1 className="text-2xl font-bold text-ink">Messages</h1>
 
-      <div className="mt-6 flex gap-4 h-[calc(100vh-12rem)]">
+      <div className="mt-6 flex gap-4" style={{ height: "calc(100dvh - 10rem)" }}>
         {/* Client list */}
         <div className={`w-64 flex-shrink-0 space-y-2 overflow-y-auto ${selectedOrg ? "hidden sm:block" : ""}`}>
           {orgs.length === 0 ? (
@@ -218,7 +218,7 @@ export default function AdminMessagesPage() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <Button type="submit" size="sm" disabled={sending || !content.trim()}>
                 {sending ? (

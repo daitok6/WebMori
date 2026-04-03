@@ -34,7 +34,7 @@
   --color-severity-good: #16A34A;
 
   /* Typography */
-  --font-sans: var(--font-inter), 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', 'Meiryo', -apple-system, sans-serif;
+  --font-sans: var(--font-dm-sans), 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', 'Meiryo', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
 }
 

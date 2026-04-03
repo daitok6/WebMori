@@ -9,9 +9,9 @@ export function Footer() {
     <footer className="bg-stone-900 text-white">
       <div className="h-1 bg-gradient-to-r from-primary to-primary-light" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 sm:py-16">
-        <div className="grid grid-cols-2 gap-8 sm:gap-12 md:grid-cols-4">
+        <div className="grid gap-8 sm:gap-12 sm:grid-cols-2 md:grid-cols-4">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
+          <div className="sm:col-span-2 md:col-span-1">
             <Image
               src="/logo-on-dark.png"
               alt="WebMori"

@@ -20,9 +20,9 @@ export function FeatureGrid() {
 
   return (
     <section className="bg-surface py-16 sm:py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <ScrollReveal>
-          <h2 className="text-center text-3xl font-bold text-ink sm:text-4xl">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <ScrollReveal direction="fade">
+          <h2 className="text-center text-2xl font-bold text-ink sm:text-3xl lg:text-4xl [text-wrap:balance]">
             {t("title")}
           </h2>
         </ScrollReveal>
@@ -32,8 +32,8 @@ export function FeatureGrid() {
             const Icon = featureIcons[i];
             const isLarge = i === 0;
             return (
-              <ScrollReveal key={i} delay={i * 0.08}>
-                <Card className={`h-full transition-all hover:shadow-md hover:border-primary/30 ${isLarge ? "sm:col-span-2 lg:col-span-2" : ""}`}>
+              <ScrollReveal key={i} delay={i * 0.08} className={isLarge ? "sm:col-span-2 lg:col-span-2" : ""}>
+                <Card className="h-full transition-all hover:shadow-md hover:border-primary/30">
                   <div className={`mb-3 ${iconColors[i]}`}>
                     <Icon className="h-8 w-8" />
                   </div>

@@ -92,12 +92,12 @@ export function HeroSection() {
             transition={{ duration: 0.6 }}
           >
             <Badge className="mb-6">{t("badge")}</Badge>
-            <h1 className="text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
+            <h1 className="text-[1.75rem] font-bold leading-tight text-ink sm:text-5xl lg:text-6xl [text-wrap:balance]">
               {t("title")}
               <br />
               <span className="text-primary">{t("titleHighlight")}</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg text-ink-muted leading-relaxed">
+            <p className="mx-auto mt-6 max-w-xl text-lg text-ink-muted leading-relaxed text-balance">
               {t("subtitle")}
             </p>
           </motion.div>
@@ -107,13 +107,13 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 flex flex-wrap items-center justify-center gap-4"
+            className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link href="/auth/signin?callbackUrl=/dashboard/free-eval">
-              <Button size="lg">{t("cta")}</Button>
+            <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto">{t("cta")}</Button>
             </Link>
-            <Link href="/sample-report">
-              <Button variant="secondary" size="lg">
+            <Link href="/sample-report" className="w-full sm:w-auto">
+              <Button variant="secondary" size="lg" className="w-full sm:w-auto">
                 {t("ctaSecondary")}
               </Button>
             </Link>
