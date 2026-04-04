@@ -37,12 +37,20 @@ const serverSchema = z.object({
 
   // Cron
   CRON_SECRET: z.string().min(1),
+
+  // LINE Messaging API (optional — required for Growth/Pro LINE delivery)
+  LINE_CHANNEL_ACCESS_TOKEN: z.string().min(1).optional(),
+  LINE_CHANNEL_SECRET: z.string().min(1).optional(),
+  // Operator's own LINE userId for self-notifications (optional)
+  OPERATOR_LINE_USER_ID: z.string().min(1).optional(),
 });
 
 const clientSchema = z.object({
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_").optional(),
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
   NEXT_PUBLIC_CALCOM_LINK: z.string().url().optional(),
+  // LINE Official Account friend-add URL (e.g. https://line.me/R/ti/p/@your-id)
+  NEXT_PUBLIC_LINE_FRIEND_URL: z.string().url().optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverSchema>;

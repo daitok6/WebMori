@@ -69,13 +69,7 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/",
-    "/(ja|en)/:path*",
-    "/dashboard/:path*",
-    "/dashboard",
-    "/auth/:path*",
-    "/admin/:path*",
-    "/admin",
-  ],
+  // Exclude /api/*, /_next/*, /_vercel/*, and static files from middleware.
+  // The intl middleware must never run on API routes — it redirects them.
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

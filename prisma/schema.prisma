@@ -27,6 +27,7 @@ model User {
   notifyQuarterly     Boolean @default(true)
   notifyFollowUp      Boolean @default(true)
   notifyMarketing     Boolean @default(true)
+  notifyLine          Boolean @default(true)  // Master switch for LINE channel notifications
   role          Role      @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -99,6 +100,12 @@ model Organization {
   // Repo change policy
   repoChangesUsed    Int     @default(0)   // lifetime changes consumed
   repoChangesAllowed Int     @default(3)   // admin-adjustable cap
+
+  // LINE Messaging API
+  lineUserId           String?   // LINE platform userId from friend-add webhook
+  lineNotifications    Boolean   @default(true)
+  lineLinkToken        String?   // Temporary token for QR account linking
+  lineLinkTokenExpiry  DateTime? // 15-minute expiry
 
   users               User[]
   subscription        Subscription?

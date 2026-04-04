@@ -1,6 +1,8 @@
 import { prisma } from "./prisma";
 import { esc, getResend, EMAIL_FROM } from "./email";
 import { buildEmail } from "./email-template";
+import { env } from "./env";
+import { sendLineFlexMessage, sendLinePush, buildAuditCompleteCard, buildAuditScheduledCard } from "./line";
 
 // ─── Helpers ─────────────────────────────────────────────
 
@@ -48,6 +50,30 @@ async function logNotification(organizationId: string, type: string, userId?: st
   await prisma.notificationLog.create({
     data: { organizationId, type, userId },
   });
+}
+
+/**
+ * Returns true if the org should receive LINE notifications.
+ * Requires: LINE userId linked, org.lineNotifications=true, user.notifyLine=true,
+ * and subscription plan is GROWTH or PRO (ACTIVE or TRIALING).
+ */
+async function shouldSendLine(organizationId: string): Promise<boolean> {
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: {
+      lineUserId: true,
+      lineNotifications: true,
+      users: { select: { notifyLine: true }, take: 1 },
+      subscription: { select: { plan: true, status: true } },
+    },
+  });
+  if (!org?.lineUserId) return false;
+  if (!org.lineNotifications) return false;
+  if (org.users[0]?.notifyLine === false) return false;
+  if (!org.subscription) return false;
+  if (!["GROWTH", "PRO"].includes(org.subscription.plan)) return false;
+  if (!["ACTIVE", "TRIALING"].includes(org.subscription.status)) return false;
+  return true;
 }
 
 // ─── Existing notifications ──────────────────────────────
@@ -101,6 +127,26 @@ export async function sendAuditCompleteEmail(
   </table>
 </body>`,
   }).catch(() => {/* non-fatal */});
+
+  // Also send via LINE for Growth/Pro clients who have it linked
+  if (await shouldSendLine(organizationId)) {
+    const orgForLine = await prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: { name: true, lineUserId: true },
+    });
+    if (orgForLine?.lineUserId) {
+      await sendLineFlexMessage(
+        orgForLine.lineUserId,
+        "監査レポートが完成しました",
+        buildAuditCompleteCard({
+          orgName: orgForLine.name,
+          repoName: auditDetails.repoName,
+          findingsCount: auditDetails.findingsCount,
+          reportUrl: dashboardLink,
+        }),
+      );
+    }
+  }
 }
 
 /**
@@ -248,6 +294,24 @@ export async function sendAuditScheduledEmail(
     subject: "【WebMori】月次監査のお知らせ",
     html,
   }).catch(() => {});
+
+  // Also send via LINE for Growth/Pro clients
+  if (await shouldSendLine(organizationId)) {
+    const orgForLine = await prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: { name: true, lineUserId: true },
+    });
+    if (orgForLine?.lineUserId) {
+      await sendLineFlexMessage(
+        orgForLine.lineUserId,
+        "月次監査のお知らせ",
+        buildAuditScheduledCard({
+          orgName: orgForLine.name,
+          auditDateLabel: dateStr,
+        }),
+      );
+    }
+  }
 
   await logNotification(organizationId, notifKey, user.id);
 }
@@ -704,4 +768,114 @@ export async function sendDripEmail(
   }).catch(() => {});
 
   await logNotification(organizationId, stage, user.id);
+}
+
+// ─── Operator alerts ──────────────────────────────────────
+
+/**
+ * Alert the operator that an audit has reached REVIEW status.
+ * Called automatically when the audit pipeline publishes results.
+ */
+export async function sendOperatorReviewAlert(
+  auditId: string,
+  orgName: string,
+  reportCode: string | null,
+) {
+  const resend = getResend();
+  if (!resend) return;
+
+  const adminUrl = `https://webmori.jp/ja/admin/audits`;
+  const label = reportCode ? `${esc(reportCode)} — ${esc(orgName)}` : esc(orgName);
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [env.OPERATOR_EMAIL],
+    subject: `【WebMori 管理】レビュー待ち: ${orgName}`,
+    html: `
+<body style="background:#FAFAF9;font-family:-apple-system,sans-serif;padding:20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:auto;">
+    <tr><td style="background:#1C1917;padding:24px 32px;border-radius:8px 8px 0 0;">
+      <span style="color:#D97706;font-size:20px;font-weight:bold;">Web<span style="color:white;">Mori</span></span>
+      <span style="color:#78716C;font-size:12px;margin-left:12px;">管理通知</span>
+    </td></tr>
+    <tr><td style="background:white;padding:32px;border:1px solid #E7E5E4;border-top:none;border-radius:0 0 8px 8px;">
+      <h2 style="margin:0 0 12px;color:#1C1917;font-size:18px;">監査レポートのレビューが必要です</h2>
+      <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 8px;">
+        以下の監査が完了し、レビュー待ちになっています。
+      </p>
+      <div style="background:#F8F5EE;border-radius:8px;padding:16px;margin:0 0 24px;">
+        <p style="margin:0;font-size:14px;font-weight:600;color:#1C1917;">${label}</p>
+        <p style="margin:4px 0 0;font-size:12px;color:#78716C;">Audit ID: ${esc(auditId)}</p>
+      </div>
+      <a href="${esc(adminUrl)}"
+        style="background:#D97706;color:#1C1917;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;">
+        管理画面でレビューする
+      </a>
+    </td></tr>
+  </table>
+</body>`,
+  }).catch(() => {});
+
+  // Also push to operator's LINE if configured
+  if (env.OPERATOR_LINE_USER_ID) {
+    const codeStr = reportCode ? ` [${reportCode}]` : "";
+    await sendLinePush(
+      env.OPERATOR_LINE_USER_ID,
+      `📋 レビュー待ち${codeStr}\n${orgName}\n\n管理画面で確認・承認してください。\nhttps://webmori.jp/ja/admin/audits`,
+    );
+  }
+}
+
+/**
+ * Alert the operator that an audit has failed.
+ * Called when the audit pipeline encounters an unrecoverable error.
+ */
+export async function sendOperatorFailureAlert(
+  auditId: string,
+  orgName: string,
+  failureReason: string,
+) {
+  const resend = getResend();
+  if (!resend) return;
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [env.OPERATOR_EMAIL],
+    subject: `【WebMori 管理】監査失敗: ${orgName}`,
+    html: `
+<body style="background:#FAFAF9;font-family:-apple-system,sans-serif;padding:20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:auto;">
+    <tr><td style="background:#7F1D1D;padding:24px 32px;border-radius:8px 8px 0 0;">
+      <span style="color:#FCA5A5;font-size:20px;font-weight:bold;">WebMori</span>
+      <span style="color:#FCA5A5;font-size:12px;margin-left:12px;">⚠️ 監査失敗</span>
+    </td></tr>
+    <tr><td style="background:white;padding:32px;border:1px solid #E7E5E4;border-top:none;border-radius:0 0 8px 8px;">
+      <h2 style="margin:0 0 12px;color:#DC2626;font-size:18px;">監査が失敗しました</h2>
+      <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 8px;">
+        以下の監査が失敗しました。手動での対応が必要です。
+      </p>
+      <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:16px;margin:0 0 16px;">
+        <p style="margin:0;font-size:14px;font-weight:600;color:#1C1917;">${esc(orgName)}</p>
+        <p style="margin:4px 0 0;font-size:12px;color:#78716C;">Audit ID: ${esc(auditId)}</p>
+      </div>
+      <div style="background:#FEF2F2;border-left:4px solid #DC2626;padding:12px 16px;border-radius:0 8px 8px 0;margin:0 0 24px;">
+        <p style="margin:0;font-size:13px;color:#DC2626;font-weight:600;">エラー内容:</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#1C1917;white-space:pre-wrap;">${esc(failureReason)}</p>
+      </div>
+      <a href="https://webmori.jp/ja/admin/audits"
+        style="background:#DC2626;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;">
+        管理画面で確認する
+      </a>
+    </td></tr>
+  </table>
+</body>`,
+  }).catch(() => {});
+
+  // Also push to operator's LINE if configured
+  if (env.OPERATOR_LINE_USER_ID) {
+    await sendLinePush(
+      env.OPERATOR_LINE_USER_ID,
+      `⚠️ 監査失敗: ${orgName}\n\n${failureReason.slice(0, 200)}\n\nhttps://webmori.jp/ja/admin/audits`,
+    );
+  }
 }

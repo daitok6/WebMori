@@ -11,6 +11,7 @@ const settingsSchema = z.object({
   notifyQuarterly: z.boolean().optional(),
   notifyFollowUp: z.boolean().optional(),
   notifyMarketing: z.boolean().optional(),
+  notifyLine: z.boolean().optional(),
 });
 
 export async function GET() {
@@ -26,6 +27,7 @@ export async function GET() {
       notifyQuarterly: true,
       notifyFollowUp: true,
       notifyMarketing: true,
+      notifyLine: true,
     },
   });
 
@@ -36,6 +38,7 @@ export async function GET() {
     notifyQuarterly: true,
     notifyFollowUp: true,
     notifyMarketing: true,
+    notifyLine: true,
   });
 }
 
