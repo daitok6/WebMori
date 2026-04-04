@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
-import { sendAuditCompleteEmail } from "@/lib/notifications";
+import { getResend, EMAIL_FROM, esc } from "@/lib/email";
 
 /**
- * GET /api/admin/test-notify?auditId=...
- * Triggers sendAuditCompleteEmail for the given audit's org.
- * Used to diagnose notification delivery issues.
+ * GET /api/admin/test-notify?email=...
+ * Fires a raw Resend email directly to the given address.
+ * Returns the exact Resend response so we can see any errors.
  * Temporary — remove after debugging.
  */
 export async function GET(request: NextRequest) {
@@ -14,37 +14,23 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const auditId = request.nextUrl.searchParams.get("auditId");
-  if (!auditId) {
-    return NextResponse.json({ error: "auditId required" }, { status: 400 });
+  const to = request.nextUrl.searchParams.get("email") ?? "daito.k631@gmail.com";
+
+  const resend = getResend();
+  if (!resend) {
+    return NextResponse.json({ error: "Resend not configured (RESEND_API_KEY missing)" }, { status: 500 });
   }
 
-  const audit = await prisma.audit.findUnique({
-    where: { id: auditId },
-    include: { repo: true, organization: { include: { users: { select: { email: true } } } } },
+  const result = await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [to],
+    subject: "WebMori テスト通知",
+    html: `<p>This is a test email from WebMori. From: ${esc(EMAIL_FROM)}</p>`,
   });
 
-  if (!audit) {
-    return NextResponse.json({ error: "Audit not found" }, { status: 404 });
-  }
-
-  const clientEmail = audit.organization.users[0]?.email ?? "none";
-
-  try {
-    await sendAuditCompleteEmail(audit.organizationId, {
-      repoName: audit.repo.name,
-      findingsCount: 5,
-    });
-    return NextResponse.json({
-      ok: true,
-      sentTo: clientEmail,
-      orgName: audit.organization.name,
-    });
-  } catch (err) {
-    return NextResponse.json({
-      ok: false,
-      error: String(err),
-      sentTo: clientEmail,
-    }, { status: 500 });
-  }
+  return NextResponse.json({
+    resendResult: result,
+    sentFrom: EMAIL_FROM,
+    sentTo: to,
+  });
 }
