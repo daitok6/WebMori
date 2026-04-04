@@ -95,7 +95,10 @@ export async function sendAuditCompleteEmail(
   });
 
   const user = org?.users[0];
-  if (!user?.email || user.emailNotifications === false) return;
+  if (!user?.email || user.emailNotifications === false) {
+    console.log(`[sendAuditCompleteEmail] skipped for org=${organizationId}: email=${user?.email ?? "none"} emailNotifications=${user?.emailNotifications}`);
+    return;
+  }
 
   const safeRepoName = esc(auditDetails.repoName);
   const dashboardLink = auditDetails.reportUrl ?? "https://webmori.jp/ja/dashboard/reports";
@@ -126,7 +129,7 @@ export async function sendAuditCompleteEmail(
     </td></tr>
   </table>
 </body>`,
-  }).catch(() => {/* non-fatal */});
+  }).catch((err) => { console.error("[sendAuditCompleteEmail] Resend error:", err); });
 
   // Also send via LINE for Growth/Pro clients who have it linked
   if (await shouldSendLine(organizationId)) {

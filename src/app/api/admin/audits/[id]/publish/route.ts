@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { uploadPdf, uploadFile } from "@/lib/r2";
 import { generateReportCode } from "@/lib/report-code";
 import { Severity, Effort } from "@/generated/prisma/client";
+import { sendOperatorReviewAlert } from "@/lib/notifications";
 
 const VALID_SEVERITIES = new Set(Object.values(Severity));
 const VALID_EFFORTS = new Set(Object.values(Effort));
@@ -50,6 +51,7 @@ export async function POST(
       organizationId: true,
       status: true,
       reportCode: true,
+      organization: { select: { name: true } },
     },
   });
 
@@ -193,6 +195,15 @@ export async function POST(
       },
     });
   });
+
+  // Notify operator that audit is ready for review (only on first publish, not re-publish)
+  if (audit.status !== "DELIVERED" && audit.status !== "COMPLETED") {
+    await sendOperatorReviewAlert(
+      auditId,
+      audit.organization.name,
+      updatedAudit.reportCode ?? null,
+    ).catch(() => {});
+  }
 
   return NextResponse.json(updatedAudit);
 }

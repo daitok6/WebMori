@@ -90,7 +90,9 @@ export async function PATCH(
     await sendAuditCompleteEmail(audit.organizationId, {
       repoName: audit.repo.name,
       findingsCount: updated.findings.length,
-    }).catch(() => {});
+    }).catch((err) => {
+      console.error("[audit DELIVERED] sendAuditCompleteEmail failed:", err);
+    });
   }
 
   return NextResponse.json(updated);

@@ -53,8 +53,6 @@ export async function POST(request: NextRequest) {
   // Process events in sequence (LINE guarantees delivery order)
   for (const event of body.events) {
     const userId = event.source?.userId;
-    // Temporary: log userId to help operator find their OPERATOR_LINE_USER_ID
-    console.log(`[LINE webhook] event=${event.type} userId=${userId ?? "none"}`);
     if (!userId) continue;
 
     if (event.type === "follow") {

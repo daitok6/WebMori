@@ -72,6 +72,7 @@ function validateClientEnv() {
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_CALCOM_LINK: process.env.NEXT_PUBLIC_CALCOM_LINK,
+    NEXT_PUBLIC_LINE_FRIEND_URL: process.env.NEXT_PUBLIC_LINE_FRIEND_URL,
   });
   if (!result.success) {
     const formatted = z.prettifyError(result.error);
