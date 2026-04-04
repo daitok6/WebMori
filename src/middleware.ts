@@ -32,6 +32,14 @@ function buildCspHeader(nonce: string): string {
 }
 
 export default async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Never run intl or auth middleware on API routes — they must return raw responses.
+  // The matcher regex should prevent this, but guard explicitly as a safety net.
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
   const response = intlMiddleware(request);
 
   // Generate per-request nonce for CSP
