@@ -111,7 +111,7 @@
   "stats": {
     "items": [
       { "value": "5", "label": "Audit lenses" },
-      { "value": "24h", "label": "Average report delivery" },
+      { "value": "3 days", "label": "Standard report delivery" },
       { "value": "100%", "label": "Japanese-native reports" },
       { "value": "PR", "label": "Fixes delivered as GitHub PRs" }
     ]
@@ -121,7 +121,7 @@
     "subtitle": "Simple pricing that scales with your business",
     "monthly": "Monthly",
     "annual": "Annual",
-    "annualDiscount": "Save 2 months free",
+    "annualDiscount": "Save 15% annually",
     "annualSavings": ["Save ¥36,000/yr", "Save ¥72,000/yr", "Save ¥132,000/yr"],
     "perMonth": "/mo",
     "onboardingFee": "Onboarding: ¥{amount} (one-time)",
@@ -147,7 +147,7 @@
           "Basic LINE check included",
           "Japanese report",
           "Share your source code and we'll deliver ready-to-apply fixes",
-          "Email support"
+          "Email support (within 5 business days)"
         ]
       },
       {
@@ -180,7 +180,7 @@
           "2 sites",
           "Monthly audit (all lenses, deep)",
           "Monthly audit cycle",
-          "All 5 lenses (deep)",
+          "All 6 lenses incl. frontend design",
           "Deep LINE API audit",
           "CVE tracking included",
           "Japanese report + trend comparison",

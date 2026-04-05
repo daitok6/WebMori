@@ -11,12 +11,11 @@ import { useEffect, useState } from "react";
 /* ---------- Terminal scan animation ---------- */
 const scanLines = [
   { text: "$ webmori scan --target client-site.jp", color: "text-primary" },
-  { text: "  [1/6] Security audit .............. PASS", color: "text-emerald-400" },
-  { text: "  [2/6] Performance check ........... 3 issues", color: "text-amber-400" },
-  { text: "  [3/6] LINE API review ............. PASS", color: "text-emerald-400" },
-  { text: "  [4/6] i18n / Japanese UX .......... 1 issue", color: "text-yellow-400" },
-  { text: "  [5/6] Maintainability ............. PASS", color: "text-emerald-400" },
-  { text: "  [6/6] Frontend design ............. 2 issues", color: "text-amber-400" },
+  { text: "  [1/5] Security audit .............. PASS", color: "text-emerald-400" },
+  { text: "  [2/5] Performance check ........... 3 issues", color: "text-amber-400" },
+  { text: "  [3/5] LINE API review ............. PASS", color: "text-emerald-400" },
+  { text: "  [4/5] i18n / Japanese UX .......... 1 issue", color: "text-yellow-400" },
+  { text: "  [5/5] Maintainability ............. PASS", color: "text-emerald-400" },
   { text: "  Report generated: report-ja.pdf", color: "text-primary" },
 ];
 
