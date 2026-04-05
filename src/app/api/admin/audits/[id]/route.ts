@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdmin } from "@/lib/admin";
+import { isCronOrAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { generateReportCode } from "@/lib/report-code";
 import { sendAuditCompleteEmail, sendOperatorReviewAlert, sendOperatorFailureAlert } from "@/lib/notifications";
@@ -10,7 +10,7 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  if (!(await isAdmin())) {
+  if (!(await isCronOrAdmin(request))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
