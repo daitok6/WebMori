@@ -6,6 +6,16 @@ import { sendLineFlexMessage, sendLinePush, buildAuditCompleteCard, buildAuditSc
 
 // ─── Helpers ─────────────────────────────────────────────
 
+/**
+ * Appends ?openExternalBrowser=1 to a URL so LINE opens it in the
+ * device's default browser instead of its built-in WebView.
+ * Google OAuth (and most sign-in flows) fail in LINE's WebView.
+ */
+function lineUrl(url: string): string {
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}openExternalBrowser=1`;
+}
+
 async function getOrgUser(organizationId: string) {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
@@ -145,7 +155,7 @@ export async function sendAuditCompleteEmail(
           orgName: orgForLine.name,
           repoName: auditDetails.repoName,
           findingsCount: auditDetails.findingsCount,
-          reportUrl: dashboardLink,
+          reportUrl: lineUrl(dashboardLink),
         }),
       );
     }
@@ -898,7 +908,7 @@ export async function sendOperatorReviewAlert(
     const codeStr = reportCode ? ` [${reportCode}]` : "";
     await sendLinePush(
       env.OPERATOR_LINE_USER_ID,
-      `📋 レビュー待ち${codeStr}\n${orgName}\n\n管理画面で確認・承認してください。\nhttps://webmori.jp/ja/admin/audits`,
+      `📋 レビュー待ち${codeStr}\n${orgName}\n\n管理画面で確認・承認してください。\n${lineUrl("https://webmori.jp/ja/admin/audits")}`,
     );
   }
 }
@@ -952,7 +962,7 @@ export async function sendOperatorFailureAlert(
   if (env.OPERATOR_LINE_USER_ID) {
     await sendLinePush(
       env.OPERATOR_LINE_USER_ID,
-      `⚠️ 監査失敗: ${orgName}\n\n${failureReason.slice(0, 200)}\n\nhttps://webmori.jp/ja/admin/audits`,
+      `⚠️ 監査失敗: ${orgName}\n\n${failureReason.slice(0, 200)}\n\n${lineUrl("https://webmori.jp/ja/admin/audits")}`,
     );
   }
 }
@@ -1023,7 +1033,7 @@ export async function sendPdfReplacedEmail(
     if (orgForLine?.lineUserId) {
       await sendLinePush(
         orgForLine.lineUserId,
-        `📄 監査レポートが更新されました（${updatedFiles}）\n\nダッシュボードから最新版をご確認ください。\n${dashboardLink}`,
+        `📄 監査レポートが更新されました（${updatedFiles}）\n\nダッシュボードから最新版をご確認ください。\n${lineUrl(dashboardLink)}`,
       );
     }
   }

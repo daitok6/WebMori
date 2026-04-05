@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import { Mail, Loader2 } from "lucide-react";
+import { Mail, Loader2, ExternalLink } from "lucide-react";
 
 function GoogleIcon() {
   return (
@@ -39,6 +39,15 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [emailLoading, setEmailLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [isLineWebView, setIsLineWebView] = useState(false);
+
+  useEffect(() => {
+    // LINE's in-app browser identifies itself with "Line/" in the user agent.
+    // Google OAuth refuses to run inside WebViews (Error 403: disallowed_useragent).
+    if (/Line\//i.test(navigator.userAgent)) {
+      setIsLineWebView(true);
+    }
+  }, []);
 
   async function handleGoogleSignIn() {
     setGoogleLoading(true);
@@ -51,6 +60,60 @@ export default function SignInPage() {
     setEmailLoading(true);
     await signIn("resend", { email, callbackUrl: `/${locale}/dashboard` });
     setEmailLoading(false);
+  }
+
+  if (isLineWebView) {
+    return (
+      <section className="flex min-h-[80vh] items-center justify-center bg-surface-raised px-6 pt-20">
+        <ScrollReveal>
+          <Card className="w-full max-w-md text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-100">
+              <ExternalLink className="h-7 w-7 text-amber-600" />
+            </div>
+            <h1 className="text-xl font-bold text-ink mb-2">ブラウザで開いてください</h1>
+            <p className="text-sm text-ink-muted mb-6 leading-relaxed">
+              LINEのアプリ内ブラウザではGoogleログインに対応していません。
+              右上の「…」メニューから<strong>「ブラウザで開く」</strong>を選択してください。
+            </p>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-left text-sm text-amber-800 space-y-2">
+              <p className="font-medium">手順</p>
+              <ol className="list-decimal list-inside space-y-1 text-amber-700">
+                <li>右上の <strong>「…」</strong> をタップ</li>
+                <li><strong>「ブラウザで開く」</strong> を選択</li>
+                <li>SafariまたはChromeでログイン</li>
+              </ol>
+            </div>
+            <p className="mt-4 text-xs text-ink-muted">
+              または、メールアドレスでのログインはこのままご利用いただけます。
+            </p>
+            <div className="mt-4 border-t border-border pt-4">
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                setEmailLoading(true);
+                await signIn("resend", { email, callbackUrl: `/${locale}/dashboard` });
+                setEmailLoading(false);
+              }} className="space-y-3">
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-lg border border-border px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                  placeholder="メールアドレス"
+                />
+                <Button type="submit" size="lg" className="w-full" disabled={emailLoading}>
+                  {emailLoading ? (
+                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />送信中…</>
+                  ) : (
+                    "マジックリンクを送信"
+                  )}
+                </Button>
+              </form>
+            </div>
+          </Card>
+        </ScrollReveal>
+      </section>
+    );
   }
 
   return (
