@@ -153,6 +153,80 @@ export async function sendAuditCompleteEmail(
 }
 
 /**
+ * Send setup-incomplete reminder to Growth/Pro clients who haven't linked LINE.
+ * Sent once per org (logged in NotificationLog). Triggered on first audit delivery.
+ */
+export async function sendSetupIncompleteEmail(organizationId: string) {
+  const resend = getResend();
+  if (!resend) return;
+
+  // Only send once
+  if (await hasNotificationBeenSent(organizationId, "setup_incomplete_line")) return;
+
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    include: {
+      users: {
+        select: { id: true, email: true, emailNotifications: true, notifyFollowUp: true },
+        take: 1,
+      },
+      subscription: { select: { plan: true, status: true } },
+    },
+  });
+
+  const user = org?.users[0];
+  if (!user?.email || user.emailNotifications === false || user.notifyFollowUp === false) return;
+
+  // Only for Growth/Pro active subscriptions that haven't linked LINE
+  const isPaidPlan = ["GROWTH", "PRO"].includes(org?.subscription?.plan ?? "");
+  const isActive = ["ACTIVE", "TRIALING"].includes(org?.subscription?.status ?? "");
+  if (!isPaidPlan || !isActive || org?.lineUserId) return;
+
+  const settingsUrl = "https://webmori.jp/ja/dashboard/settings";
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [user.email],
+    subject: "【WebMori】セットアップが未完了です — LINE連携でより便利に",
+    html: `
+<body style="background:#FAFAF9;font-family:-apple-system,sans-serif;padding:20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:auto;">
+    <tr><td style="background:#1C1917;padding:24px 32px;border-radius:8px 8px 0 0;">
+      <span style="color:#D97706;font-size:20px;font-weight:bold;">Web<span style="color:white;">Mori</span></span>
+    </td></tr>
+    <tr><td style="background:white;padding:32px;border:1px solid #E7E5E4;border-top:none;border-radius:0 0 8px 8px;">
+      <h2 style="margin:0 0 12px;color:#1C1917;font-size:18px;">セットアップが未完了です</h2>
+      <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 16px;">
+        ${esc(org?.name ?? "")} 様、いつもWebMoriをご利用いただきありがとうございます。
+      </p>
+      <p style="color:#78716C;font-size:14px;line-height:1.7;margin:0 0 16px;">
+        現在、<strong>LINE連携が未完了</strong>のため、監査レポートの完成通知がLINEで届きません。
+        設定ページからLINEアカウントを連携することで、監査完了時にLINEでもお知らせします。
+      </p>
+      <div style="background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:16px;margin:0 0 24px;">
+        <p style="margin:0;color:#92400E;font-size:13px;line-height:1.6;">
+          <strong>設定手順:</strong><br>
+          1. ダッシュボード → 設定 → LINE連携<br>
+          2. 表示された6桁のコードをWebMoriのLINE公式アカウントに送信<br>
+          3. 連携完了 — 次回の監査からLINE通知が届きます
+        </p>
+      </div>
+      <a href="${esc(settingsUrl)}"
+        style="background:#D97706;color:#1C1917;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">
+        設定を完了する
+      </a>
+      <p style="color:#A8A29E;font-size:12px;margin:24px 0 0;">
+        このメールはWebMoriよりお送りしています。通知設定はダッシュボードの設定ページから変更できます。
+      </p>
+    </td></tr>
+  </table>
+</body>`,
+  }).catch((err) => { console.error("[sendSetupIncompleteEmail] Resend error:", err); });
+
+  await logNotification(organizationId, "setup_incomplete_line", user.id);
+}
+
+/**
  * Send new-message notification to the client.
  * Checks user's emailNotifications preference before sending.
  * Used when the operator sends a message from the admin panel.

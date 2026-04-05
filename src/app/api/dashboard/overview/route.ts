@@ -15,7 +15,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [stats, audits, user, freeEval, healthScore] = await Promise.all([
+  const [stats, audits, user, freeEval, healthScore, orgDetails] = await Promise.all([
     getOrgStats(org.id),
     getOrgAudits(org.id),
     prisma.user.findUnique({
@@ -27,6 +27,13 @@ export async function GET() {
       select: { id: true },
     }),
     computeHealthScore(org.id),
+    prisma.organization.findUnique({
+      where: { id: org.id },
+      select: {
+        lineUserId: true,
+        subscription: { select: { plan: true, status: true } },
+      },
+    }),
   ]);
 
   const recentAudits = audits.slice(0, 5).map((a) => ({
@@ -56,6 +63,14 @@ export async function GET() {
     ? onboarding.profileComplete && onboarding.hasRepo && onboarding.hasRequestedEval
     : true;
 
+  // Setup issues — incomplete configuration for paid clients
+  const setupIssues: string[] = [];
+  const isPaidPlan = ["GROWTH", "PRO"].includes(orgDetails?.subscription?.plan ?? "");
+  const isActiveSub = ["ACTIVE", "TRIALING"].includes(orgDetails?.subscription?.status ?? "");
+  if (isPaidPlan && isActiveSub && !orgDetails?.lineUserId) {
+    setupIssues.push("line_not_linked");
+  }
+
   return NextResponse.json({
     plan: org.subscription?.plan ?? null,
     status: org.subscription?.status ?? null,
@@ -68,5 +83,6 @@ export async function GET() {
     hasPaidSubscription,
     hasCompletedFreeEval,
     needsOnboarding: hasPaidSubscription && !org.onboardingComplete,
+    setupIssues,
   });
 }

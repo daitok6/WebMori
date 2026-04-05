@@ -11,6 +11,7 @@ import { AuditStatusBadge } from "@/components/dashboard/audit-status-badge";
 import { DashboardError } from "@/components/dashboard/dashboard-error";
 import { FindingsTrend } from "@/components/dashboard/findings-trend";
 import { OnboardingChecklist } from "@/components/dashboard/onboarding-checklist";
+import { SetupIncompleteBanner } from "@/components/dashboard/setup-incomplete-banner";
 import { useDashboardData } from "@/lib/use-dashboard-data";
 import {
   Calendar,
@@ -49,6 +50,7 @@ interface OverviewData {
   hasPaidSubscription: boolean;
   hasCompletedFreeEval: boolean;
   needsOnboarding: boolean;
+  setupIssues: string[];
   stats: {
     totalFindings: number;
     fixedFindings: number;
@@ -137,6 +139,9 @@ export default function DashboardPage() {
     <>
       <h1 className="text-2xl font-bold text-ink">{t("title")}</h1>
       <p className="mt-1 text-ink-muted">{t("welcome")}</p>
+
+      {/* Setup incomplete banner — shown for paid users with missing configuration */}
+      {data.setupIssues?.length > 0 && <SetupIncompleteBanner issues={data.setupIssues} />}
 
       {/* Onboarding checklist — shown until all steps complete */}
       {data.onboarding && <OnboardingChecklist data={data.onboarding} />}

@@ -602,6 +602,14 @@
       "lineNotificationsEnabled": "Receive LINE notifications",
       "lineGenerating": "Generating code..."
     },
+    "setupBanner": {
+      "title": "Setup incomplete",
+      "cta": "Complete setup",
+      "dismiss": "Dismiss",
+      "issue": {
+        "line_not_linked": "LINE account not linked — connect your LINE account in Settings to receive audit notifications via LINE."
+      }
+    },
     "onboarding": {
       "title": "Get Started",
       "description": "Complete these steps to receive your first audit.",

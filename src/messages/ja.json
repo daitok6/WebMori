@@ -602,6 +602,14 @@
       "lineNotificationsEnabled": "LINE通知を受け取る",
       "lineGenerating": "コード生成中..."
     },
+    "setupBanner": {
+      "title": "セットアップが未完了です",
+      "cta": "設定を完了する",
+      "dismiss": "閉じる",
+      "issue": {
+        "line_not_linked": "LINE連携が未設定です — 設定ページからLINEアカウントを連携すると、監査完了時にLINEで通知が届きます。"
+      }
+    },
     "onboarding": {
       "title": "はじめましょう",
       "description": "以下のステップを完了して、最初の監査を受けましょう。",
