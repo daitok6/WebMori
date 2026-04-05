@@ -77,21 +77,30 @@ export function ReviewDetailPanel({
   const [updating, setUpdating] = useState(false);
   const [markdown, setMarkdown] = useState<string | null>(null);
   const [mdLoading, setMdLoading] = useState(false);
+  const [mdError, setMdError] = useState<"no-key" | "fetch-failed" | null>(null);
 
   const sortedFindings = [...audit.findings].sort(
     (a, b) => (SEVERITY_ORDER[a.severity] ?? 9) - (SEVERITY_ORDER[b.severity] ?? 9),
   );
 
   useEffect(() => {
-    if (activeTab === "report" && markdown === null && audit.reportMdKey) {
-      setMdLoading(true);
-      fetch(`/api/admin/audits/${audit.id}/markdown`)
-        .then((r) => (r.ok ? r.text() : null))
-        .then((text) => setMarkdown(text))
-        .catch(() => setMarkdown(null))
-        .finally(() => setMdLoading(false));
+    if (activeTab !== "report" || markdown !== null || mdError !== null) return;
+
+    if (!audit.reportMdKey) {
+      setMdError("no-key");
+      return;
     }
-  }, [activeTab, audit.id, audit.reportMdKey, markdown]);
+
+    setMdLoading(true);
+    fetch(`/api/admin/audits/${audit.id}/markdown`)
+      .then((r) => {
+        if (!r.ok) throw new Error(r.statusText);
+        return r.text();
+      })
+      .then((text) => setMarkdown(text))
+      .catch(() => setMdError("fetch-failed"))
+      .finally(() => setMdLoading(false));
+  }, [activeTab, audit.id, audit.reportMdKey, markdown, mdError]);
 
   async function updateStatus(newStatus: string, failureReason?: string) {
     setUpdating(true);
@@ -203,21 +212,39 @@ export function ReviewDetailPanel({
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
               </div>
             )}
-            {!mdLoading && !markdown && (
-              <div className="space-y-2">
-                <p className="text-sm text-ink-muted">Markdown preview unavailable.</p>
-                {audit.reportPdfUrl && (
-                  <a
-                    href={`/api/admin/audits/${audit.id}/pdf`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-ink hover:bg-surface-raised transition-colors"
-                  >
-                    <FileText className="h-4 w-4 text-primary" />
-                    Download Report PDF
-                    <ExternalLink className="ml-1 h-3 w-3 text-ink-muted" />
-                  </a>
-                )}
+            {!mdLoading && mdError && (
+              <div className="space-y-3">
+                <p className="text-sm text-ink-muted">
+                  {mdError === "no-key"
+                    ? "Markdown source was not uploaded for this audit. Open the PDF to review."
+                    : "Could not load markdown from storage. Open the PDF to review."}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {audit.reportPdfUrl && (
+                    <a
+                      href={`/api/admin/audits/${audit.id}/pdf`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
+                    >
+                      <FileText className="h-4 w-4" />
+                      Open Report PDF
+                      <ExternalLink className="ml-1 h-3 w-3" />
+                    </a>
+                  )}
+                  {audit.findingsPdfUrl && (
+                    <a
+                      href={`/api/admin/audits/${audit.id}/pdf?type=findings`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-ink hover:bg-surface-raised transition-colors"
+                    >
+                      <FileText className="h-4 w-4 text-ink-muted" />
+                      Open Findings PDF
+                      <ExternalLink className="ml-1 h-3 w-3 text-ink-muted" />
+                    </a>
+                  )}
+                </div>
               </div>
             )}
           </div>
