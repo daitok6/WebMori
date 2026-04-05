@@ -46,6 +46,20 @@ function AboutContent() {
               );
             })}
           </div>
+
+          <ScrollReveal delay={0.3}>
+            <div className="mt-12 rounded-2xl border border-border bg-surface-raised p-8 flex flex-col items-center text-center md:flex-row md:text-left md:gap-8">
+              {/* Avatar — initials fallback since no photo yet */}
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-primary/10 text-2xl font-bold text-primary mb-4 md:mb-0">
+                DK
+              </div>
+              <div>
+                <p className="text-xl font-semibold text-ink">{t("founder.name")}</p>
+                <p className="text-sm text-primary mt-0.5">{t("founder.role")}</p>
+                <p className="mt-3 text-ink-muted leading-relaxed">{t("founder.bio")}</p>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
       <CTASection />

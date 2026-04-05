@@ -8,6 +8,7 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
+import { BlogJsonLd } from "@/components/seo/blog-json-ld";
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -31,6 +32,13 @@ export async function generateMetadata({
       publishedTime: post.date,
       locale: locale === "ja" ? "ja_JP" : "en_US",
     },
+    alternates: {
+      canonical: `https://www.webmori.jp/${locale}/blog/${slug}`,
+      languages: {
+        ja: `/ja/blog/${slug}`,
+        en: `/en/blog/${slug}`,
+      },
+    },
   };
 }
 
@@ -53,6 +61,13 @@ export default async function BlogPostPage({
 
   return (
     <article className="bg-surface pt-32 pb-20">
+      <BlogJsonLd
+        title={post.title}
+        description={post.excerpt}
+        datePublished={post.date}
+        slug={slug}
+        locale={locale}
+      />
       <div className="mx-auto max-w-3xl px-6">
         <ScrollReveal>
           <Link

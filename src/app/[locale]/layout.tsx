@@ -22,7 +22,7 @@ const notoSansJP = Noto_Sans_JP({
   weight: ["400", "500", "700"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://webmori.jp";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.webmori.jp";
 
 export const metadata: Metadata = {
   title: {

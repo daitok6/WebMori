@@ -12,6 +12,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       locale: locale === "ja" ? "ja_JP" : "en_US",
       siteName: "WebMori",
     },
+    alternates: {
+      canonical: `https://www.webmori.jp/${locale}/contact`,
+      languages: { ja: "/ja/contact", en: "/en/contact" },
+    },
   };
 }
 

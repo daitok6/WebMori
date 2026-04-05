@@ -64,6 +64,12 @@ export default function PricingPage() {
             )}
           </div>
 
+          {/* ROI callout */}
+          <div className="text-center mb-8">
+            <p className="text-sm font-semibold text-primary">{t("roiTitle")}</p>
+            <p className="mt-1 text-sm text-ink-muted">{t("roiDescription")}</p>
+          </div>
+
           {/* Cards */}
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {[0, 1, 2].map((i) => {
@@ -124,7 +130,7 @@ export default function PricingPage() {
                         disabled={loading}
                         onClick={() => checkout(i, annual)}
                       >
-                        {t("getStarted")}
+                        {t(`plans.${i}.cta`)}
                       </Button>
                     </div>
                   </Card>
@@ -173,7 +179,7 @@ export default function PricingPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-ink mb-1">完全代行</h3>
                 <p className="text-2xl font-bold text-ink mb-1">¥7,500<span className="text-sm font-normal text-ink-muted">/時</span></p>
-                <p className="text-xs text-ink-muted mb-4">PR適用: ¥5,000固定</p>
+                <p className="text-xs text-ink-muted mb-4">PR適用: ¥2,000固定</p>
                 <p className="text-sm text-ink-muted flex-1">画像最適化、フォント自ホスト化、設定変更など低リスクの修正を直接実装します。</p>
               </div>
             </ScrollReveal>

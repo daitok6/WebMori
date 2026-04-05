@@ -3,7 +3,7 @@
     "services": "Services",
     "features": "Features",
     "pricing": "Pricing",
-    "about": "About",
+    "about": "About WebMori",
     "contact": "Contact",
     "blog": "Blog",
     "login": "Log in",
@@ -11,12 +11,13 @@
   },
   "hero": {
     "badge": "For Tokyo-based freelancers & SMBs",
-    "title": "We protect your",
-    "titleHighlight": "website",
+    "title": "From discovery to fix,",
+    "titleHighlight": "we handle everything",
     "subtitle": "Security, performance, LINE API, i18n, and maintainability. We audit your site monthly from 5 angles and deliver actionable improvements.",
     "cta": "Get Free Audit",
     "ctaSecondary": "View sample report",
-    "socialProof": "Trusted by Tokyo freelancers and SMBs"
+    "socialProof": "5 audit lenses · Japanese reports · PR fixes included",
+    "noCreditCard": "No credit card required"
   },
   "trust": {
     "title": "Supported Platforms"
@@ -83,34 +84,34 @@
     "items": [
       {
         "title": "Security Audit",
-        "description": "Detects OWASP Top 10 vulnerabilities, secret leaks, and auth issues"
+        "description": "Prevent customer data breaches and hacking incidents before they happen"
       },
       {
         "title": "Performance Optimization",
-        "description": "Core Web Vitals analysis, Japan CDN, and mobile optimization"
+        "description": "Retain visitors who were leaving due to slow load times"
       },
       {
         "title": "LINE API Audit",
-        "description": "Webhook signature verification, token management, LIFF configuration"
+        "description": "Eliminate the risk of your LINE bot going silent and losing customer reservations"
       },
       {
         "title": "i18n Check",
-        "description": "Character encoding, date formats, currency display, multilingual support"
+        "description": "Prevent embarrassing mistakes like ¥ displaying as $ on your Japanese site"
       },
       {
         "title": "Auto-fix PRs",
-        "description": "Safe fixes automatically created as pull requests"
+        "description": "Safe fixes go straight to GitHub as pull requests. Zero manual effort required"
       },
       {
         "title": "Monthly Reports",
-        "description": "Track progress with monthly improvement status reports"
+        "description": "Track improvements every month. No more silent risk accumulation"
       }
     ]
   },
   "stats": {
     "items": [
       { "value": "5", "label": "Audit lenses" },
-      { "value": "24h", "label": "Average report delivery" },
+      { "value": "3 days", "label": "Standard report delivery" },
       { "value": "100%", "label": "Japanese-native reports" },
       { "value": "PR", "label": "Fixes delivered as GitHub PRs" }
     ]
@@ -120,7 +121,7 @@
     "subtitle": "Simple pricing that scales with your business",
     "monthly": "Monthly",
     "annual": "Annual",
-    "annualDiscount": "Save 2 months free",
+    "annualDiscount": "Save 15% annually",
     "annualSavings": ["Save ¥36,000/yr", "Save ¥72,000/yr", "Save ¥132,000/yr"],
     "perMonth": "/mo",
     "onboardingFee": "Onboarding: ¥{amount} (one-time)",
@@ -130,20 +131,23 @@
     "freeEvalTitle": "Want to try it free first?",
     "freeEvalDescription": "Before choosing a plan, try our free initial audit. We'll run a basic security and performance check at no cost.",
     "freeEvalButton": "Start free audit",
+    "roiTitle": "Cheaper than spot checks. Smarter than automated scanners.",
+    "roiDescription": "A one-off freelance security audit in Japan costs ¥100,000–200,000. WebMori delivers monthly expert audits from ¥19,800.",
     "plans": [
       {
         "name": "Starter",
         "price": "19,800",
         "annualPrice": "16,800",
         "description": "For small sites",
+        "cta": "Start with Starter",
         "features": [
           "1 site",
           "Monthly audit (Security + Performance)",
-          "25+ days between audit cycles",
+          "Monthly audit cycle",
           "Basic LINE check included",
           "Japanese report",
           "Share your source code and we'll deliver ready-to-apply fixes",
-          "Email support"
+          "Email support (within 5 business days)"
         ]
       },
       {
@@ -151,10 +155,11 @@
         "price": "39,800",
         "annualPrice": "33,800",
         "description": "Comprehensive 5-lens audit",
+        "cta": "Start with Growth",
         "features": [
           "1 site",
           "Monthly audit (all 5 lenses)",
-          "25+ days between audit cycles",
+          "Monthly audit cycle",
           "Full LINE API audit",
           "i18n + maintainability checks",
           "Japanese report + executive summary",
@@ -170,11 +175,12 @@
         "price": "69,800",
         "annualPrice": "58,800",
         "description": "Multi-site + deep audit",
+        "cta": "Start with Pro",
         "features": [
           "2 sites",
           "Monthly audit (all lenses, deep)",
-          "25+ days between audit cycles",
-          "All 5 lenses (deep)",
+          "Monthly audit cycle",
+          "All 6 lenses incl. frontend design",
           "Deep LINE API audit",
           "CVE tracking included",
           "Japanese report + trend comparison",
@@ -192,6 +198,32 @@
     "description": "Understand the current state of your website. Take the first step toward improvement with a free initial audit.",
     "button": "Request Free Audit",
     "noCreditCard": "No credit card required"
+  },
+  "implementation": {
+    "badge": "Implementation Service",
+    "title": "From discovery to fix — we handle it all",
+    "description": "Every monthly report includes automatic implementation quotes for each finding. Contact us for any item and WebMori will handle the fix.",
+    "tiers": [
+      {
+        "tier": "A",
+        "label": "Fully Managed",
+        "price": "¥7,500/hr",
+        "desc": "We implement low-risk fixes directly"
+      },
+      {
+        "tier": "B",
+        "label": "Staging Review",
+        "price": "¥9,000/hr",
+        "desc": "Medium-risk changes validated on staging first"
+      },
+      {
+        "tier": "C",
+        "label": "Implementation Guide",
+        "price": "¥12,000 flat",
+        "desc": "Complex changes: guide + 1hr Q&A session"
+      }
+    ],
+    "link": "View implementation service details"
   },
   "featuresPage": {
     "title": "Key Features",
@@ -293,7 +325,7 @@
     ]
   },
   "aboutPage": {
-    "title": "About Us",
+    "title": "About WebMori",
     "subtitle": "WebMori is a Tokyo-based web security audit service",
     "sections": [
       {
@@ -308,7 +340,12 @@
         "title": "Technology",
         "description": "Our AI-powered audit engine analyzes codebases with the quality of a human security expert, but faster. Auto-fix PRs let you resolve safe issues instantly."
       }
-    ]
+    ],
+    "founder": {
+      "name": "Daito Kojima",
+      "role": "Founder / Security Engineer",
+      "bio": "After years as a security engineer at a major Japanese IT company, I built WebMori so that Tokyo freelancers and SMBs could access the same level of web security expertise as large enterprises — without the enterprise price tag."
+    }
   },
   "contactPage": {
     "title": "Contact",
@@ -327,7 +364,9 @@
     "responseTime": "We typically respond within 3 business days",
     "successTitle": "Thank you for reaching out",
     "successMessage": "We'll get back to you within 3 business days.",
-    "required": "*"
+    "required": "*",
+    "privacyNote": "Your information will only be used to respond to your inquiry.",
+    "privacyPolicyLink": "Privacy Policy"
   },
   "auth": {
     "signInTitle": "Sign in",
@@ -409,7 +448,6 @@
       "healthScore": "Site Health Score",
       "fixRate": "Fix rate",
       "checksOk": "Checks OK",
-      "findings": "findings",
       "consultationTitle": "Book a Strategy Review",
       "consultationDesc": "Pro plan benefit — a quarterly video call with your dedicated specialist to review progress and priorities.",
       "consultationCta": "Book a Meeting"
@@ -710,6 +748,10 @@
     "blog": {
       "title": "Blog",
       "description": "Technical insights and best practices on security, performance, and LINE API."
+    },
+    "services": {
+      "title": "Implementation Service",
+      "description": "WebMori fixes what we find. From fully managed Tier A to guided Tier C — choose the level that fits your budget."
     }
   },
   "sampleReport": {
@@ -877,5 +919,123 @@
     "terms": "Terms of Service",
     "tokushoho": "Specified Commercial Transactions Act",
     "copyright": "WebMori. All rights reserved."
+  },
+  "servicesPage": {
+    "metadata": {
+      "title": "Implementation Services",
+      "description": "WebMori fixes issues found in your audit directly. From full hands-off Tier A to guided Tier C support."
+    },
+    "hero": {
+      "badge": "Issues found in your audit — fixed directly by WebMori",
+      "heading": "From discovery to fix, we handle everything",
+      "subheading": "Every monthly audit report includes implementation estimates for each issue. Just tell us which items you want fixed and WebMori will handle it safely.",
+      "ctaLine": "Chat on LINE",
+      "ctaEmail": "Send us an email"
+    },
+    "subscriptionNote": {
+      "title": "A monthly audit plan is required",
+      "body": "Implementation services are an add-on for issues identified in your monthly audit report. Please subscribe to a",
+      "pricingLink": "audit plan (from ¥19,800/month)",
+      "bodySuffix": "first. Once you receive your report, you can request fixes for only the items you need."
+    },
+    "tiers": {
+      "heading": "3 Implementation Options",
+      "items": [
+        {
+          "label": "Tier A",
+          "name": "Full Implementation",
+          "price": "¥7,500",
+          "unit": "/hr",
+          "sub": "PR merge: ¥5,000 flat",
+          "description": "Low-risk fixes (image optimization, fonts, config changes, etc.) are implemented directly by WebMori.",
+          "bullets": [
+            "Image & asset optimization",
+            "Self-hosted fonts",
+            "Timing-safe comparisons",
+            "CSS & responsive fixes",
+            "Config file changes"
+          ]
+        },
+        {
+          "label": "Tier B",
+          "name": "Staging-Verified",
+          "price": "¥9,000",
+          "unit": "/hr",
+          "sub": " ",
+          "description": "Medium-risk fixes (auth, sessions, external API integrations) are verified in a staging environment before deployment.",
+          "bullets": [
+            "Auth & session handling",
+            "Form validation",
+            "LINE & external API integrations",
+            "Dependency updates",
+            "Error handling"
+          ]
+        },
+        {
+          "label": "Tier C",
+          "name": "Implementation Guide",
+          "price": "¥12,000",
+          "unit": "flat",
+          "sub": " ",
+          "description": "High-risk or complex fixes (i18n, DB changes, etc.) are supported with a guide document plus a 1-hour Q&A session.",
+          "bullets": [
+            "UI string i18n extraction",
+            "Database schema changes",
+            "Complex refactoring",
+            "Architecture changes",
+            "Large-scale work over 16 hours"
+          ]
+        }
+      ]
+    },
+    "howItWorks": {
+      "heading": "How It Works",
+      "steps": [
+        {
+          "title": "Issues identified in your audit",
+          "desc": "Your monthly audit report lists each issue with an implementation estimate."
+        },
+        {
+          "title": "Select the items you want fixed",
+          "desc": "Send us the PR number or manual action number (e.g. M-1) via LINE or email."
+        },
+        {
+          "title": "WebMori implements safely",
+          "desc": "After the appropriate safety checks for the tier, we deploy the fix. You'll hear back within the next business day."
+        }
+      ]
+    },
+    "prMerge": {
+      "heading": "Need help merging an auto-generated PR?",
+      "body": "We can handle applying audit-generated PRs from staging to production for you.",
+      "price": "¥5,000",
+      "priceNote": "flat (per PR)"
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "items": [
+        {
+          "q": "What if something goes wrong?",
+          "a": "Tier A/B fixes are verified in staging. In the unlikely event of an issue, we provide rollback instructions."
+        },
+        {
+          "q": "Can estimates change?",
+          "a": "Report estimates are indicative. We'll confirm the final price before starting any work."
+        },
+        {
+          "q": "Can I use this without an audit plan?",
+          "a": "Implementation services are an add-on to the monthly audit plan. Please subscribe to an audit plan first."
+        },
+        {
+          "q": "Are there cases you can't help with?",
+          "a": "Some high-risk work such as DB migrations, payment flow changes, or infrastructure reconfiguration may be outside our scope."
+        }
+      ]
+    },
+    "cta": {
+      "heading": "Start with a monthly audit plan",
+      "body": "Implementation services are an add-on to the monthly audit plan. Receive your report first, then request only the fixes you need.",
+      "button": "View pricing plans"
+    }
   }
 }

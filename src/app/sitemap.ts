@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getAllSlugs } from "@/lib/blog";
 
-const BASE_URL = "https://webmori.jp";
+const BASE_URL = "https://www.webmori.jp";
 
-const pages = ["", "/features", "/pricing", "/about", "/contact", "/blog"];
+const pages = ["", "/features", "/pricing", "/about", "/contact", "/blog", "/services", "/compare", "/sample-report"];
 const locales = ["ja", "en"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
