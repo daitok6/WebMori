@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
       // Nothing to do yet — they still need to send their link code.
       await replyLineMessage(
         (event as LineFollowEvent).replyToken,
-        "WebMoriをご利用いただきありがとうございます！\n\nダッシュボードの設定画面からLINE連携コードを確認し、こちらに送信してください。",
+        "WebMoriをご利用いただきありがとうございます！\n\nこのアカウントは通知専用です。監査レポートの完成やアラートをお知らせします。\n\nアカウントを連携するには、ダッシュボードの設定画面から連携コードを確認し、こちらに送信してください。",
       );
     } else if (event.type === "unfollow") {
       // User blocked or unfriended — clear their LINE link
@@ -98,10 +98,10 @@ export async function POST(request: NextRequest) {
           `${org.name} のLINE連携が完了しました！\n\n今後、監査レポートの完成や重要なお知らせをLINEでお届けします。`,
         );
       } else {
-        // Unrecognized message or expired token
+        // Not a link code — this is a notification-only account
         await replyLineMessage(
           msgEvent.replyToken,
-          "認識できないコードです。ダッシュボードの設定画面から最新の連携コードをご確認ください。\n\nコードの有効期限は15分です。",
+          "このアカウントは通知専用です。\n\nご質問・お問い合わせはダッシュボードのメッセージ機能からお送りください。\nhttps://webmori.jp/ja/dashboard/messages",
         );
       }
     }
