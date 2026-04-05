@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdmin } from "@/lib/admin";
+import { isCronOrAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { uploadPdf } from "@/lib/r2";
 import { env } from "@/lib/env";
@@ -20,7 +20,7 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  if (!(await isAdmin())) {
+  if (!(await isCronOrAdmin(request))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
