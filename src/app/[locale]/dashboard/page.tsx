@@ -227,14 +227,18 @@ export default function DashboardPage() {
       {hasAudits ? (
         <>
           {/* Findings trend chart */}
-          {data.stats.trend.length > 1 && (
-            <Card className="mt-6">
-              <h2 className="mb-4 text-lg font-semibold text-ink">
-                {t("findingsTrend")}
-              </h2>
+          <Card className="mt-6">
+            <h2 className="mb-4 text-lg font-semibold text-ink">
+              {t("findingsTrend")}
+            </h2>
+            {data.stats.trend.length > 1 ? (
               <FindingsTrend data={data.stats.trend} />
-            </Card>
-          )}
+            ) : (
+              <div className="flex h-32 items-center justify-center text-sm text-ink-muted">
+                {t("trendNotEnoughData")}
+              </div>
+            )}
+          </Card>
 
           {/* Recent audits */}
           <Card className="mt-6">

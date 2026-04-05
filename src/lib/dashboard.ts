@@ -51,13 +51,7 @@ export async function getOrgMessages(orgId: string) {
 }
 
 export async function getOrgStats(orgId: string) {
-  const [totalFindings, fixedFindings, nextAudit, audits] = await Promise.all([
-    prisma.finding.count({
-      where: { audit: { organizationId: orgId } },
-    }),
-    prisma.finding.count({
-      where: { audit: { organizationId: orgId }, prUrl: { not: null } },
-    }),
+  const [nextAudit, audits] = await Promise.all([
     prisma.audit.findFirst({
       where: { organizationId: orgId, status: "SCHEDULED" },
       orderBy: { scheduledAt: "asc" },
@@ -68,6 +62,11 @@ export async function getOrgStats(orgId: string) {
       orderBy: { createdAt: "asc" },
     }),
   ]);
+
+  // Stats from latest audit only (current site state)
+  const latestAudit = audits[audits.length - 1];
+  const totalFindings = latestAudit?.findings.length ?? 0;
+  const fixedFindings = latestAudit?.findings.filter((f) => f.prUrl !== null).length ?? 0;
 
   // Build trend data for chart
   const trend = audits.map((a) => ({
