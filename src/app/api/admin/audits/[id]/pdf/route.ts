@@ -31,9 +31,10 @@ export async function GET(
     return NextResponse.json({ error: "PDF not available" }, { status: 404 });
   }
 
-  const key = pdfUrl.startsWith("http")
+  const rawKey = pdfUrl.startsWith("http")
     ? new URL(pdfUrl).pathname.slice(1)
     : pdfUrl;
+  const key = rawKey.replace(/^\//, "");
 
   const signedUrl = await getSignedDownloadUrl(key);
   return NextResponse.redirect(signedUrl);
