@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ interface BillingData {
 
 export default function BillingPage() {
   const t = useTranslations("dashboard.billing");
+  const locale = useLocale();
   const { data, loading, error, retry } = useDashboardData<BillingData>("/api/dashboard/billing");
   const [portalLoading, setPortalLoading] = useState(false);
 
@@ -91,7 +92,7 @@ export default function BillingPage() {
                 <p className="text-xs text-ink-muted mt-1">
                   {data.billingCycle === "ANNUAL" ? t("annual") : t("monthly")} ·{" "}
                   {t("renews")}{" "}
-                  {new Date(data.currentPeriodEnd).toLocaleDateString()}
+                  {new Date(data.currentPeriodEnd).toLocaleDateString(locale)}
                 </p>
               )}
             </div>
@@ -194,7 +195,7 @@ export default function BillingPage() {
                     <td className="py-3 text-ink">
                       {new Date(
                         p.paidAt ?? p.createdAt,
-                      ).toLocaleDateString()}
+                      ).toLocaleDateString(locale)}
                     </td>
                     <td className="py-3 text-ink">
                       ¥{p.amount.toLocaleString()}
