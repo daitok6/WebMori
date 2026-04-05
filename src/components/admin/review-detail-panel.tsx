@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ReasonPromptDialog } from "./reason-prompt-dialog";
+import { ReplacePdfButton } from "./replace-pdf-button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -261,7 +262,8 @@ export function ReviewDetailPanel({
         )}
 
         {/* PDF + PR links */}
-        <div className="flex flex-wrap gap-2 pt-1">
+        <div className="flex flex-wrap gap-2 pt-1 items-start">
+          <ReplacePdfButton auditId={audit.id} />
           {audit.reportPdfUrl && (
             <a
               href={`/api/admin/audits/${audit.id}/pdf`}

@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ReasonPromptDialog } from "./reason-prompt-dialog";
+import { ReplacePdfButton } from "./replace-pdf-button";
 import type { AuditRow } from "./audit-calendar";
 import {
   X,
@@ -171,6 +172,7 @@ export function AuditDetailModal({
         {/* Report & PR links */}
         {(audit.reportPdfUrl || audit.findingsPdfUrl || audit.prLinks.length > 0) && (
           <div className="mt-4 space-y-2 border-t border-border pt-4">
+            <ReplacePdfButton auditId={audit.id} />
             {audit.reportPdfUrl && (
               <a
                 href={`/api/admin/audits/${audit.id}/pdf`}
