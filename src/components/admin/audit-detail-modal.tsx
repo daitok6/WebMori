@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ReasonPromptDialog } from "./reason-prompt-dialog";
 import type { AuditRow } from "./audit-calendar";
 import {
   X,
@@ -14,7 +15,10 @@ import {
   Star,
   FileText,
   GitPullRequest,
+  RotateCcw,
 } from "lucide-react";
+
+type ActiveDialog = "revision" | "reject" | null;
 
 const statusVariant: Record<string, "default" | "medium" | "low" | "good" | "growth"> = {
   SCHEDULED: "default",
@@ -35,14 +39,16 @@ export function AuditDetailModal({
   onStatusChange: () => void;
 }) {
   const [updating, setUpdating] = useState(false);
+  const [activeDialog, setActiveDialog] = useState<ActiveDialog>(null);
 
-  async function updateStatus(newStatus: string) {
+  async function updateStatus(newStatus: string, failureReason?: string) {
     setUpdating(true);
+    setActiveDialog(null);
     try {
       const res = await fetch(`/api/admin/audits/${audit.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ status: newStatus, ...(failureReason ? { failureReason } : {}) }),
       });
       if (res.ok) {
         onStatusChange();
@@ -198,9 +204,18 @@ export function AuditDetailModal({
               </Button>
               <Button
                 size="sm"
+                variant="outline"
+                onClick={() => setActiveDialog("revision")}
+                disabled={updating}
+              >
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Request Revision
+              </Button>
+              <Button
+                size="sm"
                 variant="danger"
-                onClick={() => updateStatus("FAILED")}
-                loading={updating}
+                onClick={() => setActiveDialog("reject")}
+                disabled={updating}
               >
                 <XCircle className="mr-2 h-4 w-4" />
                 Reject
@@ -254,6 +269,30 @@ export function AuditDetailModal({
           )}
         </div>
       </Card>
+
+      {activeDialog === "revision" && (
+        <ReasonPromptDialog
+          title="Revision Request"
+          description="Describe what needs to be changed. The audit will return to IN_PROGRESS."
+          placeholder="例: M-3の対応目安が不正確です。再確認してください。"
+          confirmLabel="Send Back for Revision"
+          confirmVariant="outline"
+          onConfirm={(reason) => updateStatus("IN_PROGRESS", reason)}
+          onCancel={() => setActiveDialog(null)}
+        />
+      )}
+
+      {activeDialog === "reject" && (
+        <ReasonPromptDialog
+          title="Reject Audit"
+          description="Provide a reason for rejection."
+          placeholder="例: 重大な問題の証拠が不足しています。"
+          confirmLabel="Reject"
+          confirmVariant="danger"
+          onConfirm={(reason) => updateStatus("FAILED", reason)}
+          onCancel={() => setActiveDialog(null)}
+        />
+      )}
     </div>
   );
 }

@@ -1,18 +1,20 @@
 "use client";
 
 import { Link, usePathname } from "@/i18n/navigation";
-import { ClipboardList, LogOut, Menu, MessageSquare, Users, X, BarChart3, CreditCard } from "lucide-react";
+import { ClipboardList, LogOut, Menu, MessageSquare, Users, X, BarChart3, CreditCard, ClipboardCheck } from "lucide-react";
 import { useState } from "react";
 import { AdminUnreadBadge } from "./admin-unread-badge";
+import { AdminReviewBadge } from "./admin-review-badge";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 const navItems = [
-  { href: "/admin", label: "Free Evals", icon: ClipboardList, badge: false, exact: true },
-  { href: "/admin/users", label: "Users", icon: Users, badge: false },
-  { href: "/admin/audits", label: "Audits", icon: BarChart3, badge: false },
-  { href: "/admin/billing", label: "Billing", icon: CreditCard, badge: false },
-  { href: "/admin/messages", label: "Messages", icon: MessageSquare, badge: true },
+  { href: "/admin", label: "Free Evals", icon: ClipboardList, badge: null, exact: true },
+  { href: "/admin/users", label: "Users", icon: Users, badge: null },
+  { href: "/admin/audits", label: "Audits", icon: BarChart3, badge: null },
+  { href: "/admin/reviews", label: "Reviews", icon: ClipboardCheck, badge: "review" as const },
+  { href: "/admin/billing", label: "Billing", icon: CreditCard, badge: null },
+  { href: "/admin/messages", label: "Messages", icon: MessageSquare, badge: "unread" as const },
 ];
 
 export function AdminNav() {
@@ -43,7 +45,8 @@ export function AdminNav() {
             >
               <item.icon className="h-4 w-4" />
               {item.label}
-              {item.badge && <AdminUnreadBadge />}
+              {item.badge === "unread" && <AdminUnreadBadge />}
+              {item.badge === "review" && <AdminReviewBadge />}
             </Link>
           );
         })}

@@ -40,7 +40,11 @@ export async function PATCH(
 
   const updateData: Record<string, unknown> = {};
   if (newStatus) updateData.status = newStatus;
-  if (newStatus === "IN_PROGRESS") updateData.startedAt = new Date();
+  if (newStatus === "IN_PROGRESS") {
+    updateData.startedAt = new Date();
+    // Revision reason (when sending back from REVIEW for rework)
+    if (body.failureReason) updateData.failureReason = body.failureReason;
+  }
   if (newStatus === "DELIVERED") updateData.deliveredAt = new Date();
   if (newStatus === "COMPLETED") updateData.completedAt = new Date();
   if (newStatus === "FAILED") {

@@ -56,3 +56,9 @@ export async function getSignedDownloadUrl(key: string): Promise<string> {
   const command = new GetObjectCommand({ Bucket: BUCKET, Key: key });
   return getSignedUrl(getR2(), command, { expiresIn: 3600 });
 }
+
+export async function downloadFileAsText(key: string): Promise<string> {
+  const command = new GetObjectCommand({ Bucket: BUCKET, Key: key });
+  const response = await getR2().send(command);
+  return response.Body!.transformToString("utf-8");
+}
