@@ -1,31 +1,58 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Upload, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Upload, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type UploadState = "idle" | "uploading" | "success" | "error";
 
+type PendingFile = {
+  report: File | null;
+  findings: File | null;
+};
+
 export function ReplacePdfButton({ auditId }: { auditId: string }) {
   const [open, setOpen] = useState(false);
+  const [pending, setPending] = useState<PendingFile>({ report: null, findings: null });
   const [reportState, setReportState] = useState<UploadState>("idle");
   const [findingsState, setFindingsState] = useState<UploadState>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState(false);
 
   const reportInputRef = useRef<HTMLInputElement>(null);
   const findingsInputRef = useRef<HTMLInputElement>(null);
 
-  async function upload(reportFile: File | null, findingsFile: File | null) {
-    if (!reportFile && !findingsFile) return;
+  const isUploading = reportState === "uploading" || findingsState === "uploading";
 
-    if (reportFile) setReportState("uploading");
-    if (findingsFile) setFindingsState("uploading");
+  function handleFileChange(type: "report" | "findings") {
+    const input = type === "report" ? reportInputRef.current : findingsInputRef.current;
+    const file = input?.files?.[0] ?? null;
+    if (!file) return;
+    setPending((prev) => ({ ...prev, [type]: file }));
+    setErrorMsg(null);
+    setConfirming(true);
+  }
+
+  function cancelPending() {
+    setPending({ report: null, findings: null });
+    setConfirming(false);
+    if (reportInputRef.current) reportInputRef.current.value = "";
+    if (findingsInputRef.current) findingsInputRef.current.value = "";
+  }
+
+  async function confirmUpload() {
+    const { report, findings } = pending;
+    if (!report && !findings) return;
+
+    setConfirming(false);
+    if (report) setReportState("uploading");
+    if (findings) setFindingsState("uploading");
     setErrorMsg(null);
 
     try {
       const form = new FormData();
-      if (reportFile) form.append("reportPdf", reportFile);
-      if (findingsFile) form.append("findingsPdf", findingsFile);
+      if (report) form.append("reportPdf", report);
+      if (findings) form.append("findingsPdf", findings);
 
       const res = await fetch(`/api/admin/audits/${auditId}/replace-pdf`, {
         method: "POST",
@@ -37,10 +64,10 @@ export function ReplacePdfButton({ auditId }: { auditId: string }) {
         throw new Error(data.error ?? `HTTP ${res.status}`);
       }
 
-      if (reportFile) setReportState("success");
-      if (findingsFile) setFindingsState("success");
+      if (report) setReportState("success");
+      if (findings) setFindingsState("success");
+      setPending({ report: null, findings: null });
 
-      // Auto-close after success
       setTimeout(() => {
         setOpen(false);
         setReportState("idle");
@@ -48,22 +75,10 @@ export function ReplacePdfButton({ auditId }: { auditId: string }) {
       }, 2000);
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "Upload failed");
-      if (reportFile) setReportState("error");
-      if (findingsFile) setFindingsState("error");
+      if (pending.report) setReportState("error");
+      if (pending.findings) setFindingsState("error");
     }
   }
-
-  function handleFileChange(type: "report" | "findings") {
-    const input = type === "report" ? reportInputRef.current : findingsInputRef.current;
-    const file = input?.files?.[0] ?? null;
-    if (!file) return;
-    upload(
-      type === "report" ? file : null,
-      type === "findings" ? file : null,
-    );
-  }
-
-  const isUploading = reportState === "uploading" || findingsState === "uploading";
 
   return (
     <div>
@@ -78,9 +93,9 @@ export function ReplacePdfButton({ auditId }: { auditId: string }) {
       </button>
 
       {open && (
-        <div className="mt-2 rounded-lg border border-border bg-surface-raised p-3 space-y-2 text-xs">
+        <div className="mt-2 rounded-lg border border-border bg-surface-raised p-3 space-y-3 text-xs">
           <p className="text-ink-muted">
-            Select a new PDF to replace the current version in R2. Status and findings are not affected.
+            Select a new PDF to replace the current version in R2. The client will be notified by email.
           </p>
 
           {/* Report PDF row */}
@@ -103,6 +118,11 @@ export function ReplacePdfButton({ auditId }: { auditId: string }) {
               >
                 Choose file
               </Button>
+              {pending.report && reportState === "idle" && (
+                <span className="text-ink truncate max-w-[140px]" title={pending.report.name}>
+                  {pending.report.name}
+                </span>
+              )}
               {reportState === "uploading" && (
                 <span className="text-ink-muted animate-pulse">Uploading…</span>
               )}
@@ -139,6 +159,11 @@ export function ReplacePdfButton({ auditId }: { auditId: string }) {
               >
                 Choose file
               </Button>
+              {pending.findings && findingsState === "idle" && (
+                <span className="text-ink truncate max-w-[140px]" title={pending.findings.name}>
+                  {pending.findings.name}
+                </span>
+              )}
               {findingsState === "uploading" && (
                 <span className="text-ink-muted animate-pulse">Uploading…</span>
               )}
@@ -154,6 +179,42 @@ export function ReplacePdfButton({ auditId }: { auditId: string }) {
               )}
             </div>
           </div>
+
+          {/* Confirmation banner */}
+          {confirming && (pending.report || pending.findings) && (
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 space-y-2">
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <p className="font-medium text-amber-800">Confirm replacement</p>
+                  {pending.report && (
+                    <p className="text-amber-700">Report PDF → <span className="font-mono">{pending.report.name}</span></p>
+                  )}
+                  {pending.findings && (
+                    <p className="text-amber-700">Findings PDF → <span className="font-mono">{pending.findings.name}</span></p>
+                  )}
+                  <p className="text-amber-600 text-[11px] mt-1">The client will be notified by email.</p>
+                </div>
+              </div>
+              <div className="flex gap-2 pt-1">
+                <Button
+                  size="sm"
+                  onClick={confirmUpload}
+                  className="text-xs h-7 px-3"
+                >
+                  Replace
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={cancelPending}
+                  className="text-xs h-7 px-3"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
 
           {errorMsg && (
             <p className="text-red-600 text-xs">{errorMsg}</p>

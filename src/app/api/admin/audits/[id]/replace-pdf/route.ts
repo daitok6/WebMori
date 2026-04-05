@@ -3,6 +3,7 @@ import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { uploadPdf } from "@/lib/r2";
 import { env } from "@/lib/env";
+import { sendPdfReplacedEmail } from "@/lib/notifications";
 
 /**
  * POST /api/admin/audits/[id]/replace-pdf
@@ -94,11 +95,15 @@ export async function POST(
     await prisma.audit.update({ where: { id: auditId }, data: updates });
   }
 
-  return NextResponse.json({
-    ok: true,
-    replaced: {
-      reportPdf: !!reportPdfFile,
-      findingsPdf: !!findingsPdfFile,
-    },
+  const replacedFlags = {
+    reportPdf: !!reportPdfFile,
+    findingsPdf: !!findingsPdfFile,
+  };
+
+  // Notify client — fire-and-forget, never block the response
+  sendPdfReplacedEmail(audit.organizationId, replacedFlags).catch((err) => {
+    console.error("[replace-pdf] notification error:", err);
   });
+
+  return NextResponse.json({ ok: true, replaced: replacedFlags });
 }
