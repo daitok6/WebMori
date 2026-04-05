@@ -34,7 +34,7 @@
   --color-severity-good: #16A34A;
 
   /* Typography */
-  --font-sans: var(--font-dm-sans), 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', 'Meiryo', -apple-system, sans-serif;
+  --font-sans: var(--font-dm-sans), var(--font-noto-sans-jp), 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
 }
 
@@ -55,8 +55,8 @@ body {
 
 /* Dark mode overrides */
 .dark {
-  --color-primary: #F59E0B;
-  --color-primary-light: #FBBF24;
+  --color-primary: #D97706;
+  --color-primary-light: #F59E0B;
   --color-primary-subtle: #451A03;
 
   --color-accent: #EA580C;

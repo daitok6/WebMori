@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdmin } from "@/lib/admin";
+import { isCronOrAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
 /**
@@ -10,7 +10,7 @@ import { prisma } from "@/lib/prisma";
  *   ?reportCode=WM-202603-001 — Look up audit by report code with findings and org info
  */
 export async function GET(request: NextRequest) {
-  if (!(await isAdmin())) {
+  if (!(await isCronOrAdmin(request))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

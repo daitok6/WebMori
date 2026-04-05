@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdmin } from "@/lib/admin";
+import { isCronOrAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { generateReportCode } from "@/lib/report-code";
-import { sendAuditCompleteEmail, sendOperatorReviewAlert, sendOperatorFailureAlert } from "@/lib/notifications";
+import { sendAuditCompleteEmail, sendOperatorReviewAlert, sendOperatorFailureAlert, sendSetupIncompleteEmail } from "@/lib/notifications";
 import { scheduleNextAuditForRepo } from "@/lib/audit-scheduler";
 import type { AuditStatus } from "@/generated/prisma/client";
 
@@ -10,7 +10,7 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  if (!(await isAdmin())) {
+  if (!(await isCronOrAdmin(request))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -98,6 +98,11 @@ export async function PATCH(
       reportUrl: `https://webmori.jp/ja/dashboard/reports/${audit.id}`,
     }).catch((err) => {
       console.error("[audit DELIVERED] sendAuditCompleteEmail failed:", err);
+    });
+
+    // Remind Growth/Pro clients who haven't linked LINE yet (sent once per org)
+    await sendSetupIncompleteEmail(audit.organizationId).catch((err) => {
+      console.error("[audit DELIVERED] sendSetupIncompleteEmail failed:", err);
     });
   }
 

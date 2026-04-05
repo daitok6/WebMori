@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ReasonPromptDialog } from "./reason-prompt-dialog";
+import { ReplacePdfButton } from "./replace-pdf-button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -15,6 +16,8 @@ import {
   FileText,
   Loader2,
   Shield,
+  Copy,
+  Check,
 } from "lucide-react";
 
 const SEVERITY_ORDER: Record<string, number> = {
@@ -75,6 +78,14 @@ export function ReviewDetailPanel({
   const [activeTab, setActiveTab] = useState<ActiveTab>("findings");
   const [activeDialog, setActiveDialog] = useState<ActiveDialog>(null);
   const [updating, setUpdating] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  function copyId() {
+    navigator.clipboard.writeText(audit.id).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }
   const [markdown, setMarkdown] = useState<string | null>(null);
   const [mdLoading, setMdLoading] = useState(false);
   const [mdError, setMdError] = useState<"no-key" | "fetch-failed" | null>(null);
@@ -251,7 +262,8 @@ export function ReviewDetailPanel({
         )}
 
         {/* PDF + PR links */}
-        <div className="flex flex-wrap gap-2 pt-1">
+        <div className="flex flex-wrap gap-2 pt-1 items-start">
+          <ReplacePdfButton auditId={audit.id} />
           {audit.reportPdfUrl && (
             <a
               href={`/api/admin/audits/${audit.id}/pdf`}
@@ -292,7 +304,17 @@ export function ReviewDetailPanel({
         </div>
 
         {/* Action buttons */}
-        <div className="flex gap-2 pt-2 border-t border-border">
+        <div className="flex items-center justify-between pt-2 border-t border-border">
+          <button
+            onClick={copyId}
+            className="inline-flex items-center gap-1.5 rounded border border-border px-2.5 py-1 font-mono text-xs text-ink-muted hover:text-ink hover:bg-surface transition-colors"
+            title="Copy audit ID"
+          >
+            <span>{audit.id}</span>
+            {copied ? <Check className="h-3 w-3 text-green-600 shrink-0" /> : <Copy className="h-3 w-3 shrink-0" />}
+          </button>
+        </div>
+        <div className="flex gap-2">
           <Button
             size="sm"
             onClick={() => updateStatus("DELIVERED")}

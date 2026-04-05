@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Card } from "@/components/ui/card";
 import {
   Activity,
@@ -105,6 +105,7 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function MonitoringPage() {
   const t = useTranslations("dashboard.monitoring");
+  const locale = useLocale();
   const [data, setData] = useState<MonitoringData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -210,7 +211,7 @@ export default function MonitoringPage() {
                           </p>
                         )}
                         <p className="mt-1 text-[10px] text-ink-muted/60">
-                          {new Date(check.checkedAt).toLocaleDateString()}
+                          {new Date(check.checkedAt).toLocaleDateString(locale)}
                         </p>
                       </div>
                     );
@@ -297,11 +298,11 @@ export default function MonitoringPage() {
                     </div>
                     <div className="shrink-0 text-right">
                       <p className="text-xs text-ink-muted">
-                        {new Date(alert.createdAt).toLocaleDateString()}
+                        {new Date(alert.createdAt).toLocaleDateString(locale)}
                       </p>
                       {alert.resolvedAt && (
                         <p className="text-xs text-severity-good">
-                          {t("resolved")} {new Date(alert.resolvedAt).toLocaleDateString()}
+                          {t("resolved")} {new Date(alert.resolvedAt).toLocaleDateString(locale)}
                         </p>
                       )}
                     </div>

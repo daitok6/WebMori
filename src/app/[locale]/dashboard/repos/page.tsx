@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -59,6 +59,7 @@ const stackLabels: Record<string, string> = {
 
 export default function ReposPage() {
   const t = useTranslations("dashboard.repos");
+  const locale = useLocale();
   const { data, loading, error, retry, mutate } = useDashboardData<ReposResponse>("/api/dashboard/repos");
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: "", url: "", stack: "OTHER" });
@@ -262,7 +263,7 @@ export default function ReposPage() {
                     {repo.lastAudit ? (
                       <span className="flex items-center gap-2">
                         {t("lastAudit")}:{" "}
-                        {new Date(repo.lastAudit.date).toLocaleDateString()}
+                        {new Date(repo.lastAudit.date).toLocaleDateString(locale)}
                         {" · "}
                         {t("findingsCount", { count: repo.lastAudit.findingsCount })}
                         <AuditStatusBadge status={repo.lastAudit.status} />

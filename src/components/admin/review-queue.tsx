@@ -15,6 +15,8 @@ import {
   ChevronUp,
   ExternalLink,
   Star,
+  Copy,
+  Check,
 } from "lucide-react";
 
 type Finding = {
@@ -89,6 +91,26 @@ function humanizeAge(isoDate: string): string {
   if (hours < 1) return `${Math.round(hours * 60)}m ago`;
   if (hours < 24) return `${Math.round(hours)}h ago`;
   return `${Math.round(hours / 24)}d ago`;
+}
+
+function CopyIdButton({ id }: { id: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(id).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1500);
+        });
+      }}
+      className="inline-flex items-center gap-1 font-mono text-[10px] text-ink-muted hover:text-ink transition-colors"
+      title="Copy audit ID"
+    >
+      <span className="truncate max-w-[100px]">{id}</span>
+      {copied ? <Check className="h-2.5 w-2.5 text-green-600 shrink-0" /> : <Copy className="h-2.5 w-2.5 shrink-0" />}
+    </button>
+  );
 }
 
 export function ReviewQueue() {
@@ -225,6 +247,9 @@ export function ReviewQueue() {
                         ) : (
                           <span className="text-ink-muted">—</span>
                         )}
+                        <div className="mt-0.5">
+                          <CopyIdButton id={audit.id} />
+                        </div>
                       </td>
                       <td className="px-4 py-3 hidden sm:table-cell">
                         <SeveritySummary findings={audit.findings} />
