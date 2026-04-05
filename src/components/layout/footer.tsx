@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { Github } from "lucide-react";
 
 export function Footer() {
   const t = useTranslations();
@@ -92,8 +93,17 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-8 pb-[env(safe-area-inset-bottom)] text-center text-sm text-white/40">
-          &copy; {new Date().getFullYear()} {t("footer.copyright")}
+        <div className="mt-12 border-t border-white/10 pt-8 pb-[env(safe-area-inset-bottom)] flex items-center justify-center gap-4 text-sm text-white/40">
+          <span>&copy; {new Date().getFullYear()} {t("footer.copyright")}</span>
+          <a
+            href="https://github.com/daitok6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-white transition-colors"
+            aria-label="GitHub"
+          >
+            <Github className="h-4 w-4" />
+          </a>
         </div>
       </div>
     </footer>

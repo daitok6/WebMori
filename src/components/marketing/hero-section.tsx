@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@/i18n/navigation";
-import { Shield, Zap, Globe, Code, LineChart, Users } from "lucide-react";
+import { Shield, Zap, Globe, Code, LineChart, CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 /* ---------- Terminal scan animation ---------- */
@@ -119,6 +119,16 @@ export function HeroSection() {
             </Link>
           </motion.div>
 
+          {/* No credit card note */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="mt-2 text-xs text-ink-muted"
+          >
+            {t("noCreditCard")}
+          </motion.p>
+
           {/* Social proof line */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -126,7 +136,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-6 flex items-center justify-center gap-2 text-sm text-ink-muted"
           >
-            <Users className="h-4 w-4" />
+            <CheckCircle className="h-4 w-4" />
             <span>{t("socialProof")}</span>
           </motion.div>
         </div>

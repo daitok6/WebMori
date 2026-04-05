@@ -14,7 +14,7 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://webmori.jp";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.webmori.jp";
 
 export const metadata: Metadata = {
   title: {

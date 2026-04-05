@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/dashboard/", "/api/"],
     },
-    sitemap: "https://webmori.jp/sitemap.xml",
+    sitemap: "https://www.webmori.jp/sitemap.xml",
   };
 }

@@ -3,6 +3,7 @@ export function JsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "WebMori",
+    url: "https://www.webmori.jp",
     alternateName: "ウェブ守り",
     applicationCategory: "SecurityApplication",
     operatingSystem: "Web",

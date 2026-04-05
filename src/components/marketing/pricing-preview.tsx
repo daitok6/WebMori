@@ -58,6 +58,11 @@ export function PricingPreview() {
                       &yen;{t(`plans.${i}.price`)}
                     </span>
                     <span className="text-ink-muted">{t("perMonth")}</span>
+                    {t.has(`plans.${i}.onboarding`) && (
+                      <p className="mt-2 text-xs text-ink-muted">
+                        {t("onboardingFee", { amount: t(`plans.${i}.onboarding`) })}
+                      </p>
+                    )}
                   </div>
 
                   <ul className="mb-8 flex-1 space-y-3">

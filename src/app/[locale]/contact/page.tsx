@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { Send, Clock } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
 const stacks = ["Shopify", "WordPress", "Next.js", "LINE Mini App", "Other"];
 
@@ -143,6 +144,11 @@ export default function ContactPage() {
                 <Button type="submit" size="lg" className="w-full" loading={loading}>
                   {t("submit")}
                 </Button>
+
+                <p className="mt-2 text-xs text-ink-muted">
+                  {t("privacyNote")}{" "}
+                  <Link href="/legal/privacy" className="underline hover:text-ink">{t("privacyPolicyLink")}</Link>
+                </p>
 
                 <div className="flex items-center gap-2 text-sm text-ink-muted">
                   <Clock className="h-4 w-4" />

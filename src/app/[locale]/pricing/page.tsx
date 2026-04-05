@@ -10,14 +10,12 @@ import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCheckout } from "@/lib/use-checkout";
 import { Link } from "@/i18n/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 import { featureCounts } from "@/lib/pricing-data";
 
 export default function PricingPage() {
   const t = useTranslations("pricing");
   const tFaq = useTranslations("pricingPage");
   const [annual, setAnnual] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { checkout, loading } = useCheckout();
 
   return (
@@ -58,6 +56,12 @@ export default function PricingPage() {
             {annual && (
               <Badge variant="growth">{t("annualDiscount")}</Badge>
             )}
+          </div>
+
+          {/* ROI callout */}
+          <div className="text-center mb-8">
+            <p className="text-sm font-semibold text-primary">{t("roiTitle")}</p>
+            <p className="mt-1 text-sm text-ink-muted">{t("roiDescription")}</p>
           </div>
 
           {/* Cards */}
@@ -120,7 +124,7 @@ export default function PricingPage() {
                         disabled={loading}
                         onClick={() => checkout(i, annual)}
                       >
-                        {t("getStarted")}
+                        {t(`plans.${i}.cta`)}
                       </Button>
                     </div>
                   </Card>
@@ -221,36 +225,15 @@ export default function PricingPage() {
           <div className="mt-12 space-y-3">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <ScrollReveal key={i} delay={i * 0.05}>
-                <div className="rounded-xl border border-border">
-                  <button
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="flex w-full items-center justify-between px-6 py-4 text-left cursor-pointer"
-                  >
-                    <span className="font-medium text-ink">{tFaq(`faq.${i}.q`)}</span>
-                    <ChevronDown
-                      className={cn(
-                        "h-5 w-5 shrink-0 text-ink-muted transition-transform",
-                        openFaq === i && "rotate-180",
-                      )}
-                    />
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {openFaq === i && (
-                      <motion.div
-                        key="content"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2, ease: "easeInOut" }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-6 pb-4 text-sm text-ink-muted leading-relaxed">
-                          {tFaq(`faq.${i}.a`)}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                <details className="border border-border rounded-lg overflow-hidden group">
+                  <summary className="flex items-center justify-between cursor-pointer px-5 py-4 text-left font-medium text-ink select-none list-none">
+                    {tFaq(`faq.${i}.q`)}
+                    <ChevronDown className="h-4 w-4 shrink-0 text-ink-muted transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="px-5 pb-4 text-ink-muted leading-relaxed text-sm">
+                    {tFaq(`faq.${i}.a`)}
+                  </div>
+                </details>
               </ScrollReveal>
             ))}
           </div>
