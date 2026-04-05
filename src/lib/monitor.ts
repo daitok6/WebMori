@@ -3,7 +3,7 @@
  * All checks are URL-based — no repo access required.
  * Designed to run inside a Vercel serverless function (Node.js runtime).
  */
-import https from "https";
+import tls from "tls";
 
 export type CheckStatus = "OK" | "WARNING" | "CRITICAL";
 
@@ -42,26 +42,30 @@ export function checkSSLExpiry(url: string): Promise<CheckResult> {
       return Promise.resolve({ status: "CRITICAL", value: "Not using HTTPS" });
     }
     return new Promise((resolve) => {
-      const req = https.request({ hostname, method: "HEAD", port: 443 }, (res) => {
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const cert = (res.socket as any).getPeerCertificate?.();
-          if (!cert?.valid_to) {
-            resolve({ status: "WARNING", value: "Could not read certificate" });
-          } else {
+      // Use tls.connect() directly so getPeerCertificate() works reliably in
+      // serverless environments where https.request() loses cert access.
+      const socket = tls.connect(
+        { host: hostname, port: 443, servername: hostname, rejectUnauthorized: false },
+        () => {
+          try {
+            const cert = socket.getPeerCertificate();
+            socket.destroy();
+            if (!cert?.valid_to) {
+              resolve({ status: "WARNING", value: "Could not read certificate" });
+              return;
+            }
             const days = Math.floor((new Date(cert.valid_to).getTime() - Date.now()) / 86_400_000);
             if (days < 14) resolve({ status: "CRITICAL", value: `Expires in ${days} days` });
             else if (days < 30) resolve({ status: "WARNING", value: `Expires in ${days} days` });
             else resolve({ status: "OK", value: `Expires in ${days} days` });
+          } catch {
+            socket.destroy();
+            resolve({ status: "WARNING", value: "Certificate read error" });
           }
-        } catch {
-          resolve({ status: "WARNING", value: "Certificate read error" });
         }
-        req.destroy();
-      });
-      req.on("error", () => resolve({ status: "WARNING", value: "SSL check failed" }));
-      req.setTimeout(8_000, () => { req.destroy(); resolve({ status: "WARNING", value: "SSL check timed out" }); });
-      req.end();
+      );
+      socket.on("error", () => resolve({ status: "WARNING", value: "SSL check failed" }));
+      socket.setTimeout(8_000, () => { socket.destroy(); resolve({ status: "WARNING", value: "SSL check timed out" }); });
     });
   } catch {
     return Promise.resolve({ status: "WARNING", value: "Invalid URL" });
