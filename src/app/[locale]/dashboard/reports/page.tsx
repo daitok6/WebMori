@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useDashboardData } from "@/lib/use-dashboard-data";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,20 +31,12 @@ interface FreeEvalReport {
 
 export default function ReportsPage() {
   const t = useTranslations("dashboard.reports");
-  const [audits, setAudits] = useState<AuditSummary[]>([]);
-  const [freeEvals, setFreeEvals] = useState<FreeEvalReport[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      fetch("/api/dashboard/reports")
-        .then((r) => (r.ok ? r.json() : []))
-        .then(setAudits),
-      fetch("/api/dashboard/reports/free-evals")
-        .then((r) => (r.ok ? r.json() : []))
-        .then(setFreeEvals),
-    ]).finally(() => setLoading(false));
-  }, []);
+  const { data, loading } = useDashboardData<[AuditSummary[], FreeEvalReport[]]>(
+    ["/api/dashboard/reports", "/api/dashboard/reports/free-evals"],
+    { pollInterval: 120_000 }
+  );
+  const audits = data?.[0] ?? [];
+  const freeEvals = data?.[1] ?? [];
 
   if (loading) {
     return (

@@ -79,7 +79,7 @@ export default function DashboardPage() {
   const tStatus = useTranslations("dashboard.auditStatus");
   const locale = useLocale();
   const router = useRouter();
-  const { data, loading, error, retry } = useDashboardData<OverviewData>("/api/dashboard/overview");
+  const { data, loading, error, retry } = useDashboardData<OverviewData>("/api/dashboard/overview", { pollInterval: 60_000 });
 
   // Redirect paid users who haven't completed onboarding wizard
   useEffect(() => {

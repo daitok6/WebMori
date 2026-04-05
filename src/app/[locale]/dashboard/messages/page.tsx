@@ -25,8 +25,23 @@ export default function MessagesPage() {
 
   useEffect(() => {
     fetchMessages();
-    const interval = setInterval(fetchMessages, 15000);
-    return () => clearInterval(interval);
+
+    let id: ReturnType<typeof setInterval> | null = setInterval(fetchMessages, 15000);
+
+    function handleVisibility() {
+      if (document.hidden) {
+        if (id) { clearInterval(id); id = null; }
+      } else {
+        fetchMessages();
+        id = setInterval(fetchMessages, 15000);
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      if (id) clearInterval(id);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, []);
 
   useEffect(() => {

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+
 import { useTranslations, useLocale } from "next-intl";
 import { Card } from "@/components/ui/card";
+import { useDashboardData } from "@/lib/use-dashboard-data";
 import {
   Activity,
   ShieldAlert,
@@ -106,15 +107,10 @@ function StatusBadge({ status }: { status: string }) {
 export default function MonitoringPage() {
   const t = useTranslations("dashboard.monitoring");
   const locale = useLocale();
-  const [data, setData] = useState<MonitoringData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/dashboard/monitoring")
-      .then((r) => (r.ok ? r.json() : null))
-      .then(setData)
-      .finally(() => setLoading(false));
-  }, []);
+  const { data, loading, error } = useDashboardData<MonitoringData>(
+    "/api/dashboard/monitoring",
+    { pollInterval: 60_000 }
+  );
 
   if (loading) {
     return (
@@ -124,7 +120,7 @@ export default function MonitoringPage() {
     );
   }
 
-  if (!data) {
+  if (error || !data) {
     return (
       <Card className="mt-6 py-12 text-center">
         <p className="text-ink-muted">{t("error")}</p>
