@@ -40,8 +40,12 @@ export default function PricingPage() {
             </span>
             <button
               onClick={() => setAnnual(!annual)}
+              role="switch"
+              aria-checked={annual}
+              aria-label={t("annual")}
               className={cn(
                 "relative h-7 w-12 rounded-full transition-colors cursor-pointer",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                 annual ? "bg-primary" : "bg-border",
               )}
             >
@@ -224,6 +228,8 @@ export default function PricingPage() {
                 <div className="rounded-xl border border-border">
                   <button
                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    aria-expanded={openFaq === i}
+                    aria-controls={`faq-answer-${i}`}
                     className="flex w-full items-center justify-between px-6 py-4 text-left cursor-pointer"
                   >
                     <span className="font-medium text-ink">{tFaq(`faq.${i}.q`)}</span>
@@ -232,12 +238,14 @@ export default function PricingPage() {
                         "h-5 w-5 shrink-0 text-ink-muted transition-transform",
                         openFaq === i && "rotate-180",
                       )}
+                      aria-hidden="true"
                     />
                   </button>
                   <AnimatePresence initial={false}>
                     {openFaq === i && (
                       <motion.div
                         key="content"
+                        id={`faq-answer-${i}`}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
