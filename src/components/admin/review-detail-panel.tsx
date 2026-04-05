@@ -15,6 +15,8 @@ import {
   FileText,
   Loader2,
   Shield,
+  Copy,
+  Check,
 } from "lucide-react";
 
 const SEVERITY_ORDER: Record<string, number> = {
@@ -75,6 +77,14 @@ export function ReviewDetailPanel({
   const [activeTab, setActiveTab] = useState<ActiveTab>("findings");
   const [activeDialog, setActiveDialog] = useState<ActiveDialog>(null);
   const [updating, setUpdating] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  function copyId() {
+    navigator.clipboard.writeText(audit.id).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }
   const [markdown, setMarkdown] = useState<string | null>(null);
   const [mdLoading, setMdLoading] = useState(false);
   const [mdError, setMdError] = useState<"no-key" | "fetch-failed" | null>(null);
@@ -292,7 +302,17 @@ export function ReviewDetailPanel({
         </div>
 
         {/* Action buttons */}
-        <div className="flex gap-2 pt-2 border-t border-border">
+        <div className="flex items-center justify-between pt-2 border-t border-border">
+          <button
+            onClick={copyId}
+            className="inline-flex items-center gap-1.5 rounded border border-border px-2.5 py-1 font-mono text-xs text-ink-muted hover:text-ink hover:bg-surface transition-colors"
+            title="Copy audit ID"
+          >
+            <span>{audit.id}</span>
+            {copied ? <Check className="h-3 w-3 text-green-600 shrink-0" /> : <Copy className="h-3 w-3 shrink-0" />}
+          </button>
+        </div>
+        <div className="flex gap-2">
           <Button
             size="sm"
             onClick={() => updateStatus("DELIVERED")}

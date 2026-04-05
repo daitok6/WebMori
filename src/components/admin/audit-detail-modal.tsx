@@ -16,6 +16,8 @@ import {
   FileText,
   GitPullRequest,
   RotateCcw,
+  Copy,
+  Check,
 } from "lucide-react";
 
 type ActiveDialog = "revision" | "reject" | null;
@@ -40,6 +42,14 @@ export function AuditDetailModal({
 }) {
   const [updating, setUpdating] = useState(false);
   const [activeDialog, setActiveDialog] = useState<ActiveDialog>(null);
+  const [copied, setCopied] = useState(false);
+
+  function copyId() {
+    navigator.clipboard.writeText(audit.id).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }
 
   async function updateStatus(newStatus: string, failureReason?: string) {
     setUpdating(true);
@@ -102,6 +112,22 @@ export function AuditDetailModal({
           <div className="flex justify-between">
             <span className="text-ink-muted">Findings</span>
             <span className="font-medium text-ink">{audit.findingsCount}</span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-ink-muted">Audit ID</span>
+            <button
+              onClick={copyId}
+              className="inline-flex items-center gap-1.5 rounded border border-border px-2 py-0.5 font-mono text-xs text-ink hover:bg-surface-raised transition-colors"
+              title="Copy audit ID"
+            >
+              <span className="truncate max-w-[160px]">{audit.id}</span>
+              {copied ? (
+                <Check className="h-3 w-3 text-green-600 shrink-0" />
+              ) : (
+                <Copy className="h-3 w-3 text-ink-muted shrink-0" />
+              )}
+            </button>
           </div>
 
           {audit.reportCode && (
