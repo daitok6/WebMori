@@ -55,8 +55,8 @@ body {
 
 /* Dark mode overrides */
 .dark {
-  --color-primary: #F59E0B;
-  --color-primary-light: #FBBF24;
+  --color-primary: #D97706;
+  --color-primary-light: #F59E0B;
   --color-primary-subtle: #451A03;
 
   --color-accent: #EA580C;
