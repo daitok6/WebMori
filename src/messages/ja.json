@@ -413,6 +413,7 @@
       "viewAllReports": "すべてのレポートを見る",
       "manageBilling": "請求管理",
       "findingsTrend": "検出傾向",
+      "trendNotEnoughData": "2回目の監査完了後にトレンドが表示されます",
       "findings": "件の問題",
       "noPlan": "未契約",
       "notScheduled": "未定",

@@ -439,6 +439,7 @@
       "viewAllReports": "View all reports",
       "manageBilling": "Manage billing",
       "findingsTrend": "Findings Trend",
+      "trendNotEnoughData": "Trend will appear after your second audit is complete",
       "findings": "findings",
       "noPlan": "No Plan",
       "notScheduled": "Not scheduled",
