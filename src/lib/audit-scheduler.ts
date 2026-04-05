@@ -196,6 +196,62 @@ export async function scheduleMonthlyAudits(): Promise<{ orgName: string; repoNa
 }
 
 /**
+ * Schedule the next monthly audit for a specific repo after the current one completes.
+ * Called reactively when an audit is marked COMPLETED. Uses the org's assigned week/day
+ * slot and the 25-day minimum gap rule. The daily cron remains as a catch-up safety net.
+ */
+export async function scheduleNextAuditForRepo(
+  organizationId: string,
+  repoId: string,
+): Promise<void> {
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    include: { subscription: true },
+  });
+
+  if (!org?.auditWeek || !org?.auditDayOfWeek) return;
+  if (!org.subscription || !["ACTIVE", "TRIALING"].includes(org.subscription.status)) return;
+
+  const lastAudit = await prisma.audit.findFirst({
+    where: { repoId },
+    orderBy: { createdAt: "desc" },
+    select: { createdAt: true },
+  });
+
+  const nextDate = getNextAuditDate(
+    org.auditWeek,
+    org.auditDayOfWeek,
+    lastAudit?.createdAt,
+    25,
+  );
+
+  // Don't create a duplicate for the same month
+  const existing = await prisma.audit.findFirst({
+    where: {
+      repoId,
+      scheduledAt: {
+        gte: new Date(nextDate.getFullYear(), nextDate.getMonth(), 1),
+        lt: new Date(nextDate.getFullYear(), nextDate.getMonth() + 1, 1),
+      },
+      status: { not: "FAILED" },
+    },
+  });
+  if (existing) return;
+
+  const auditDepth = org.subscription.plan === "STARTER" ? "lite" : "full";
+
+  await prisma.audit.create({
+    data: {
+      organizationId,
+      repoId,
+      status: "SCHEDULED",
+      scheduledAt: nextDate,
+      auditDepth,
+    },
+  });
+}
+
+/**
  * Trigger a welcome audit immediately after onboarding.
  */
 export async function triggerWelcomeAudit(orgId: string, plan: Plan): Promise<void> {

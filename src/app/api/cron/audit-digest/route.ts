@@ -76,7 +76,8 @@ export async function GET(request: NextRequest) {
 
   const commands = pending.map((audit) => {
     const email = audit.organization.users[0]?.email ?? "";
-    return email ? `/audit ${email}` : `# ${audit.organization.name} — メール未設定`;
+    if (!email) return `# ${audit.organization.name} — メール未設定`;
+    return `/audit ${email} --auditId=${audit.id}  # ${audit.repo.name}`;
   }).join("\n");
 
   await resend.emails.send({

@@ -72,13 +72,14 @@ async function lookupByEmail(email: string) {
           audits: {
             where: { status: "SCHEDULED" },
             orderBy: { scheduledAt: "desc" },
-            take: 1,
             select: {
               id: true,
               reportCode: true,
               repoId: true,
               scheduledAt: true,
               status: true,
+              auditDepth: true,
+              repo: { select: { name: true, url: true, isRepoless: true } },
             },
           },
         },
@@ -116,7 +117,7 @@ async function lookupByEmail(email: string) {
         }
       : null,
     repos: org.repos,
-    audit: org.audits[0] ?? null,
+    audits: org.audits,
   });
 }
 

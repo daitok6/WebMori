@@ -20,9 +20,11 @@ export async function getCurrentOrg() {
   return user?.organization ?? null;
 }
 
+const CLIENT_VISIBLE_STATUSES = ["DELIVERED", "COMPLETED"] as const;
+
 export async function getOrgAudits(orgId: string) {
   return prisma.audit.findMany({
-    where: { organizationId: orgId },
+    where: { organizationId: orgId, status: { in: [...CLIENT_VISIBLE_STATUSES] } },
     include: {
       repo: true,
       findings: true,
@@ -33,7 +35,7 @@ export async function getOrgAudits(orgId: string) {
 
 export async function getAuditById(auditId: string, orgId: string) {
   return prisma.audit.findFirst({
-    where: { id: auditId, organizationId: orgId },
+    where: { id: auditId, organizationId: orgId, status: { in: [...CLIENT_VISIBLE_STATUSES] } },
     include: {
       repo: true,
       findings: { orderBy: { severity: "asc" } },

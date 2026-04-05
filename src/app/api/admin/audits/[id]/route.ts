@@ -3,6 +3,7 @@ import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { generateReportCode } from "@/lib/report-code";
 import { sendAuditCompleteEmail, sendOperatorReviewAlert, sendOperatorFailureAlert } from "@/lib/notifications";
+import { scheduleNextAuditForRepo } from "@/lib/audit-scheduler";
 import type { AuditStatus } from "@/generated/prisma/client";
 
 export async function PATCH(
@@ -94,8 +95,16 @@ export async function PATCH(
     await sendAuditCompleteEmail(audit.organizationId, {
       repoName: audit.repo.name,
       findingsCount: updated.findings.length,
+      reportUrl: `https://webmori.jp/ja/dashboard/reports/${audit.id}`,
     }).catch((err) => {
       console.error("[audit DELIVERED] sendAuditCompleteEmail failed:", err);
+    });
+  }
+
+  // Schedule next month's audit when this one is marked complete
+  if (newStatus === "COMPLETED") {
+    scheduleNextAuditForRepo(audit.organizationId, audit.repoId).catch((err) => {
+      console.error("[audit COMPLETED] scheduleNextAuditForRepo failed:", err);
     });
   }
 
