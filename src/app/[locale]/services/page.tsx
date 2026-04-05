@@ -41,6 +41,9 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
 
   const faqs = t.raw("faq.items") as Array<{ q: string; a: string }>;
 
+  const lineFriendUrl = process.env.NEXT_PUBLIC_LINE_FRIEND_URL ?? "https://line.me/R/ti/p/@webmori";
+  const contactEmail = process.env.OPERATOR_EMAIL ?? "contact@webmori.jp";
+
   return (
     <>
       {/* Hero */}
@@ -58,13 +61,13 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="https://line.me/R/ti/p/@webmori"
+                href={lineFriendUrl}
                 className="inline-flex items-center justify-center rounded-lg bg-[#06C755] px-6 py-3 text-sm font-semibold text-white hover:bg-[#05b34c] transition-colors"
               >
                 {t("hero.ctaLine")}
               </a>
               <a
-                href="mailto:hello@webmori.jp"
+                href={`mailto:${contactEmail}`}
                 className="inline-flex items-center justify-center rounded-lg border border-border bg-surface px-6 py-3 text-sm font-semibold text-ink hover:bg-surface-raised transition-colors"
               >
                 {t("hero.ctaEmail")}

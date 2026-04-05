@@ -173,7 +173,7 @@ export default function PricingPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-ink mb-1">完全代行</h3>
                 <p className="text-2xl font-bold text-ink mb-1">¥7,500<span className="text-sm font-normal text-ink-muted">/時</span></p>
-                <p className="text-xs text-ink-muted mb-4">PR適用: ¥5,000固定</p>
+                <p className="text-xs text-ink-muted mb-4">PR適用: ¥2,000固定</p>
                 <p className="text-sm text-ink-muted flex-1">画像最適化、フォント自ホスト化、設定変更など低リスクの修正を直接実装します。</p>
               </div>
             </ScrollReveal>
