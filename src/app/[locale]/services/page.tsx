@@ -145,8 +145,32 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Subscription prerequisite notice */}
+      <section className="bg-surface py-8">
+        <div className="mx-auto max-w-3xl px-6">
+          <ScrollReveal>
+            <div className="flex items-start gap-4 rounded-xl border border-primary/25 bg-primary/5 px-6 py-4">
+              <span className="mt-0.5 text-xl leading-none">ℹ️</span>
+              <div>
+                <p className="font-semibold text-ink text-sm">
+                  月次監査プランへのご加入が必要です
+                </p>
+                <p className="mt-1 text-sm text-ink-muted leading-relaxed">
+                  実装代行は、月次監査レポートに記載された問題に対してご依頼いただくオプションです。
+                  まずは{" "}
+                  <Link href="/pricing" className="font-medium text-primary hover:underline">
+                    監査プラン（¥19,800/月〜）
+                  </Link>
+                  {" "}にご加入ください。レポートを受け取った後、必要な修正だけをご依頼いただけます。
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* Three tier cards */}
-      <section className="bg-surface py-16 sm:py-24">
+      <section className="bg-surface pb-16 sm:pb-24">
         <div className="mx-auto max-w-5xl px-6">
           <ScrollReveal>
             <h2 className="text-center text-3xl font-bold text-ink sm:text-4xl mb-12">
