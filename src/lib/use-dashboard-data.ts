@@ -55,8 +55,31 @@ export function useDashboardData<T>(
 
   useEffect(() => {
     if (!options?.pollInterval) return;
-    const id = setInterval(fetchData, options.pollInterval);
-    return () => clearInterval(id);
+    const interval = options.pollInterval;
+
+    let id: ReturnType<typeof setInterval> | null = null;
+
+    function start() {
+      if (id) clearInterval(id);
+      id = setInterval(fetchData, interval);
+    }
+
+    function handleVisibility() {
+      if (document.hidden) {
+        if (id) { clearInterval(id); id = null; }
+      } else {
+        fetchData();
+        start();
+      }
+    }
+
+    start();
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      if (id) clearInterval(id);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, [fetchData, options?.pollInterval]);
 
   const retry = useCallback(() => {
