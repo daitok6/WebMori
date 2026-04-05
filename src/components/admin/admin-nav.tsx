@@ -1,7 +1,7 @@
 "use client";
 
 import { Link, usePathname } from "@/i18n/navigation";
-import { ClipboardList, LogOut, Menu, MessageSquare, Users, X, BarChart3, CreditCard, ClipboardCheck } from "lucide-react";
+import { ClipboardList, LogOut, Menu, MessageSquare, Users, X, BarChart3, CreditCard, ClipboardCheck, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 import { AdminUnreadBadge } from "./admin-unread-badge";
 import { AdminReviewBadge } from "./admin-review-badge";
@@ -9,12 +9,13 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 const navItems = [
-  { href: "/admin", label: "Free Evals", icon: ClipboardList, badge: null, exact: true },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, badge: null, exact: true },
   { href: "/admin/users", label: "Users", icon: Users, badge: null },
   { href: "/admin/audits", label: "Audits", icon: BarChart3, badge: null },
   { href: "/admin/reviews", label: "Reviews", icon: ClipboardCheck, badge: "review" as const },
   { href: "/admin/billing", label: "Billing", icon: CreditCard, badge: null },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare, badge: "unread" as const },
+  { href: "/admin/contacts", label: "Contacts", icon: ClipboardList, badge: null },
 ];
 
 export function AdminNav() {

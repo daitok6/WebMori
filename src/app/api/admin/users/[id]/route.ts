@@ -20,6 +20,7 @@ export async function GET(
           subscription: true,
           repos: { where: { isActive: true } },
           audits: {
+            where: { status: { notIn: ["SCHEDULED", "IN_PROGRESS"] } },
             orderBy: { createdAt: "desc" },
             take: 5,
             include: { findings: true },
