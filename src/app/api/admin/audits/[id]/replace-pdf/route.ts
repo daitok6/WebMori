@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 import { uploadPdf } from "@/lib/r2";
+import { env } from "@/lib/env";
 
 /**
  * POST /api/admin/audits/[id]/replace-pdf
  *
- * Replaces one or both PDFs in R2 without touching findings, status, or prLinks.
- * Used by the operator to swap out a delivered report after edits.
+ * Replaces one or both PDFs in R2 without touching the DB URL, findings, status, or prLinks.
+ * Derives the R2 key from the existing stored URL so the same key is always overwritten.
  *
  * Content-Type: multipart/form-data
  * Fields (at least one required):
@@ -44,25 +45,54 @@ export async function POST(
     );
   }
 
+  // Derive the R2 key from the existing stored URL (or fall back to the canonical path).
+  // We never update the DB URL — just overwrite the object at the same key in R2.
+  function keyFromUrl(storedUrl: string | null, fallback: string): string {
+    if (!storedUrl) return fallback;
+    if (storedUrl.startsWith("http")) {
+      // e.g. "https://cdn.webmori.jp/audits/org/audit/report.pdf" → "audits/org/audit/report.pdf"
+      return new URL(storedUrl).pathname.replace(/^\//, "");
+    }
+    // Relative path stored — strip leading slash
+    return storedUrl.replace(/^\//, "");
+  }
+
   const orgId = audit.organizationId;
-  const updates: { reportPdfUrl?: string; findingsPdfUrl?: string } = {};
 
   if (reportPdfFile) {
+    const key = keyFromUrl(
+      audit.reportPdfUrl,
+      `audits/${orgId}/${auditId}/report.pdf`,
+    );
     const buffer = Buffer.from(await reportPdfFile.arrayBuffer());
-    const key = `audits/${orgId}/${auditId}/report.pdf`;
-    updates.reportPdfUrl = await uploadPdf(key, buffer);
+    await uploadPdf(key, buffer);
   }
 
   if (findingsPdfFile) {
+    const key = keyFromUrl(
+      audit.findingsPdfUrl,
+      `audits/${orgId}/${auditId}/findings.pdf`,
+    );
     const buffer = Buffer.from(await findingsPdfFile.arrayBuffer());
-    const key = `audits/${orgId}/${auditId}/findings.pdf`;
-    updates.findingsPdfUrl = await uploadPdf(key, buffer);
+    await uploadPdf(key, buffer);
   }
 
-  await prisma.audit.update({
-    where: { id: auditId },
-    data: updates,
-  });
+  // If no URL was stored yet (first-time upload), persist the new URL now
+  const needsUrlUpdate =
+    (reportPdfFile && !audit.reportPdfUrl) ||
+    (findingsPdfFile && !audit.findingsPdfUrl);
+
+  if (needsUrlUpdate) {
+    const publicUrl = env.R2_PUBLIC_URL;
+    const updates: { reportPdfUrl?: string; findingsPdfUrl?: string } = {};
+    if (reportPdfFile && !audit.reportPdfUrl) {
+      updates.reportPdfUrl = `${publicUrl}/audits/${orgId}/${auditId}/report.pdf`;
+    }
+    if (findingsPdfFile && !audit.findingsPdfUrl) {
+      updates.findingsPdfUrl = `${publicUrl}/audits/${orgId}/${auditId}/findings.pdf`;
+    }
+    await prisma.audit.update({ where: { id: auditId }, data: updates });
+  }
 
   return NextResponse.json({
     ok: true,
