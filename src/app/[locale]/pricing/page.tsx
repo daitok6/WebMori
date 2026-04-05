@@ -148,6 +148,67 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Implementation add-on */}
+      <section className="bg-surface-raised py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <span className="text-xs font-bold uppercase tracking-widest text-primary">実装代行オプション</span>
+              <h2 className="mt-2 text-3xl font-bold text-ink">見つけた問題、WebMoriが直接修正します</h2>
+              <p className="mt-3 text-ink-muted">月次レポートには各問題の代行見積もりが記載されています。ご希望の項目をLINEまたはメールでご連絡ください。</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {/* Tier A */}
+            <ScrollReveal delay={0}>
+              <div className="rounded-xl border border-border bg-surface p-6 h-full flex flex-col">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-block w-3 h-3 rounded-full bg-green-500" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-green-600">Tier A</span>
+                </div>
+                <h3 className="text-lg font-semibold text-ink mb-1">完全代行</h3>
+                <p className="text-2xl font-bold text-ink mb-1">¥7,500<span className="text-sm font-normal text-ink-muted">/時</span></p>
+                <p className="text-xs text-ink-muted mb-4">PR適用: ¥5,000固定</p>
+                <p className="text-sm text-ink-muted flex-1">画像最適化、フォント自ホスト化、設定変更など低リスクの修正を直接実装します。</p>
+              </div>
+            </ScrollReveal>
+            {/* Tier B */}
+            <ScrollReveal delay={0.1}>
+              <div className="rounded-xl border border-border bg-surface p-6 h-full flex flex-col">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-block w-3 h-3 rounded-full bg-orange-400" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-orange-500">Tier B</span>
+                </div>
+                <h3 className="text-lg font-semibold text-ink mb-1">ステージング確認</h3>
+                <p className="text-2xl font-bold text-ink mb-1">¥9,000<span className="text-sm font-normal text-ink-muted">/時</span></p>
+                <p className="text-xs text-ink-muted mb-4"> </p>
+                <p className="text-sm text-ink-muted flex-1">認証、外部API連携、依存関係更新などをステージング環境で確認のうえ実装します。</p>
+              </div>
+            </ScrollReveal>
+            {/* Tier C */}
+            <ScrollReveal delay={0.2}>
+              <div className="rounded-xl border border-border bg-surface p-6 h-full flex flex-col">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-block w-3 h-3 rounded-full bg-rose-400" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-rose-500">Tier C</span>
+                </div>
+                <h3 className="text-lg font-semibold text-ink mb-1">実装ガイド</h3>
+                <p className="text-2xl font-bold text-ink mb-1">¥12,000<span className="text-sm font-normal text-ink-muted">固定</span></p>
+                <p className="text-xs text-ink-muted mb-4"> </p>
+                <p className="text-sm text-ink-muted flex-1">i18n化やアーキテクチャ変更などの複雑な修正は、ガイドドキュメント＋1時間Q&Aで対応します。</p>
+              </div>
+            </ScrollReveal>
+          </div>
+
+          <ScrollReveal>
+            <p className="mt-8 text-center text-sm text-ink-muted">
+              <a href="/services" className="text-primary hover:underline font-medium">実装代行の詳細を見る →</a>
+            </p>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="bg-surface py-20">
         <div className="mx-auto max-w-3xl px-6">

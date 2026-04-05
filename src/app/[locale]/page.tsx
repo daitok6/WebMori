@@ -6,6 +6,7 @@ import { TrustLogos } from "@/components/marketing/trust-logos";
 import { ProblemSolution } from "@/components/marketing/problem-solution";
 import { HowItWorks } from "@/components/marketing/how-it-works";
 import { FeatureGrid } from "@/components/marketing/feature-grid";
+import { ImplementationTeaser } from "@/components/marketing/implementation-teaser";
 import { StatCounter } from "@/components/marketing/stat-counter";
 import { PricingPreview } from "@/components/marketing/pricing-preview";
 import { CTASection } from "@/components/marketing/cta-section";
@@ -39,6 +40,7 @@ export default function HomePage() {
       <ProblemSolution />
       <HowItWorks />
       <FeatureGrid />
+      <ImplementationTeaser />
       <StatCounter />
       <PricingPreview />
       <CTASection />
