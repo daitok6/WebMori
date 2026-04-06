@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -129,9 +129,37 @@ function ScoresPanel() {
   );
 }
 
+const TAB_IDS = TABS.map((t) => t.id);
+const ROTATE_MS = 3000;
+
 /* ── Main component ── */
 export function ProductPreviewCard() {
   const [active, setActive] = useState<TabId>("findings");
+  const [paused, setPaused] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startInterval = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setActive((cur) => {
+        const idx = TAB_IDS.indexOf(cur);
+        return TAB_IDS[(idx + 1) % TAB_IDS.length] as TabId;
+      });
+    }, ROTATE_MS);
+  };
+
+  useEffect(() => {
+    if (!paused) startInterval();
+    else if (intervalRef.current) clearInterval(intervalRef.current);
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paused]);
+
+  const handleTabClick = (id: TabId) => {
+    setActive(id);
+    // Reset interval so the tab gets full 3s before advancing
+    if (!paused) startInterval();
+  };
 
   const panelMap: Record<TabId, React.ReactNode> = {
     findings: <FindingsPanel />,
@@ -140,7 +168,11 @@ export function ProductPreviewCard() {
   };
 
   return (
-    <div className="w-full max-w-[420px] mx-auto rounded-2xl border border-border bg-surface shadow-[0_8px_40px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] overflow-hidden">
+    <div
+      className="w-full max-w-[420px] mx-auto rounded-2xl border border-border bg-surface shadow-[0_8px_40px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       {/* Card header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <span className="text-xs font-bold text-ink">example-shop.jp</span>
@@ -152,7 +184,7 @@ export function ProductPreviewCard() {
         {TABS.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActive(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
             className={cn(
               "text-[11px] font-semibold px-3 py-1 rounded-full transition-colors cursor-pointer",
               active === tab.id
