@@ -63,9 +63,9 @@ function FindingsPanel() {
 
 function BeforeAfterPanel() {
   return (
-    <div className="px-4 py-3">
+    <div className="px-4 py-4">
       {/* Headers + scores */}
-      <div className="grid grid-cols-[1fr_auto_1fr] mb-3">
+      <div className="grid grid-cols-[1fr_auto_1fr] mb-4">
         <div>
           <div className="text-[10px] font-bold text-severity-critical mb-2">❌ 診断前</div>
           <span className="text-[28px] font-black leading-none text-severity-critical">38</span>
@@ -81,21 +81,20 @@ function BeforeAfterPanel() {
 
       {/* Bullet lists + absolutely centered arrow */}
       <div className="relative grid grid-cols-2 gap-2">
-        {/* Arrow pinned to exact center */}
         <div className="absolute left-[42%] top-[40%] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
           <span className="text-sm text-primary font-bold">→</span>
         </div>
-        <div className="pr-3">
+        <div className="pr-3 flex flex-col gap-1.5">
           {BEFORE_ITEMS.map((item, i) => (
-            <div key={i} className="flex items-start gap-1.5 mb-1.5">
+            <div key={i} className="flex items-start gap-1.5">
               <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
               <span className="text-[10px] text-ink-muted leading-tight">{item.text}</span>
             </div>
           ))}
         </div>
-        <div className="pl-3">
+        <div className="pl-3 flex flex-col gap-1.5">
           {AFTER_ITEMS.map((item, i) => (
-            <div key={i} className="flex items-start gap-1.5 mb-1.5">
+            <div key={i} className="flex items-start gap-1.5">
               <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
               <span className="text-[10px] text-ink-muted leading-tight">{item.text}</span>
             </div>
@@ -196,7 +195,7 @@ export function ProductPreviewCard() {
       </div>
 
       {/* Panel content */}
-      <div className="min-h-[180px]">
+      <div className="min-h-[200px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
