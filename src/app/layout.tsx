@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "WebMori",
+  title: "WebMori（ウェブ守り）",
 };
 
 export default function RootLayout({

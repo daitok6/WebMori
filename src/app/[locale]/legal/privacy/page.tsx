@@ -8,7 +8,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const isJa = locale === "ja";
   return {
-    title: isJa ? "プライバシーポリシー | WebMori" : "Privacy Policy | WebMori",
+    title: isJa ? "プライバシーポリシー | WebMori（ウェブ守り）" : "Privacy Policy | WebMori（ウェブ守り）",
   };
 }
 

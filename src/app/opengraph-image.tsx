@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "WebMori - Web Security Audit Service";
+export const alt = "WebMori（ウェブ守り）- Web Security Audit Service";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -59,13 +59,13 @@ export default function OGImage() {
           </div>
           <span
             style={{
-              fontSize: 56,
+              fontSize: 44,
               fontWeight: 700,
               color: "#ffffff",
               letterSpacing: -1,
             }}
           >
-            WebMori
+            WebMori（ウェブ守り）
           </span>
         </div>
 

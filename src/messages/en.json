@@ -10,17 +10,22 @@
     "getStarted": "Get Free Audit"
   },
   "hero": {
-    "badge": "For Tokyo-based freelancers & SMBs",
-    "title": "From discovery to fix,",
-    "titleHighlight": "we handle everything",
-    "subtitle": "Security, performance, LINE API, i18n, and maintainability. We audit your site monthly from 5 angles and deliver actionable improvements.",
+    "badge": "Web Audit Service · Tokyo",
+    "title1": "Every month, pros ",
+    "titleHighlight": "protect your site.",
+    "title2": "Problems found before they happen.",
+    "subtitle": "Are you losing customers without realizing your site has issues? WebMori audits monthly, finding hidden risks and fixing them.",
     "cta": "Get Free Audit",
     "ctaSecondary": "View sample report",
-    "socialProof": "5 audit lenses · Japanese reports · PR fixes included",
-    "noCreditCard": "No credit card required"
+    "noCreditCard": "No credit card · 5 min setup · No sales calls",
+    "proofOwasp": "Monthly checkup",
+    "proofIpa": "Report in 3 business days",
+    "proofLine": "LINE sites included",
+    "proofClients": "12 businesses in Tokyo",
+    "platformsLabel": "Who we serve:"
   },
   "trust": {
-    "title": "Supported Platforms"
+    "title": "Works with your existing site"
   },
   "problem": {
     "title": "Sound familiar?",
@@ -326,25 +331,39 @@
   },
   "aboutPage": {
     "title": "About WebMori",
-    "subtitle": "WebMori is a Tokyo-based web security audit service",
+    "subtitle": "Monthly professional web audits for Tokyo SMBs and freelancers",
+    "storyLabel": "Why we built this",
+    "storyTitle": "\"They didn't even know their site had a problem.\"",
+    "storyBody1": "Working as a web and security engineer in Tokyo, I kept seeing the same pattern. Small restaurants, clinics, freelance designers — their sites were quietly accumulating serious security holes and performance issues that drove customers away. Nobody noticed. Because nobody was checking.",
+    "storyBody2": "Large companies have security teams. Small businesses don't. That asymmetry is what WebMori exists to fix. Every month, a professional reviews your site so you don't have to worry about it.",
+    "principlesLabel": "3 principles",
     "sections": [
       {
-        "title": "Mission",
-        "description": "To make enterprise-level web security accessible to Tokyo freelancers and SMBs. We remove technical complexity so you can focus on your business."
+        "title": "Business impact first",
+        "description": "Pointing out technical issues isn't enough. Every finding comes with business context an owner can act on — why this malicious script injection matters, how this image fix affects conversions. Reports are written for business owners, not engineers."
       },
       {
-        "title": "Approach",
-        "description": "Not just vulnerability scanning — we evaluate sites holistically from 5 angles: security, performance, LINE API, i18n, and maintainability. Reports include specific fix proposals with business impact explanations."
+        "title": "No evidence, no finding",
+        "description": "Every issue in our reports is backed by real code and real logs — file paths, line numbers, reproduction steps. Unconfirmed hypotheses are labeled as such and never mixed with verified findings."
       },
       {
-        "title": "Technology",
-        "description": "Our AI-powered audit engine analyzes codebases with the quality of a human security expert, but faster. Auto-fix PRs let you resolve safe issues instantly."
+        "title": "We see fixes through",
+        "description": "We don't stop at finding problems. Safe fixes are submitted as GitHub PRs. Manual fixes come with step-by-step guides and code samples. Full implementation is available as an add-on (Tier A–C)."
       }
+    ],
+    "stackLabel": "What we check",
+    "stackTitle": "Five lenses, every audit",
+    "stacks": [
+      { "name": "Security", "icon": "🔒", "desc": "Unauthorized access, data leaks, weak authentication" },
+      { "name": "Performance", "icon": "⚡", "desc": "Page speed, mobile experience, Japan delivery optimization" },
+      { "name": "LINE API", "icon": "💬", "desc": "LINE integration safety, token management, message verification" },
+      { "name": "Multilingual / UX", "icon": "🌐", "desc": "Japanese display, garbled text prevention, date & currency formats" },
+      { "name": "Maintainability", "icon": "🔧", "desc": "Outdated packages, code structure, update risk" }
     ],
     "founder": {
       "name": "Daito Kojima",
-      "role": "Founder / Security Engineer",
-      "bio": "After years as a security engineer at a major Japanese IT company, I built WebMori so that Tokyo freelancers and SMBs could access the same level of web security expertise as large enterprises — without the enterprise price tag."
+      "role": "Founder / Web Engineer / Security Engineer",
+      "bio": "After working across web engineering and security engineering on multiple products and security assessments, I founded WebMori out of the conviction that small businesses need professional audits most. Based in Tokyo, our mission is to protect local businesses through a monthly audit and improvement cycle."
     }
   },
   "contactPage": {

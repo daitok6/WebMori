@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return {
-    title: "競合比較",
+    title: locale === "ja" ? "競合比較 | WebMori（ウェブ守り）" : "Comparison | WebMori（ウェブ守り）",
     alternates: {
       canonical: `https://www.webmori.jp/${locale}/compare`,
       languages: { ja: "/ja/compare", en: "/en/compare" },

@@ -24,7 +24,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const posts = getAllPosts(locale);
 
   return (
-    <section className="bg-gradient-to-b from-surface-raised to-white pt-32 pb-20">
+    <section className="bg-gradient-to-b from-surface-raised to-surface pt-32 pb-20">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <h1 className="text-center text-4xl font-bold text-ink sm:text-5xl">

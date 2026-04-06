@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./language-toggle";
-import { ThemeToggle } from "./theme-toggle";
 import { MobileMenu } from "./mobile-menu";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -57,15 +56,7 @@ export function Navbar() {
               alt="WebMori"
               width={110}
               height={44}
-              className="h-[44px] w-auto dark:hidden"
-              priority
-            />
-            <Image
-              src="/logo-on-dark.png"
-              alt="WebMori"
-              width={110}
-              height={44}
-              className="h-[44px] w-auto hidden dark:block"
+              className="h-[44px] w-auto"
               priority
             />
           </Link>
@@ -83,7 +74,6 @@ export function Navbar() {
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
-            <ThemeToggle />
             <LanguageToggle />
             <Link href="/auth/signin">
               <Button variant="ghost" size="sm">

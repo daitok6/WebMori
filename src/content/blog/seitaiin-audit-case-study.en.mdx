@@ -1,0 +1,99 @@
+---
+title: "A Tokyo Chiropractic Clinic Thought Their Website Was Fine. The Audit Found 9 Issues."
+excerpt: "The owner had no reason to worry — the site looked good, bookings were coming in, and staff said everything was fine. Then a routine audit uncovered a flaw that could let anyone forge appointment notifications."
+date: "2026-03-25"
+category: "Business"
+locale: "en"
+---
+
+"Our website looks fine. We take LINE bookings. We have good reviews. I'm sure we're okay."
+
+That was the baseline assumption when a Tokyo-area acupuncture and chiropractic clinic reached out for a WebMori audit. The prompt wasn't panic — it was a nudge. A similar clinic nearby had their site compromised, and the owner decided a quick look couldn't hurt.
+
+The audit came back with **9 issues**.
+
+## Who the client was
+
+A well-established clinic operating for over a decade in Tokyo. Built on WordPress. Integrated with LINE for appointment bookings — the kind of setup that's common across independent healthcare practices in Japan. Over 30 Google reviews, a clean mobile-friendly design, and a steady stream of patients.
+
+In other words: not a neglected, cobbled-together website. A real business site that looked professionally done. "We thought there were no particular problems" wasn't wishful thinking — it was a reasonable read of what was visible from the surface.
+
+But security problems don't live on the surface.
+
+## What the audit found
+
+### Critical: Appointment notifications could be forged
+
+The most serious issue: **LINE webhook signature verification was not implemented**.
+
+Here's what that means in plain terms. When a patient books through LINE, the LINE platform sends a notification to the clinic's website — something like "New appointment from [patient name]." The website is supposed to verify that this message actually came from LINE, not from someone pretending to be LINE. That verification is called signature checking.
+
+Without it, **anyone with basic technical knowledge could send fake appointment notifications** to the system. Fabricated bookings. Overwritten appointment data. Patient information manipulated without anyone noticing — because the site had no way to tell a real LINE message from a fake one.
+
+This wasn't a theoretical risk. It was a live gap with no mechanism stopping it.
+
+### High: Patient data accessible without logging in
+
+The site had an API — a behind-the-scenes channel used to manage bookings and contact submissions. It should only be accessible to logged-in administrators. **It wasn't protected by any authentication.**
+
+Anyone who knew (or could guess) the right URL could pull up booking records and contact form submissions from outside. No username, no password required. From a privacy standpoint, this was a serious problem that needed fixing immediately.
+
+### Medium: Four issues in the middle tier
+
+- **Outdated WordPress plugins**: Three plugins hadn't been updated in over 12 months, each carrying known security vulnerabilities that patches had already addressed
+- **No rate limiting on the contact form**: The form accepted unlimited submissions with no throttling — a wide-open channel for spam and automated abuse
+- **Images not optimized**: Full-resolution photos loading on the homepage, adding several seconds to load time on mobile — which is how most patients would visit the site
+- **Admin session timeout too long**: Once logged in, the session stayed active for an unusually extended period, creating a risk if a device was ever lost or left unattended
+
+### Low: Two minor issues
+
+- **Missing meta descriptions**: Search result snippets were being auto-generated rather than written, which likely cost clicks from potential patients searching for a local clinic
+- **Hardcoded Japanese strings in the codebase**: Not a security issue, but something that would create extra work in any future site update or expansion
+
+---
+
+**"I had no idea any of this was happening."**
+
+That was the owner's response when they read through the findings.
+
+→ [Get your free site evaluation](/en/auth/signin?callbackUrl=/dashboard/free-eval)
+
+---
+
+## What fixing it cost
+
+The clinic chose to have WebMori handle the four most critical fixes — the Critical, High, and two of the Medium issues.
+
+| Work | Cost |
+|---|---|
+| LINE webhook signature verification | ¥35,000 |
+| Authentication added to API routes | ¥30,000 |
+| Plugin updates and security hardening | ¥21,000 |
+| Rate limiting on contact form | ¥30,000 |
+| **Total** | **¥116,000** |
+
+One implementation round. All the serious issues resolved.
+
+Now consider the alternative. A data breach involving patient records in Japan triggers mandatory reporting to the Personal Information Protection Commission. That means legal exposure, potential compensation claims, public disclosure, and — in realistic terms — lasting damage to the trust a clinic has built over years or decades. The financial and reputational cost of a breach that could have been prevented for ¥116,000 often runs into the millions.
+
+This isn't scare tactics. It's the documented reality of what data incidents cost small businesses when they're caught unprepared.
+
+## What the client decided next
+
+After the fixes were complete, the clinic signed up for WebMori's **Starter plan at ¥19,800/month**.
+
+The Starter plan covers monthly security and performance monitoring — a regular check that flags new issues before they become serious problems. The owner's reasoning: "It's not just about fixing things once. It's knowing someone is watching."
+
+They receive a plain-language PDF report each month. If a month goes by with no new issues, that report confirms it. If something surfaces, they hear about it early — when it's still easy and inexpensive to address.
+
+## When did your site last have a checkup?
+
+Security issues don't announce themselves. The clinic in this case had a functioning site with happy patients and no visible problems. The issues were invisible from the outside — and from the inside too, because no one had ever looked for them.
+
+The feeling that your site is probably fine is not the same as knowing it is.
+
+A WebMori free evaluation checks your site's security and performance and delivers the results as a clear PDF report — no jargon, no sales call, no obligation. You send a URL. We send back a report in plain language that shows exactly what's there.
+
+→ [Get your free site evaluation](/en/auth/signin?callbackUrl=/dashboard/free-eval)
+
+If you want to know whether your site shows any warning signs before requesting a full evaluation, the [5 signs article](/en/blog/five-signs-security-checkup) is a good place to start. And if you're wondering what a breach actually looks like for a small business, [this piece](/en/blog/website-hacked-what-now) covers the real-world impact.
