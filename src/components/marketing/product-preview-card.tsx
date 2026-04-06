@@ -81,13 +81,7 @@ function BeforeAfterPanel() {
 
       {/* Arrow */}
       <div className="flex items-center justify-center px-2.5">
-        <div className="flex flex-col items-center gap-1">
-          <div className="w-1 h-1 rounded-full bg-primary" />
-          <div className="w-1 h-1 rounded-full bg-primary" />
-          <span className="text-base text-primary font-bold">→</span>
-          <div className="w-1 h-1 rounded-full bg-primary" />
-          <div className="w-1 h-1 rounded-full bg-primary" />
-        </div>
+        <span className="text-base text-primary font-bold">→</span>
       </div>
 
       {/* After */}
