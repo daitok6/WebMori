@@ -350,12 +350,14 @@
         "description": "We don't stop at finding problems. Safe fixes are submitted as GitHub PRs. Manual fixes come with step-by-step guides and code samples. Full implementation is available as an add-on (Tier A–C)."
       }
     ],
-    "stackLabel": "Supported stacks",
+    "stackLabel": "What we check",
+    "stackTitle": "Five lenses, every audit",
     "stacks": [
-      { "name": "Shopify", "icon": "🛍", "desc": "Liquid, API, checkout flow" },
-      { "name": "WordPress", "icon": "📝", "desc": "Plugins, REST API, permissions" },
-      { "name": "Next.js", "icon": "⚡", "desc": "Server Actions, API routes, env vars" },
-      { "name": "LINE Mini App", "icon": "💬", "desc": "Webhook signature, LIFF, token mgmt" }
+      { "name": "Security", "icon": "🔒", "desc": "OWASP vulnerabilities, auth, secret leakage" },
+      { "name": "Performance", "icon": "⚡", "desc": "Core Web Vitals, mobile speed, Japan CDN" },
+      { "name": "LINE API", "icon": "💬", "desc": "Webhook signature, LIFF, token management" },
+      { "name": "i18n / UX", "icon": "🌐", "desc": "Japanese display, encoding, date & currency" },
+      { "name": "Maintainability", "icon": "🔧", "desc": "Dependencies, code structure, deploy risk" }
     ],
     "founder": {
       "name": "Daito Kojima",

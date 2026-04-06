@@ -113,12 +113,12 @@ function AboutContent() {
               {t("stackLabel")}
             </p>
             <h2 className="text-2xl font-bold text-ink mb-10">
-              対応プラットフォーム
+              {t("stackTitle")}
             </h2>
           </ScrollReveal>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {([0, 1, 2, 3] as const).map((i) => (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {([0, 1, 2, 3, 4] as const).map((i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
                 <div className="rounded-xl border border-border bg-surface-raised p-5 text-center">
                   <div className="text-3xl mb-3">{t(`stacks.${i}.icon`)}</div>

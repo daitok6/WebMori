@@ -324,12 +324,14 @@
         "description": "問題を見つけるだけで終わりません。安全に自動修正できる問題はGitHub PRとして提出します。手動対応が必要なものには、具体的な修正ガイドとコードサンプルを用意します。代行実装も対応可能です（Tier A〜C）。"
       }
     ],
-    "stackLabel": "対応スタック",
+    "stackLabel": "監査項目",
+    "stackTitle": "何を調べるか",
     "stacks": [
-      { "name": "Shopify", "icon": "🛍", "desc": "Liquid、API、決済フロー" },
-      { "name": "WordPress", "icon": "📝", "desc": "プラグイン、REST API、パーミッション" },
-      { "name": "Next.js", "icon": "⚡", "desc": "Server Actions、APIルート、環境変数" },
-      { "name": "LINE Mini App", "icon": "💬", "desc": "Webhook署名検証、LIFF、トークン管理" }
+      { "name": "セキュリティ", "icon": "🔒", "desc": "OWASP準拠の脆弱性診断・認証・シークレット漏洩" },
+      { "name": "パフォーマンス", "icon": "⚡", "desc": "Core Web Vitals・モバイル速度・日本CDN" },
+      { "name": "LINE API", "icon": "💬", "desc": "Webhook署名検証・LIFF・トークン管理" },
+      { "name": "i18n / UX", "icon": "🌐", "desc": "日本語表示・文字コード・日付と通貨" },
+      { "name": "保守性", "icon": "🔧", "desc": "依存パッケージ・コード構造・デプロイリスク" }
     ],
     "founder": {
       "name": "小島 大都",
