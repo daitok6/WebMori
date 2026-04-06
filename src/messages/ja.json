@@ -725,7 +725,7 @@
       "description": "東京のフリーランス・中小企業向けウェブセキュリティ監査サービス。セキュリティ、パフォーマンス、LINE API、国際化、保守性の5つの視点から毎月監査。"
     },
     "features": {
-      "title": "機能",
+      "title": "ウェブ監査の機能",
       "description": "5つの監査レンズ：セキュリティ、パフォーマンス、LINE API、国際化、保守性。Shopify、WordPress、Next.js、LINE Mini Appに対応。"
     },
     "pricing": {
@@ -733,7 +733,7 @@
       "description": "Starter ¥19,800/月、Growth ¥39,800/月、Pro ¥69,800/月。年額プランは15%OFF。"
     },
     "about": {
-      "title": "私たちについて",
+      "title": "WebMoriについて",
       "description": "WebMori（ウェブ守り）は東京を拠点とするウェブセキュリティ監査サービスです。AI技術で高品質な監査を提供します。"
     },
     "contact": {
@@ -741,7 +741,7 @@
       "description": "無料診断のお申し込み、サービスに関するご質問はこちらから。通常3営業日以内にご返信いたします。"
     },
     "blog": {
-      "title": "ブログ",
+      "title": "ウェブセキュリティ・技術ブログ",
       "description": "セキュリティ、パフォーマンス、LINE APIに関する技術情報とベストプラクティスをお届けします。"
     },
     "services": {

@@ -750,7 +750,7 @@
       "description": "Tokyo-based web security audit service for freelancers and SMBs. Monthly audits covering security, performance, LINE API, i18n, and maintainability."
     },
     "features": {
-      "title": "Features",
+      "title": "Web Audit Features",
       "description": "5 audit lenses: Security, Performance, LINE API, i18n, Maintainability. Supports Shopify, WordPress, Next.js, and LINE Mini Apps."
     },
     "pricing": {
@@ -758,7 +758,7 @@
       "description": "Starter ¥19,800/mo, Growth ¥39,800/mo, Pro ¥69,800/mo. Annual plans save 15%."
     },
     "about": {
-      "title": "About Us",
+      "title": "About WebMori",
       "description": "WebMori is a Tokyo-based web security audit service. AI-powered audits deliver enterprise-level quality."
     },
     "contact": {
@@ -766,7 +766,7 @@
       "description": "Request a free audit or ask about our services. We typically respond within 3 business days."
     },
     "blog": {
-      "title": "Blog",
+      "title": "Web Security Blog",
       "description": "Technical insights and best practices on security, performance, and LINE API."
     },
     "services": {
