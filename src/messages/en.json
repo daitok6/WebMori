@@ -10,14 +10,18 @@
     "getStarted": "Get Free Audit"
   },
   "hero": {
-    "badge": "For Tokyo-based freelancers & SMBs",
-    "title": "From discovery to fix,",
-    "titleHighlight": "we handle everything",
-    "subtitle": "Security, performance, LINE API, i18n, and maintainability. We audit your site monthly from 5 angles and deliver actionable improvements.",
+    "badge": "Web Audit Service · Tokyo",
+    "title1": "Every month, pros ",
+    "titleHighlight": "protect",
+    "title2": " your site. Problems found before they happen.",
+    "subtitle": "Are you losing customers without realizing your site has issues? WebMori audits monthly, finding hidden risks and fixing them.",
     "cta": "Get Free Audit",
     "ctaSecondary": "View sample report",
-    "socialProof": "5 audit lenses · Japanese reports · PR fixes included",
-    "noCreditCard": "No credit card required"
+    "noCreditCard": "No credit card · 5 min setup · No sales calls",
+    "proofOwasp": "OWASP Compliant",
+    "proofIpa": "IPA Standards",
+    "proofLine": "LINE Official Partner",
+    "proofClients": "12 companies onboarded"
   },
   "trust": {
     "title": "Supported Platforms"

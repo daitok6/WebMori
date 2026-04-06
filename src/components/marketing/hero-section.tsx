@@ -3,113 +3,97 @@
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
-import { Shield, Zap, Globe, Code, LineChart, CheckCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ProductPreviewCard } from "./product-preview-card";
 
-/* ---------- Terminal scan animation ---------- */
-const scanLines = [
-  { text: "$ webmori scan --target client-site.jp", color: "text-primary" },
-  { text: "  [1/5] Security audit .............. PASS", color: "text-emerald-400" },
-  { text: "  [2/5] Performance check ........... 3 issues", color: "text-amber-400" },
-  { text: "  [3/5] LINE API review ............. PASS", color: "text-emerald-400" },
-  { text: "  [4/5] i18n / Japanese UX .......... 1 issue", color: "text-yellow-400" },
-  { text: "  [5/5] Maintainability ............. PASS", color: "text-emerald-400" },
-  { text: "  Report generated: report-ja.pdf", color: "text-primary" },
-];
-
-function TerminalScan() {
-  const [visibleLines, setVisibleLines] = useState(0);
-
-  useEffect(() => {
-    if (visibleLines < scanLines.length) {
-      const timeout = setTimeout(
-        () => setVisibleLines((v) => v + 1),
-        visibleLines === 0 ? 800 : 400,
-      );
-      return () => clearTimeout(timeout);
-    }
-  }, [visibleLines]);
-
-  return (
-    <div className="rounded-2xl bg-stone-900 p-5 shadow-2xl border border-stone-700/50 font-mono text-sm leading-relaxed">
-      {/* Terminal chrome */}
-      <div className="flex items-center gap-2 pb-4 mb-4 border-b border-stone-700/50">
-        <span className="h-3 w-3 rounded-full bg-red-400/80" />
-        <span className="h-3 w-3 rounded-full bg-amber-400/80" />
-        <span className="h-3 w-3 rounded-full bg-emerald-400/80" />
-        <span className="ml-2 text-xs text-stone-500">webmori-audit</span>
-      </div>
-
-      {/* Scan lines */}
-      <div className="space-y-1.5 min-h-[220px]">
-        <AnimatePresence>
-          {scanLines.slice(0, visibleLines).map((line, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-              className={line.color}
-            >
-              {line.text}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-
-        {/* Blinking cursor */}
-        {visibleLines < scanLines.length && (
-          <motion.span
-            animate={{ opacity: [1, 0] }}
-            transition={{ duration: 0.8, repeat: Infinity }}
-            className="inline-block w-2 h-4 bg-primary"
-          />
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Hero Section ---------- */
 export function HeroSection() {
   const t = useTranslations("hero");
 
   return (
-    <section className="relative overflow-hidden pt-24 sm:pt-32 pb-14 sm:pb-20">
-      {/* Warm gradient mesh background */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary-subtle via-surface to-surface" />
-      <div className="absolute top-0 left-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-accent-subtle/30 blur-3xl" />
+    <section className="relative overflow-hidden bg-surface min-h-screen flex flex-col justify-center pt-20 pb-0">
+      {/* Subtle grid texture */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        {/* Centered text block */}
-        <div className="mx-auto max-w-3xl text-center">
+      {/* Amber top-left accent rule */}
+      <div
+        className="pointer-events-none absolute top-0 left-0 h-[3px]"
+        style={{ width: "40%", background: "linear-gradient(90deg, #D97706, transparent)" }}
+      />
+
+      {/* "守" kanji watermark */}
+      <div
+        aria-hidden
+        className="pointer-events-none select-none absolute right-[-40px] top-1/2 -translate-y-1/2 font-black leading-none text-ink opacity-[0.045] text-[300px] max-[900px]:text-[160px] max-[900px]:right-[-20px]"
+        style={{ fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
+      >
+        守
+      </div>
+
+      {/* Split grid */}
+      <div className="relative z-10 mx-auto w-full max-w-[1100px] px-5 sm:px-10 lg:px-20 flex flex-col gap-10 min-[900px]:flex-row min-[900px]:items-center min-[900px]:gap-16 py-12 min-[900px]:py-16">
+
+        {/* ── Left column ── */}
+        <div className="flex-1 min-w-0">
+
+          {/* Eyebrow badge */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
-            <Badge className="mb-6">{t("badge")}</Badge>
-            <h1 className="text-[1.75rem] font-bold leading-tight text-ink sm:text-5xl lg:text-6xl [text-wrap:balance]">
-              {t("title")}
-              <br />
-              <span className="text-primary">{t("titleHighlight")}</span>
-            </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg text-ink-muted leading-relaxed text-balance">
-              {t("subtitle")}
-            </p>
+            <Badge className="mb-5">{t("badge")}</Badge>
           </motion.div>
+
+          {/* Amber rule */}
+          <motion.div
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            style={{ transformOrigin: "left" }}
+            className="mb-5 h-[3px] w-12 rounded-full bg-primary"
+          />
+
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.15 }}
+            className="text-[clamp(32px,4.5vw,54px)] font-black leading-[1.08] tracking-[-0.04em] text-ink mb-5"
+          >
+            {t("title1")}
+            <span className="text-primary">{t("titleHighlight")}</span>
+            {t("title2")}
+          </motion.h1>
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="text-[15px] sm:text-base text-ink-muted leading-relaxed max-w-[460px] mb-7"
+          >
+            {t("subtitle")}
+          </motion.p>
 
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-3"
           >
             <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto">{t("cta")}</Button>
+              <Button size="lg" className="w-full sm:w-auto">
+                {t("cta")} →
+              </Button>
             </Link>
             <Link href="/sample-report" className="w-full sm:w-auto">
               <Button variant="secondary" size="lg" className="w-full sm:w-auto">
@@ -118,37 +102,67 @@ export function HeroSection() {
             </Link>
           </motion.div>
 
-          {/* No credit card note */}
+          {/* Microcopy */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="mt-2 text-xs text-ink-muted"
+            transition={{ duration: 0.5, delay: 0.45 }}
+            className="text-[11px] text-ink-subtle mb-7"
           >
             {t("noCreditCard")}
           </motion.p>
 
-          {/* Social proof line */}
+          {/* Proof bar */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-6 flex items-center justify-center gap-2 text-sm text-ink-muted"
+            transition={{ duration: 0.5, delay: 0.55 }}
+            className="flex flex-wrap items-center gap-x-3 gap-y-2 pt-5 border-t border-border"
           >
-            <CheckCircle className="h-4 w-4" />
-            <span>{t("socialProof")}</span>
+            <span className="text-[11px] text-ink-subtle">✓ {t("proofOwasp")}</span>
+            <span className="text-ink-subtle text-[11px]">·</span>
+            <span className="text-[11px] text-ink-subtle">✓ {t("proofIpa")}</span>
+            <span className="text-ink-subtle text-[11px]">·</span>
+            <span className="text-[11px] text-ink-subtle">✓ {t("proofLine")}</span>
+            <span className="text-ink-subtle text-[11px]">·</span>
+            <span className="inline-flex items-center gap-1.5 rounded-md bg-surface-raised border border-border px-2.5 py-1 text-[11px] text-ink-muted font-medium">
+              {t("proofClients")}
+            </span>
           </motion.div>
         </div>
 
-        {/* Terminal scan animation */}
+        {/* ── Right column — Product card ── */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="mx-auto mt-14 max-w-2xl"
+          initial={{ opacity: 0, scale: 0.96, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="w-full min-[900px]:w-[420px] shrink-0"
         >
-          <TerminalScan />
+          <ProductPreviewCard />
         </motion.div>
+
+      </div>
+
+      {/* Bottom platform strip */}
+      <div className="relative z-10 border-t border-border">
+        <div className="mx-auto max-w-[1100px] px-5 sm:px-10 lg:px-20 py-5 flex flex-wrap items-center justify-between gap-4">
+          <span className="text-[11px] text-ink-subtle">対応スタック:</span>
+          <div className="flex flex-wrap gap-2.5">
+            {[
+              { icon: "🛍", name: "Shopify" },
+              { icon: "📝", name: "WordPress" },
+              { icon: "⚡", name: "Next.js" },
+              { icon: "💬", name: "LINE Mini App" },
+            ].map((p) => (
+              <span
+                key={p.name}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-surface-raised border border-border px-3 py-1.5 text-[11px] text-ink-muted"
+              >
+                {p.icon} {p.name}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

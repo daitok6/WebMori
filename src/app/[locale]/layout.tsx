@@ -19,7 +19,7 @@ const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans-jp",
   display: "swap",
   preload: false,
-  weight: ["400", "500", "700"],
+  weight: ["400", "500", "700", "900"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.webmori.jp";
@@ -75,15 +75,8 @@ export default async function LocaleLayout({
   const messages = (await import(`@/messages/${locale}.json`)).default;
 
   return (
-    <html lang={locale} className={`${dmSans.variable} ${notoSansJP.variable}`} suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark')}catch(e){}})()`,
-          }}
-        />
-      </head>
-      <body className="font-sans antialiased bg-surface text-ink transition-colors">
+    <html lang={locale} className={`${dmSans.variable} ${notoSansJP.variable}`}>
+      <body className="font-sans antialiased bg-surface text-ink">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <MarketingShell>{children}</MarketingShell>
         </NextIntlClientProvider>

@@ -10,14 +10,18 @@
     "getStarted": "無料診断を始める"
   },
   "hero": {
-    "badge": "東京のフリーランス・中小企業向け",
-    "title": "発見から修正まで、",
-    "titleHighlight": "すべてお任せください",
-    "subtitle": "セキュリティ・パフォーマンス・LINE API・国際化・保守性。5つの視点からサイトを毎月監査し、具体的な改善提案をお届けします。",
-    "cta": "無料診断を始める",
+    "badge": "ウェブ監査サービス · 東京",
+    "title1": "毎月、プロが",
+    "titleHighlight": "守る",
+    "title2": "。問題は起きる前に見つける。",
+    "subtitle": "サイトの問題に気づかないまま、お客様を逃し続けていませんか？WebMoriが月1回、見えないリスクを見つけて改善します。",
+    "cta": "無料診断を受ける",
     "ctaSecondary": "サンプルレポートを見る",
-    "socialProof": "5つの監査レンズ・日本語レポート・修正PRまで対応",
-    "noCreditCard": "クレジットカード不要"
+    "noCreditCard": "クレジットカード不要 · 5分で完了 · 担当者からの連絡なし",
+    "proofOwasp": "OWASP準拠",
+    "proofIpa": "IPA推奨基準",
+    "proofLine": "LINE公式パートナー対応",
+    "proofClients": "導入実績 12社"
   },
   "trust": {
     "title": "対応プラットフォーム"

@@ -53,7 +53,8 @@ body {
   }
 }
 
-/* Dark mode overrides */
+/* Dark mode overrides — dashboard only (not used by marketing pages) */
+/*
 .dark {
   --color-primary: #D97706;
   --color-primary-light: #F59E0B;
@@ -73,3 +74,4 @@ body {
   --color-border: #44403C;
   --color-border-strong: #57534E;
 }
+*/
