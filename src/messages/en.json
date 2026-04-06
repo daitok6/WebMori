@@ -72,7 +72,7 @@
       },
       {
         "title": "Automated audit runs",
-        "description": "Our 5 audit lenses scan your codebase thoroughly."
+        "description": "Our 6 audit lenses scan your codebase thoroughly."
       },
       {
         "title": "Review your report",
@@ -115,7 +115,7 @@
   },
   "stats": {
     "items": [
-      { "value": "5", "label": "Audit lenses" },
+      { "value": "6", "label": "Audit lenses" },
       { "value": "3 days", "label": "Standard report delivery" },
       { "value": "100%", "label": "Japanese-native reports" },
       { "value": "PR", "label": "Fixes delivered as GitHub PRs" }
@@ -147,7 +147,7 @@
         "cta": "Start with Starter",
         "features": [
           "1 site",
-          "Monthly audit (Security + Performance)",
+          "Monthly audit (Security + Performance + SEO)",
           "Monthly audit cycle",
           "Basic LINE check included",
           "Japanese report",
@@ -159,11 +159,11 @@
         "name": "Growth",
         "price": "39,800",
         "annualPrice": "33,800",
-        "description": "Comprehensive 5-lens audit",
+        "description": "Comprehensive 6-lens audit",
         "cta": "Start with Growth",
         "features": [
           "1 site",
-          "Monthly audit (all 5 lenses)",
+          "Monthly audit (all 6 lenses)",
           "Monthly audit cycle",
           "Full LINE API audit",
           "i18n + maintainability checks",
@@ -185,7 +185,7 @@
           "2 sites",
           "Monthly audit (all lenses, deep)",
           "Monthly audit cycle",
-          "All 6 lenses incl. frontend design",
+          "All 7 lenses incl. SEO + frontend design",
           "Deep LINE API audit",
           "CVE tracking included",
           "Japanese report + trend comparison",
@@ -232,7 +232,7 @@
   },
   "featuresPage": {
     "title": "Key Features",
-    "subtitle": "We analyze your site thoroughly through 5 audit lenses",
+    "subtitle": "We analyze your site thoroughly through 6 audit lenses",
     "lenses": [
       {
         "title": "Security Audit",
@@ -253,6 +253,10 @@
       {
         "title": "Maintainability",
         "description": "Outdated dependencies, code structure analysis, deployment risks, and technical debt assessment."
+      },
+      {
+        "title": "SEO Audit",
+        "description": "Meta tags, sitemap, structured data, canonical URLs, robots.txt, alt text, and Japan-specific SEO signals."
       }
     ],
     "reportShowcase": {
@@ -352,7 +356,7 @@
       }
     ],
     "stackLabel": "What we check",
-    "stackTitle": "Five lenses, every audit",
+    "stackTitle": "Six lenses, every audit",
     "stacks": [
       { "name": "Security", "icon": "🔒", "desc": "Unauthorized access, data leaks, weak authentication" },
       { "name": "Performance", "icon": "⚡", "desc": "Page speed, mobile experience, Japan delivery optimization" },
@@ -588,7 +592,7 @@
       ],
       "upgradeToProFeatures": [
         "2 sites covered",
-        "Deep audit with 6 lenses",
+        "Deep audit with 7 lenses",
         "CVE tracking",
         "Quarterly strategic review",
         "Same-day support"
@@ -790,6 +794,7 @@
       "security": "Security",
       "performance": "Performance",
       "line": "LINE API",
+      "seo": "SEO",
       "i18n": "i18n",
       "maintainability": "Maintainability"
     },
