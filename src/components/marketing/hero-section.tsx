@@ -108,7 +108,7 @@ export function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.45 }}
-            className="text-[11px] text-ink-subtle mb-7"
+            className="text-[11px] text-ink-muted mb-7"
           >
             {t("noCreditCard")}
           </motion.p>
@@ -120,12 +120,12 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.55 }}
             className="flex flex-wrap items-center gap-x-3 gap-y-2 pt-5 border-t border-border"
           >
-            <span className="text-[11px] text-ink-subtle">✓ {t("proofOwasp")}</span>
-            <span className="text-ink-subtle text-[11px]">·</span>
-            <span className="text-[11px] text-ink-subtle">✓ {t("proofIpa")}</span>
-            <span className="text-ink-subtle text-[11px]">·</span>
-            <span className="text-[11px] text-ink-subtle">✓ {t("proofLine")}</span>
-            <span className="text-ink-subtle text-[11px]">·</span>
+            <span className="text-[11px] text-ink-muted">✓ {t("proofOwasp")}</span>
+            <span className="text-ink-muted text-[11px]">·</span>
+            <span className="text-[11px] text-ink-muted">✓ {t("proofIpa")}</span>
+            <span className="text-ink-muted text-[11px]">·</span>
+            <span className="text-[11px] text-ink-muted">✓ {t("proofLine")}</span>
+            <span className="text-ink-muted text-[11px]">·</span>
             <span className="inline-flex items-center gap-1.5 rounded-md bg-surface-raised border border-border px-2.5 py-1 text-[11px] text-ink-muted font-medium">
               {t("proofClients")}
             </span>
@@ -147,7 +147,7 @@ export function HeroSection() {
       {/* Bottom platform strip */}
       <div className="relative z-10 border-t border-border">
         <div className="mx-auto max-w-[1100px] px-5 sm:px-10 lg:px-20 py-5 flex flex-wrap items-center justify-between gap-4">
-          <span className="text-[11px] text-ink-subtle">対応スタック:</span>
+          <span className="text-[11px] text-ink-muted">対応スタック:</span>
           <div className="flex flex-wrap gap-2.5">
             {[
               { icon: "🛍", name: "Shopify" },
