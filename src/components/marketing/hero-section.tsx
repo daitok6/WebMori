@@ -31,7 +31,7 @@ export function HeroSection() {
       {/* "守" kanji watermark */}
       <div
         aria-hidden
-        className="pointer-events-none select-none absolute right-[-40px] top-1/2 -translate-y-1/2 font-black leading-none text-ink opacity-[0.045] text-[300px] max-[900px]:text-[160px] max-[900px]:right-[-20px]"
+        className="pointer-events-none select-none absolute z-0 right-[-40px] top-1/2 -translate-y-1/2 font-black leading-none text-ink opacity-[0.045] text-[300px] max-[900px]:text-[160px] max-[900px]:right-[-20px]"
         style={{ fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
       >
         守
