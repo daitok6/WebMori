@@ -127,7 +127,7 @@ function ScoresPanel() {
 }
 
 const TAB_IDS = TABS.map((t) => t.id);
-const ROTATE_MS = 3000;
+const ROTATE_MS = 4500;
 
 /* ── Main component ── */
 export function ProductPreviewCard() {
