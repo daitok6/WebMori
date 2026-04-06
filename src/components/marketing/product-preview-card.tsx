@@ -89,7 +89,7 @@ function BeforeAfterPanel() {
             </div>
           ))}
         </div>
-        <div className="flex items-center justify-center px-2.5">
+        <div className="self-center px-2.5">
           <span className="text-base text-primary font-bold">→</span>
         </div>
         <div>
