@@ -18,10 +18,11 @@
     "cta": "Get Free Audit",
     "ctaSecondary": "View sample report",
     "noCreditCard": "No credit card · 5 min setup · No sales calls",
-    "proofOwasp": "OWASP Compliant",
-    "proofIpa": "IPA Standards",
-    "proofLine": "LINE Official Partner",
-    "proofClients": "12 companies onboarded"
+    "proofOwasp": "Monthly checkup",
+    "proofIpa": "Report in 3 business days",
+    "proofLine": "LINE sites included",
+    "proofClients": "12 businesses in Tokyo",
+    "platformsLabel": "Who we serve:"
   },
   "trust": {
     "title": "Supported Platforms"
@@ -339,7 +340,7 @@
     "sections": [
       {
         "title": "Business impact first",
-        "description": "Pointing out technical issues isn't enough. Every finding comes with business context an owner can act on — why this XSS matters, how this image fix affects conversions. Reports are written for business owners, not engineers."
+        "description": "Pointing out technical issues isn't enough. Every finding comes with business context an owner can act on — why this malicious script injection matters, how this image fix affects conversions. Reports are written for business owners, not engineers."
       },
       {
         "title": "No evidence, no finding",
@@ -353,11 +354,11 @@
     "stackLabel": "What we check",
     "stackTitle": "Five lenses, every audit",
     "stacks": [
-      { "name": "Security", "icon": "🔒", "desc": "OWASP vulnerabilities, auth, secret leakage" },
-      { "name": "Performance", "icon": "⚡", "desc": "Core Web Vitals, mobile speed, Japan CDN" },
-      { "name": "LINE API", "icon": "💬", "desc": "Webhook signature, LIFF, token management" },
-      { "name": "i18n / UX", "icon": "🌐", "desc": "Japanese display, encoding, date & currency" },
-      { "name": "Maintainability", "icon": "🔧", "desc": "Dependencies, code structure, deploy risk" }
+      { "name": "Security", "icon": "🔒", "desc": "Unauthorized access, data leaks, weak authentication" },
+      { "name": "Performance", "icon": "⚡", "desc": "Page speed, mobile experience, Japan delivery optimization" },
+      { "name": "LINE API", "icon": "💬", "desc": "LINE integration safety, token management, message verification" },
+      { "name": "Multilingual / UX", "icon": "🌐", "desc": "Japanese display, garbled text prevention, date & currency formats" },
+      { "name": "Maintainability", "icon": "🔧", "desc": "Outdated packages, code structure, update risk" }
     ],
     "founder": {
       "name": "Daito Kojima",

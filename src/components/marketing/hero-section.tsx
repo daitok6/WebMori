@@ -85,7 +85,7 @@ export function HeroSection() {
           >
             <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" className="w-full sm:w-auto">
               <Button size="lg" className="w-full sm:w-auto whitespace-nowrap">
-                {t("cta")} →
+                {t("cta")}<span aria-hidden="true"> →</span>
               </Button>
             </Link>
             <Link href="/sample-report" className="w-full sm:w-auto">
@@ -139,19 +139,19 @@ export function HeroSection() {
       {/* Bottom platform strip */}
       <div className="relative z-10 border-t border-border">
         <div className="mx-auto max-w-[1100px] px-5 sm:px-10 lg:px-20 py-5 flex flex-wrap items-center justify-between gap-4">
-          <span className="text-[11px] text-ink-muted">対応スタック:</span>
+          <span className="text-[11px] text-ink-muted">{t("platformsLabel")}</span>
           <div className="flex flex-wrap gap-2.5">
             {[
-              { icon: "🛍", name: "Shopify" },
-              { icon: "📝", name: "WordPress" },
-              { icon: "⚡", name: "Next.js" },
-              { icon: "💬", name: "LINE Mini App" },
-            ].map((p) => (
+              "整体院・鍼灸院",
+              "飲食店・カフェ",
+              "EC通販サイト",
+              "美容室・ネイルサロン",
+            ].map((name) => (
               <span
-                key={p.name}
+                key={name}
                 className="inline-flex items-center gap-1.5 rounded-lg bg-surface-raised border border-border px-3 py-1.5 text-[11px] text-ink-muted"
               >
-                {p.icon} {p.name}
+                {name}
               </span>
             ))}
           </div>
