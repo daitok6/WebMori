@@ -66,11 +66,12 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.15 }}
-            className="text-[clamp(32px,4.5vw,54px)] font-black leading-[1.08] tracking-[-0.04em] text-ink mb-5"
+            className="text-[clamp(26px,2.8vw,36px)] font-black leading-[1.12] tracking-[-0.04em] text-ink mb-5"
           >
             {t("title1")}
             <span className="text-primary">{t("titleHighlight")}</span>
-            {t("title2")}
+            <br />
+            <span className="whitespace-nowrap">{t("title2")}</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -136,7 +137,7 @@ export function HeroSection() {
           initial={{ opacity: 0, scale: 0.96, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="w-full min-[900px]:w-[420px] shrink-0"
+          className="w-full min-[900px]:w-[380px] shrink-0"
         >
           <ProductPreviewCard />
         </motion.div>
