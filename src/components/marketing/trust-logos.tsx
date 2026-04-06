@@ -23,33 +23,29 @@ function WordPressLogo({ className }: { className?: string }) {
 
 function NextjsLogo({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 180 180" fill="none" aria-label="Next.js">
-      <mask id="mask0_408_134" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="180" height="180">
-        <circle cx="90" cy="90" r="90" fill="black" />
-      </mask>
-      <g mask="url(#mask0_408_134)">
-        <circle cx="90" cy="90" r="90" fill="currentColor" />
-        <path d="M149.508 157.52L69.142 54H54v71.97h12.114V69.384l73.885 95.461A90.304 90.304 0 00149.508 157.52z" fill="url(#paint0_linear_408_134)" />
-        <rect x="115" y="54" width="12" height="72" fill="url(#paint1_linear_408_134)" />
-      </g>
-      <defs>
-        <linearGradient id="paint0_linear_408_134" x1="109" y1="116.5" x2="144.5" y2="160.5" gradientUnits="userSpaceOnUse">
-          <stop stopColor="white" />
-          <stop offset="1" stopColor="white" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="paint1_linear_408_134" x1="121" y1="54" x2="120.799" y2="106.875" gradientUnits="userSpaceOnUse">
-          <stop stopColor="white" />
-          <stop offset="1" stopColor="white" stopOpacity="0" />
-        </linearGradient>
-      </defs>
+    <svg className={className} viewBox="0 0 180 180" fill="currentColor" aria-label="Next.js">
+      <circle cx="90" cy="90" r="90" />
+      <path fill="white" d="M149.508 157.52L69.142 54H54v71.97h12.114V69.384l73.885 95.461A90.304 90.304 0 00149.508 157.52z" />
+      <rect x="115" y="54" width="12" height="72" fill="white" />
     </svg>
   );
 }
 
 function LineLogo({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 120 120" fill="currentColor" aria-label="LINE">
-      <path d="M60 0C26.9 0 0 26.9 0 60s26.9 60 60 60 60-26.9 60-60S93.1 0 60 0zm30.7 68.4c-3.1 4.2-12.4 13.2-26.4 22.2-1 .6-2.1.4-2.4.3-.4-.1-5.6-1.9-6.5-2.2-.9-.3-1.5-1-1.1-2.1.3-.8 1.1-1.5 1.8-2 .7-.4 1.3-.6 1.3-.6s17.1-10.9 20.5-14.8c3.7-4.2 2.2-8-2.8-8.7-4.9-.7-15.9 0-22.1.5-6.2.5-9.1-2.5-9.1-7.7 0-5.3 0-17.2 0-17.2 0-2.2 1.8-4 4-4h24.4c2.2 0 4 1.8 4 4v14.8c0 3.1 2.7 5.1 5.9 4.4 3.1-.7 8.7-3.3 10.3-5.2 0 0 1.3-1.6 2-1 .7.7.1 2.7-1.5 5.3l-2.3 3.6"/>
+    <svg className={className} viewBox="0 0 48 48" fill="currentColor" aria-label="LINE">
+      {/* App icon background */}
+      <rect x="1" y="1" width="46" height="46" rx="10" />
+      {/* Speech bubble — white cutout */}
+      <path
+        fill="white"
+        d="M24 8.5C14.3 8.5 6.5 15 6.5 23c0 7.2 6.4 13.2 15 14.7-.3 1.3-.8 3.3-.2 3.8.6.5 3.6-1.4 5.5-2.7.7.1 1.4.1 2.2.1 9.7 0 17.5-6.5 17.5-14.5S33.7 8.5 24 8.5z"
+      />
+      {/* LINE letters — currentColor (same as background circle, shows as filled) */}
+      <path
+        fill="currentColor"
+        d="M16.5 21h1.8v5H21v1.5h-4.5V21zm5.5 0h1.8v6.5H22V21zm2.8 0h1.9l2.3 4V21H30v6.5h-1.8l-2.4-4.1v4.1H24V21zm6 0h4.7v1.5h-2.9v1h2.7v1.4h-2.7v1.1h3v1.5h-4.8V21z"
+      />
     </svg>
   );
 }
