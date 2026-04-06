@@ -92,7 +92,7 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-3"
           >
             <Link href="/auth/signin?callbackUrl=/dashboard/free-eval" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto whitespace-nowrap">
                 {t("cta")} →
               </Button>
             </Link>
