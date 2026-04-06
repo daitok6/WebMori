@@ -79,12 +79,10 @@ function BeforeAfterPanel() {
         </div>
       </div>
 
-      {/* Bullet lists + absolutely centered arrow */}
-      <div className="relative grid grid-cols-2 gap-2">
-        <div className="absolute left-[42%] top-[40%] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-          <span className="text-sm text-primary font-bold">→</span>
-        </div>
-        <div className="pr-3 flex flex-col gap-1.5">
+      {/* Bullet lists + vertical divider */}
+      <div className="relative grid grid-cols-2 gap-0">
+        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-border -translate-x-1/2 pointer-events-none" />
+        <div className="pr-4 flex flex-col gap-1.5">
           {BEFORE_ITEMS.map((item, i) => (
             <div key={i} className="flex items-start gap-1.5">
               <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
@@ -92,7 +90,7 @@ function BeforeAfterPanel() {
             </div>
           ))}
         </div>
-        <div className="pl-3 flex flex-col gap-1.5">
+        <div className="pl-4 flex flex-col gap-1.5">
           {AFTER_ITEMS.map((item, i) => (
             <div key={i} className="flex items-start gap-1.5">
               <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
