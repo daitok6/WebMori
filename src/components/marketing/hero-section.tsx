@@ -28,14 +28,6 @@ export function HeroSection() {
         style={{ width: "40%", background: "linear-gradient(90deg, #D97706, transparent)" }}
       />
 
-      {/* "守" kanji watermark */}
-      <div
-        aria-hidden
-        className="pointer-events-none select-none absolute z-0 right-[-40px] top-1/2 -translate-y-1/2 font-black leading-none text-ink opacity-[0.045] text-[300px] max-[900px]:text-[160px] max-[900px]:right-[-20px]"
-        style={{ fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
-      >
-        守
-      </div>
 
       {/* Split grid */}
       <div className="relative z-10 mx-auto w-full max-w-[1100px] px-5 sm:px-10 lg:px-20 flex flex-col gap-10 min-[900px]:flex-row min-[900px]:items-center min-[900px]:gap-16 py-12 min-[900px]:py-16">
