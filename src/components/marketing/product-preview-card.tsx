@@ -148,25 +148,22 @@ export function ProductPreviewCard() {
       </div>
 
       {/* Tab bar */}
-      <div className="flex gap-0.5 px-4 pt-2.5">
+      <div className="flex gap-1.5 px-4 py-2.5 border-b border-border">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActive(tab.id)}
             className={cn(
-              "text-[11px] font-semibold px-3 py-1.5 rounded-t-md border border-b-0 transition-colors cursor-pointer",
+              "text-[11px] font-semibold px-3 py-1 rounded-full transition-colors cursor-pointer",
               active === tab.id
-                ? "bg-surface-raised border-border text-ink"
-                : "bg-transparent border-transparent text-ink-subtle hover:text-ink-muted",
+                ? "bg-primary text-white"
+                : "bg-surface-sunken text-ink-muted hover:bg-surface-raised hover:text-ink",
             )}
           >
             {tab.label}
           </button>
         ))}
       </div>
-
-      {/* Divider below tabs */}
-      <div className="border-t border-border" />
 
       {/* Panel content */}
       <div className="min-h-[180px]">
