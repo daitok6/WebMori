@@ -82,7 +82,7 @@ function BeforeAfterPanel() {
       {/* Bullet lists + absolutely centered arrow */}
       <div className="relative grid grid-cols-2 gap-2">
         {/* Arrow pinned to exact center */}
-        <div className="absolute left-[42%] top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <div className="absolute left-[42%] top-[40%] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
           <span className="text-sm text-primary font-bold">→</span>
         </div>
         <div className="pr-3">
