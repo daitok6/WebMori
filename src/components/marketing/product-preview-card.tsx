@@ -63,40 +63,43 @@ function FindingsPanel() {
 
 function BeforeAfterPanel() {
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] px-4 py-3 gap-0">
-      {/* Before */}
-      <div>
-        <div className="text-[10px] font-bold text-severity-critical mb-2.5">❌ 診断前</div>
-        <div className="mb-2">
+    <div className="px-4 py-3">
+      {/* Headers + scores */}
+      <div className="grid grid-cols-[1fr_auto_1fr] mb-3">
+        <div>
+          <div className="text-[10px] font-bold text-severity-critical mb-2">❌ 診断前</div>
           <span className="text-[28px] font-black leading-none text-severity-critical">38</span>
           <div className="text-[8px] uppercase tracking-wider text-ink-subtle mt-0.5">総合スコア</div>
         </div>
-        {BEFORE_ITEMS.map((item, i) => (
-          <div key={i} className="flex items-start gap-1.5 mb-1.5">
-            <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
-            <span className="text-[10px] text-ink-muted leading-tight">{item.text}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Arrow */}
-      <div className="flex items-center justify-center px-2.5">
-        <span className="text-base text-primary font-bold">→</span>
-      </div>
-
-      {/* After */}
-      <div>
-        <div className="text-[10px] font-bold text-severity-good mb-2.5">✅ 修正後</div>
-        <div className="mb-2">
+        <div className="px-2.5" />
+        <div>
+          <div className="text-[10px] font-bold text-severity-good mb-2">✅ 修正後</div>
           <span className="text-[28px] font-black leading-none text-severity-good">91</span>
           <div className="text-[8px] uppercase tracking-wider text-ink-subtle mt-0.5">総合スコア</div>
         </div>
-        {AFTER_ITEMS.map((item, i) => (
-          <div key={i} className="flex items-start gap-1.5 mb-1.5">
-            <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
-            <span className="text-[10px] text-ink-muted leading-tight">{item.text}</span>
-          </div>
-        ))}
+      </div>
+
+      {/* Bullet lists + centered arrow */}
+      <div className="grid grid-cols-[1fr_auto_1fr]">
+        <div>
+          {BEFORE_ITEMS.map((item, i) => (
+            <div key={i} className="flex items-start gap-1.5 mb-1.5">
+              <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
+              <span className="text-[10px] text-ink-muted leading-tight">{item.text}</span>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center justify-center px-2.5">
+          <span className="text-base text-primary font-bold">→</span>
+        </div>
+        <div>
+          {AFTER_ITEMS.map((item, i) => (
+            <div key={i} className="flex items-start gap-1.5 mb-1.5">
+              <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
+              <span className="text-[10px] text-ink-muted leading-tight">{item.text}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
