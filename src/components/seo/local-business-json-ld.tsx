@@ -2,6 +2,7 @@ export function LocalBusinessJsonLd() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
+    "@id": "https://www.webmori.jp/#organization",
     name: "WebMori（ウェブ守り）",
     alternateName: "WebMori",
     url: "https://www.webmori.jp",
@@ -109,7 +110,16 @@ export function LocalBusinessJsonLd() {
         alternateName: "ja",
       },
     },
-    sameAs: ["https://www.webmori.jp"],
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "18:00",
+    },
+    sameAs: [
+      "https://note.com/webmori",
+      "https://zenn.dev/webmori",
+    ],
   };
 
   return (
