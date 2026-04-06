@@ -12,8 +12,8 @@
   "hero": {
     "badge": "Web Audit Service · Tokyo",
     "title1": "Every month, pros ",
-    "titleHighlight": "protect",
-    "title2": " your site. Problems found before they happen.",
+    "titleHighlight": "protect your site.",
+    "title2": "Problems found before they happen.",
     "subtitle": "Are you losing customers without realizing your site has issues? WebMori audits monthly, finding hidden risks and fixing them.",
     "cta": "Get Free Audit",
     "ctaSecondary": "View sample report",
@@ -330,25 +330,37 @@
   },
   "aboutPage": {
     "title": "About WebMori",
-    "subtitle": "WebMori is a Tokyo-based web security audit service",
+    "subtitle": "Monthly professional web audits for Tokyo SMBs and freelancers",
+    "storyLabel": "Why we built this",
+    "storyTitle": "\"They didn't even know their site had a problem.\"",
+    "storyBody1": "Working as a web and security engineer in Tokyo, I kept seeing the same pattern. Small restaurants, clinics, freelance designers — their sites were quietly accumulating serious security holes and performance issues that drove customers away. Nobody noticed. Because nobody was checking.",
+    "storyBody2": "Large companies have security teams. Small businesses don't. That asymmetry is what WebMori exists to fix. Every month, a professional reviews your site so you don't have to worry about it.",
+    "principlesLabel": "3 principles",
     "sections": [
       {
-        "title": "Mission",
-        "description": "To make enterprise-level web security accessible to Tokyo freelancers and SMBs. We remove technical complexity so you can focus on your business."
+        "title": "Business impact first",
+        "description": "Pointing out technical issues isn't enough. Every finding comes with business context an owner can act on — why this XSS matters, how this image fix affects conversions. Reports are written for business owners, not engineers."
       },
       {
-        "title": "Approach",
-        "description": "Not just vulnerability scanning — we evaluate sites holistically from 5 angles: security, performance, LINE API, i18n, and maintainability. Reports include specific fix proposals with business impact explanations."
+        "title": "No evidence, no finding",
+        "description": "Every issue in our reports is backed by real code and real logs — file paths, line numbers, reproduction steps. Unconfirmed hypotheses are labeled as such and never mixed with verified findings."
       },
       {
-        "title": "Technology",
-        "description": "Our AI-powered audit engine analyzes codebases with the quality of a human security expert, but faster. Auto-fix PRs let you resolve safe issues instantly."
+        "title": "We see fixes through",
+        "description": "We don't stop at finding problems. Safe fixes are submitted as GitHub PRs. Manual fixes come with step-by-step guides and code samples. Full implementation is available as an add-on (Tier A–C)."
       }
+    ],
+    "stackLabel": "Supported stacks",
+    "stacks": [
+      { "name": "Shopify", "icon": "🛍", "desc": "Liquid, API, checkout flow" },
+      { "name": "WordPress", "icon": "📝", "desc": "Plugins, REST API, permissions" },
+      { "name": "Next.js", "icon": "⚡", "desc": "Server Actions, API routes, env vars" },
+      { "name": "LINE Mini App", "icon": "💬", "desc": "Webhook signature, LIFF, token mgmt" }
     ],
     "founder": {
       "name": "Daito Kojima",
-      "role": "Founder / Security Engineer",
-      "bio": "After years as a security engineer at a major Japanese IT company, I built WebMori so that Tokyo freelancers and SMBs could access the same level of web security expertise as large enterprises — without the enterprise price tag."
+      "role": "Founder / Web Engineer / Security Engineer",
+      "bio": "After working across web engineering and security engineering on multiple products and security assessments, I founded WebMori out of the conviction that small businesses need professional audits most. Based in Tokyo, our mission is to protect local businesses through a monthly audit and improvement cycle."
     }
   },
   "contactPage": {
