@@ -63,13 +63,28 @@ function FindingsPanel() {
 
 function BeforeAfterPanel() {
   return (
-    <div className="px-4 py-4 grid grid-cols-[1fr_28px_1fr]">
-      {/* Left: header + bullets */}
-      <div>
-        <div className="text-[10px] font-bold text-severity-critical mb-2">❌ 診断前</div>
-        <span className="text-[28px] font-black leading-none text-severity-critical">38</span>
-        <div className="text-[8px] uppercase tracking-wider text-ink-subtle mt-0.5 mb-4">総合スコア</div>
-        <div className="flex flex-col gap-1.5">
+    <div className="px-4 py-4">
+      {/* Headers + scores */}
+      <div className="grid grid-cols-[1fr_auto_1fr] mb-4">
+        <div>
+          <div className="text-[10px] font-bold text-severity-critical mb-2">❌ 診断前</div>
+          <span className="text-[28px] font-black leading-none text-severity-critical">38</span>
+          <div className="text-[8px] uppercase tracking-wider text-ink-subtle mt-0.5">総合スコア</div>
+        </div>
+        <div className="px-2.5" />
+        <div>
+          <div className="text-[10px] font-bold text-severity-good mb-2">✅ 修正後</div>
+          <span className="text-[28px] font-black leading-none text-severity-good">91</span>
+          <div className="text-[8px] uppercase tracking-wider text-ink-subtle mt-0.5">総合スコア</div>
+        </div>
+      </div>
+
+      {/* Bullet lists + absolutely centered arrow */}
+      <div className="relative grid grid-cols-2 gap-2">
+        <div className="absolute left-[42%] top-[40%] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+          <span className="text-sm text-primary font-bold">→</span>
+        </div>
+        <div className="pr-3 flex flex-col gap-1.5">
           {BEFORE_ITEMS.map((item, i) => (
             <div key={i} className="flex items-start gap-1.5">
               <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
@@ -77,28 +92,7 @@ function BeforeAfterPanel() {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Middle: arrow aligned to bullet list */}
-      <div className="flex flex-col">
-        {/* Spacer matching header height */}
-        <div className="mb-4">
-          <div className="text-[10px] mb-2 opacity-0">x</div>
-          <div className="text-[28px] leading-none opacity-0">0</div>
-          <div className="text-[8px] mt-0.5 opacity-0">x</div>
-        </div>
-        {/* Arrow centered in the bullets area */}
-        <div className="flex-1 flex items-center justify-center">
-          <span className="text-sm text-primary font-bold">→</span>
-        </div>
-      </div>
-
-      {/* Right: header + bullets */}
-      <div>
-        <div className="text-[10px] font-bold text-severity-good mb-2">✅ 修正後</div>
-        <span className="text-[28px] font-black leading-none text-severity-good">91</span>
-        <div className="text-[8px] uppercase tracking-wider text-ink-subtle mt-0.5 mb-4">総合スコア</div>
-        <div className="flex flex-col gap-1.5">
+        <div className="pl-3 flex flex-col gap-1.5">
           {AFTER_ITEMS.map((item, i) => (
             <div key={i} className="flex items-start gap-1.5">
               <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
