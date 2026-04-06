@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CTASection } from "@/components/marketing/cta-section";
-import { Shield, Zap, MessageCircle, Globe, Code, GitPullRequest, AlertTriangle, XCircle, CheckCircle, ArrowRight } from "lucide-react";
+import { Shield, Zap, MessageCircle, Globe, Code, Search, GitPullRequest, AlertTriangle, XCircle, CheckCircle, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 
@@ -15,6 +15,7 @@ const lenses = [
   { icon: MessageCircle, color: "text-severity-good", bg: "bg-severity-good/10" },
   { icon: Globe, color: "text-severity-low", bg: "bg-severity-low/10" },
   { icon: Code, color: "text-ink-muted", bg: "bg-ink-subtle/10" },
+  { icon: Search, color: "text-brand-gold", bg: "bg-brand-gold/10" },
 ];
 
 const stackKeys = ["shopify", "wordpress", "nextjs", "line"] as const;
@@ -38,7 +39,7 @@ export default function FeaturesPage() {
           </ScrollReveal>
 
           <div className="mt-16 space-y-8">
-            {[0, 1, 2, 3, 4].map((i) => {
+            {[0, 1, 2, 3, 4, 5].map((i) => {
               const LensIcon = lenses[i].icon;
               return (
                 <ScrollReveal key={i} delay={i * 0.1}>
