@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -79,34 +79,28 @@ function BeforeAfterPanel() {
         </div>
       </div>
 
-      {/* Bullet lists — row-by-row grid, arrow injected between rows 2 and 3 */}
-      <div className="grid grid-cols-[1fr_20px_1fr] gap-y-1.5">
-        {BEFORE_ITEMS.map((before, i) => {
-          const after = AFTER_ITEMS[i];
-          return (
-            <React.Fragment key={i}>
-              {/* Arrow row injected before item index 2 (= between items 2 and 3) */}
-              {i === 2 && (
-                <>
-                  <div />
-                  <div className="flex items-center justify-center">
-                    <span className="text-sm text-primary font-bold leading-none">→</span>
-                  </div>
-                  <div />
-                </>
-              )}
-              <div className="flex items-start gap-1.5">
-                <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", before.color)} />
-                <span className="text-[10px] text-ink-muted leading-tight">{before.text}</span>
-              </div>
-              <div />
-              <div className="flex items-start gap-1.5">
-                <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", after.color)} />
-                <span className="text-[10px] text-ink-muted leading-tight">{after.text}</span>
-              </div>
-            </React.Fragment>
-          );
-        })}
+      {/* Bullet lists + absolutely centered arrow */}
+      <div className="relative grid grid-cols-2 gap-2">
+        {/* Arrow pinned to exact center */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+          <span className="text-sm text-primary font-bold">→</span>
+        </div>
+        <div className="pr-3">
+          {BEFORE_ITEMS.map((item, i) => (
+            <div key={i} className="flex items-start gap-1.5 mb-1.5">
+              <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
+              <span className="text-[10px] text-ink-muted leading-tight">{item.text}</span>
+            </div>
+          ))}
+        </div>
+        <div className="pl-3">
+          {AFTER_ITEMS.map((item, i) => (
+            <div key={i} className="flex items-start gap-1.5 mb-1.5">
+              <div className={cn("w-1.5 h-1.5 rounded-full mt-[4px] shrink-0", item.color)} />
+              <span className="text-[10px] text-ink-muted leading-tight">{item.text}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
