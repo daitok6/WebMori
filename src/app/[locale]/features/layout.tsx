@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       title: t("title"),
       description: t("description"),
       locale: locale === "ja" ? "ja_JP" : "en_US",
-      siteName: "WebMori",
+      siteName: "WebMori（ウェブ守り）",
     },
     alternates: {
       canonical: `https://www.webmori.jp/${locale}/features`,
