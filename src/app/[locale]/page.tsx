@@ -11,6 +11,7 @@ import { StatCounter } from "@/components/marketing/stat-counter";
 import { PricingPreview } from "@/components/marketing/pricing-preview";
 import { CTASection } from "@/components/marketing/cta-section";
 import { JsonLd } from "@/components/seo/json-ld";
+import { LocalBusinessJsonLd } from "@/components/seo/local-business-json-ld";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t("description"),
       type: "website",
       locale: locale === "ja" ? "ja_JP" : "en_US",
-      siteName: "WebMori",
+      siteName: "WebMori（ウェブ守り）",
     },
     alternates: {
       canonical: `https://www.webmori.jp/${locale}`,
@@ -36,6 +37,7 @@ export default function HomePage() {
   return (
     <>
       <JsonLd />
+      <LocalBusinessJsonLd />
       <HeroSection />
       <TrustLogos />
       <ProblemSolution />

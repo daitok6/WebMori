@@ -26,8 +26,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.webmori.jp";
 
 export const metadata: Metadata = {
   title: {
-    default: "WebMori - Web Security Audit Service",
-    template: "%s | WebMori",
+    default: "WebMori（ウェブ守り）- Web Security Audit Service",
+    template: "%s | WebMori（ウェブ守り）",
   },
   description:
     "Tokyo-based web security audit service for freelancers and SMBs. Monthly audits covering security, performance, LINE API, i18n, and maintainability.",
@@ -43,10 +43,10 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "WebMori - Web Security Audit Service",
+        alt: "WebMori（ウェブ守り）- Web Security Audit Service",
       },
     ],
-    siteName: "WebMori",
+    siteName: "WebMori（ウェブ守り）",
     type: "website",
   },
   twitter: {
