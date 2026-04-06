@@ -97,7 +97,7 @@ export function HeroSection() {
               </Button>
             </Link>
             <Link href="/sample-report" className="w-full sm:w-auto">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+              <Button variant="secondary" size="lg" className="w-full sm:w-auto whitespace-nowrap">
                 {t("ctaSecondary")}
               </Button>
             </Link>
