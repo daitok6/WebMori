@@ -4,15 +4,17 @@ interface BlogJsonLdProps {
   datePublished: string;
   slug: string;
   locale: string;
+  image?: string;
 }
 
-export function BlogJsonLd({ title, description, datePublished, slug, locale }: BlogJsonLdProps) {
+export function BlogJsonLd({ title, description, datePublished, slug, locale, image }: BlogJsonLdProps) {
   const url = `https://www.webmori.jp/${locale}/blog/${slug}`;
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: title,
     description,
+    image: image ?? "https://www.webmori.jp/webmori_logo.jpg",
     url,
     datePublished,
     dateModified: datePublished,

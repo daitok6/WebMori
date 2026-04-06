@@ -5,11 +5,16 @@ export function LocalBusinessJsonLd() {
     name: "WebMori（ウェブ守り）",
     alternateName: "WebMori",
     url: "https://www.webmori.jp",
-    logo: "https://www.webmori.jp/images/logo.png",
-    image: "https://www.webmori.jp/images/og-image.jpg",
+    logo: "https://www.webmori.jp/logo-on-light.png",
+    image: "https://www.webmori.jp/webmori_logo.jpg",
     description:
       "東京のフリーランス・中小企業向け月次ウェブ監査サービス。セキュリティ・パフォーマンス・LINE API・SEOを毎月チェックし、日本語レポートでお届けします。",
     slogan: "守る。改善する。成長させる。",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "東京都",
+      addressCountry: "JP",
+    },
     foundingDate: "2025",
     inLanguage: "ja",
     priceRange: "¥19,800〜¥69,800/月",
