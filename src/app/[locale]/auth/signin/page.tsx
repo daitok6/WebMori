@@ -4,10 +4,9 @@ import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import { Mail, Loader2, ExternalLink } from "lucide-react";
+import { Loader2, ExternalLink } from "lucide-react";
 
 function GoogleIcon() {
   return (
@@ -36,8 +35,6 @@ export default function SignInPage() {
   const t = useTranslations("auth");
   const params = useParams();
   const locale = (params.locale as string) ?? "ja";
-  const [email, setEmail] = useState("");
-  const [emailLoading, setEmailLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [isLineWebView, setIsLineWebView] = useState(false);
 
@@ -53,13 +50,6 @@ export default function SignInPage() {
     setGoogleLoading(true);
     await signIn("google", { callbackUrl: `/${locale}/dashboard` });
     setGoogleLoading(false);
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setEmailLoading(true);
-    await signIn("resend", { email, callbackUrl: `/${locale}/dashboard` });
-    setEmailLoading(false);
   }
 
   if (isLineWebView) {
@@ -83,33 +73,6 @@ export default function SignInPage() {
                 <li>SafariまたはChromeでログイン</li>
               </ol>
             </div>
-            <p className="mt-4 text-xs text-ink-muted">
-              または、メールアドレスでのログインはこのままご利用いただけます。
-            </p>
-            <div className="mt-4 border-t border-border pt-4">
-              <form onSubmit={async (e) => {
-                e.preventDefault();
-                setEmailLoading(true);
-                await signIn("resend", { email, callbackUrl: `/${locale}/dashboard` });
-                setEmailLoading(false);
-              }} className="space-y-3">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-lg border border-border px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
-                  placeholder="メールアドレス"
-                />
-                <Button type="submit" size="lg" className="w-full" disabled={emailLoading}>
-                  {emailLoading ? (
-                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />送信中…</>
-                  ) : (
-                    "マジックリンクを送信"
-                  )}
-                </Button>
-              </form>
-            </div>
           </Card>
         </ScrollReveal>
       </section>
@@ -122,17 +85,16 @@ export default function SignInPage() {
         <Card className="w-full max-w-md">
           <div className="mb-6 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-              <Mail className="h-7 w-7 text-primary" />
+              <GoogleIcon />
             </div>
             <h1 className="text-2xl font-bold text-ink">{t("signInTitle")}</h1>
             <p className="mt-2 text-sm text-ink-muted">{t("signInDescription")}</p>
           </div>
 
-          {/* Google */}
           <button
             type="button"
             onClick={handleGoogleSignIn}
-            disabled={googleLoading || emailLoading}
+            disabled={googleLoading}
             className="w-full flex items-center justify-center gap-3 rounded-lg border border-border bg-white px-4 py-2.5 text-sm font-medium text-ink shadow-sm hover:bg-surface-raised transition-colors disabled:opacity-60"
           >
             {googleLoading ? (
@@ -142,43 +104,6 @@ export default function SignInPage() {
             )}
             {t("signInWithGoogle")}
           </button>
-
-          {/* Divider */}
-          <div className="my-5 flex items-center gap-3">
-            <div className="flex-1 border-t border-border" />
-            <span className="text-xs text-ink-muted">{t("or")}</span>
-            <div className="flex-1 border-t border-border" />
-          </div>
-
-          {/* Magic link */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-ink mb-1.5">
-                {t("email")}
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-border px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
-                placeholder={t("emailPlaceholder")}
-              />
-            </div>
-
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full"
-              disabled={emailLoading || googleLoading}
-            >
-              {emailLoading ? (
-                <><Loader2 className="h-4 w-4 animate-spin mr-2" />{t("sending")}</>
-              ) : (
-                t("sendMagicLink")
-              )}
-            </Button>
-          </form>
 
           <p className="mt-4 text-center text-xs text-ink-muted">
             {t("signInFooter")}

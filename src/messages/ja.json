@@ -10,11 +10,11 @@
     "getStarted": "無料診断を始める"
   },
   "hero": {
-    "badge": "ウェブ監査サービス · 東京",
-    "title1": "毎月、プロが",
-    "titleHighlight": "守る。",
-    "title2": "問題は起きる前に見つける。",
-    "subtitle": "サイトの問題に気づかないまま、お客様を逃し続けていませんか？WebMoriが月1回、見えないリスクを見つけて改善します。",
+    "badge": "毎月のサイト定期診断 · 東京",
+    "title1": "その不具合、",
+    "titleHighlight": "売上を逃していませんか？",
+    "title2": "プロが毎月、先回りで守ります。",
+    "subtitle": "表示崩れやエラーは、信用低下や離脱の原因になります。WebMoriが月1回の定期チェックで問題を早期発見し、安定したサイト運用を支えます。",
     "cta": "無料診断を受ける",
     "ctaSecondary": "サンプルレポートを見る",
     "noCreditCard": "クレジットカード不要 · 5分で完了 · 担当者からの連絡なし",
@@ -50,12 +50,12 @@
     "label": "導入後",
     "items": [
       {
-        "title": "5つの視点で徹底監査",
-        "description": "セキュリティ、パフォーマンス、LINE API、国際化、保守性を網羅的にチェック"
+        "title": "5つの視点でまるごとチェック",
+        "description": "セキュリティ、パフォーマンス、LINE API、国際化、保守性を網羅的に確認"
       },
       {
         "title": "具体的な改善提案",
-        "description": "問題の指摘だけでなく、修正コード付きのプルリクエストをお届け"
+        "description": "問題の指摘だけでなく、修正の方法と修正コードをそのままお届け"
       },
       {
         "title": "わかりやすい日本語レポート",
@@ -67,12 +67,12 @@
     "title": "ご利用の流れ",
     "steps": [
       {
-        "title": "リポジトリを登録",
-        "description": "GitHubリポジトリのURLを登録するだけ。数分で完了します。"
+        "title": "サイトを登録",
+        "description": "サイトのURLを登録するだけ。数分で完了します。"
       },
       {
-        "title": "自動監査を実施",
-        "description": "5つの監査レンズで、コードベースを徹底的にスキャンします。"
+        "title": "プロがチェックを実施",
+        "description": "5つの視点で、サイト全体を徹底的に確認します。"
       },
       {
         "title": "レポートを確認",
@@ -80,7 +80,7 @@
       },
       {
         "title": "修正を適用",
-        "description": "安全な修正はPRとして自動作成。そのままマージするだけです。"
+        "description": "安全な修正はそのまま適用できる形でご提案。確認してワンクリックで完了です。"
       }
     ]
   },
@@ -104,8 +104,8 @@
         "description": "¥が$で表示される恥ずかしいミスを防ぎます"
       },
       {
-        "title": "自動修正PR",
-        "description": "安全な修正はそのままGitHubに反映。手間ゼロです"
+        "title": "修正まで対応",
+        "description": "安全な修正はそのまま適用できる形でご提案。手間ゼロです"
       },
       {
         "title": "月次レポート",
@@ -115,10 +115,10 @@
   },
   "stats": {
     "items": [
-      { "value": "5", "label": "監査レンズ" },
+      { "value": "5", "label": "チェック項目" },
       { "value": "3営業日", "label": "標準レポート提供" },
       { "value": "100%", "label": "日本語対応" },
-      { "value": "PR", "label": "修正はGitHubで即対応" }
+      { "value": "即対応", "label": "安全な修正はそのまま適用可" }
     ]
   },
   "pricing": {
@@ -206,7 +206,7 @@
   },
   "featuresPage": {
     "title": "主な機能",
-    "subtitle": "6つの監査レンズで、あなたのサイトを徹底的に分析します",
+    "subtitle": "6つの視点で、あなたのサイトを徹底的に分析します",
     "lenses": [
       {
         "title": "セキュリティ監査",
@@ -367,17 +367,9 @@
   },
   "auth": {
     "signInTitle": "ログイン",
-    "signInDescription": "Googleアカウントまたはメールアドレスでログインしてください",
+    "signInDescription": "Googleアカウントでログインしてください",
     "signInWithGoogle": "Googleでログイン",
-    "or": "または",
-    "email": "メールアドレス",
-    "emailPlaceholder": "example@company.jp",
-    "sendMagicLink": "マジックリンクを送信",
-    "sending": "送信中...",
-    "signInFooter": "アカウントがない場合は自動的に作成されます",
-    "verifyTitle": "メールを確認してください",
-    "verifyDescription": "ログインリンクをメールで送信しました。メールを確認してリンクをクリックしてください。",
-    "verifyNote": "メールが届かない場合は、迷惑メールフォルダをご確認ください。"
+    "signInFooter": "アカウントがない場合は自動的に作成されます"
   },
   "dashboard": {
     "error": {
@@ -730,7 +722,7 @@
     },
     "features": {
       "title": "ウェブ監査の機能",
-      "description": "5つの監査レンズ：セキュリティ、パフォーマンス、LINE API、国際化、保守性。Shopify、WordPress、Next.js、LINE Mini Appに対応。"
+      "description": "セキュリティ・パフォーマンス・LINE API・国際化・保守性の5視点でサイトを診断。Shopify、WordPress、Next.js、LINE Mini Appに対応。"
     },
     "pricing": {
       "title": "料金プラン",

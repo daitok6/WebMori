@@ -1,59 +1,9 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import Resend from "next-auth/providers/resend";
 import Google from "next-auth/providers/google";
-import { Resend as ResendClient } from "resend";
 import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 import { getResend, EMAIL_FROM } from "./email";
-
-function magicLinkHtml(url: string): string {
-  return `
-<body style="background:#FAFAF9;font-family:-apple-system,'SF Pro Text','Segoe UI',sans-serif;margin:0;padding:20px;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:auto;">
-    <tr>
-      <td style="background:#1C1917;padding:24px 32px;border-radius:8px 8px 0 0;">
-        <span style="color:#D97706;font-size:22px;font-weight:bold;letter-spacing:-0.5px;">Web<span style="color:white;">Mori</span></span>
-        <span style="color:rgba(255,255,255,0.4);font-size:12px;margin-left:8px;">ウェブ守り</span>
-      </td>
-    </tr>
-    <tr>
-      <td style="background:white;padding:40px 32px 32px;border:1px solid #E7E5E4;border-top:none;">
-        <h2 style="margin:0 0 8px;color:#1C1917;font-size:20px;font-weight:600;">ログインリンク</h2>
-        <p style="margin:0 0 32px;color:#78716C;font-size:14px;line-height:1.7;">
-          下のボタンをクリックしてWebMoriダッシュボードにログインしてください。<br>
-          このリンクは24時間有効です。
-        </p>
-        <table cellpadding="0" cellspacing="0">
-          <tr>
-            <td style="border-radius:8px;background:#D97706;">
-              <a href="${url}"
-                target="_blank"
-                style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:600;color:#1C1917;text-decoration:none;border-radius:8px;letter-spacing:-0.2px;">
-                ダッシュボードにログイン
-              </a>
-            </td>
-          </tr>
-        </table>
-        <p style="margin:32px 0 0;color:#78716C;font-size:12px;line-height:1.7;">
-          このメールに心当たりがない場合は、無視していただいて構いません。<br>
-          ボタンが機能しない場合は以下のURLをブラウザに貼り付けてください：<br>
-          <a href="${url}" style="color:#D97706;word-break:break-all;">${url}</a>
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding:20px 0;text-align:center;">
-        <span style="color:#78716C;font-size:12px;">
-          © ${new Date().getFullYear()} WebMori（ウェブ守り）
-          · <a href="https://webmori.jp" style="color:#78716C;">webmori.jp</a>
-        </span>
-      </td>
-    </tr>
-  </table>
-</body>
-  `.trim();
-}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -62,24 +12,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-    Resend({
-      from: process.env.EMAIL_FROM ?? "WebMori <noreply@webmori.jp>",
-      apiKey: process.env.RESEND_API_KEY,
-      sendVerificationRequest: async ({ identifier, url, provider }) => {
-        const resend = new ResendClient(provider.apiKey as string);
-        await resend.emails.send({
-          from: provider.from as string,
-          to: [identifier],
-          subject: "WebMoriへのログイン",
-          html: magicLinkHtml(url),
-          text: `WebMoriダッシュボードにログインするには以下のリンクをクリックしてください:\n${url}`,
-        });
-      },
-    }),
   ],
   pages: {
     signIn: "/auth/signin",
-    verifyRequest: "/auth/verify",
   },
   callbacks: {
     async session({ session, user }) {

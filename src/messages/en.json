@@ -393,17 +393,9 @@
   },
   "auth": {
     "signInTitle": "Sign in",
-    "signInDescription": "Sign in with Google or use your email",
+    "signInDescription": "Sign in with your Google account",
     "signInWithGoogle": "Continue with Google",
-    "or": "or",
-    "email": "Email address",
-    "emailPlaceholder": "example@company.jp",
-    "sendMagicLink": "Send magic link",
-    "sending": "Sending...",
-    "signInFooter": "If you don't have an account, one will be created automatically",
-    "verifyTitle": "Check your email",
-    "verifyDescription": "We sent you a login link. Check your email and click the link to sign in.",
-    "verifyNote": "If you don't see it, check your spam folder."
+    "signInFooter": "If you don't have an account, one will be created automatically"
   },
   "dashboard": {
     "error": {
