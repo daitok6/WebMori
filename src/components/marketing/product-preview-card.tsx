@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /* ── Static demo data ── */
@@ -210,7 +211,9 @@ export function ProductPreviewCard() {
       {/* Card footer */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-surface-raised border-t border-border">
         <span className="text-[10px] text-ink-subtle">Growthプラン · 月次監査</span>
-        <span className="text-[11px] font-bold text-primary">フルレポートを見る →</span>
+        <Link href="/sample-report" className="text-[11px] font-bold text-primary hover:underline">
+          フルレポートを見る →
+        </Link>
       </div>
     </div>
   );

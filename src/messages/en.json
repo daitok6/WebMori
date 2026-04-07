@@ -771,64 +771,8 @@
     }
   },
   "sampleReport": {
-    "metaTitle": "Sample Report",
-    "metaDescription": "See a sample WebMori audit report. We analyze your site across 5 lenses: security, performance, LINE API, i18n, and maintainability.",
-    "badge": "Sample",
-    "title": "Sample Audit Report",
-    "subtitle": "An anonymized sample of an actual audit report. Every plan includes reports like this one.",
-    "client": "Client",
-    "clientName": "Sample Corp.",
-    "site": "Target site",
-    "date": "Audit date",
-    "plan": "Plan",
-    "overviewTitle": "Audit Score Overview",
-    "lens": {
-      "security": "Security",
-      "performance": "Performance",
-      "line": "LINE API",
-      "seo": "SEO",
-      "i18n": "i18n",
-      "maintainability": "Maintainability"
-    },
-    "findingsTitle": "Findings",
-    "severity": {
-      "critical": "Critical",
-      "high": "High",
-      "medium": "Medium",
-      "low": "Low"
-    },
-    "recommendedFix": "Recommended fix:",
-    "findings": {
-      "finding1": {
-        "title": "Missing webhook signature verification",
-        "impact": "LINE webhook request signatures are not validated. An attacker could send fake webhook requests, triggering unauthorized data processing.",
-        "fix": "Add middleware to verify the X-Line-Signature header using the line-bot-sdk validateSignature function."
-      },
-      "finding2": {
-        "title": "Uncompressed image assets (4.2MB total)",
-        "impact": "LCP score is 3.8s (target: under 2.5s). Directly impacts mobile user bounce rate, especially on Japanese mobile networks.",
-        "fix": "Use next/image component for WebP conversion and proper sizing. Consider using an image CDN."
-      },
-      "finding3": {
-        "title": "Inconsistent date formatting",
-        "impact": "Some pages show \"2026/03/15\" while others show \"March 15, 2026\". Creates an inconsistent experience for Japanese users.",
-        "fix": "Standardize on toLocaleDateString('ja-JP') to display dates as \"2026年3月15日\"."
-      },
-      "finding4": {
-        "title": "Unused dependencies (3 packages)",
-        "impact": "Unnecessarily increases bundle size and build time.",
-        "fix": "Remove unused packages from package.json."
-      }
-    },
-    "prioritiesTitle": "This Month's Priorities",
-    "priorities": [
-      "Implement webhook signature verification — top security priority",
-      "Optimize images to improve LCP score — directly impacts conversion rate",
-      "Standardize date formatting — improves user trust"
-    ],
-    "ctaTitle": "Ready to audit your own site?",
-    "ctaDescription": "Start with a free initial audit and take the first step toward improvement.",
-    "ctaButton": "Start free audit"
+    "metaTitle": "Sample Report | WebMori",
+    "metaDescription": "See a real WebMori monthly audit report. We analyze your site across 5 lenses — security, performance, SEO, LINE API, and maintainability — and deliver a clear, actionable report every month."
   },
   "cookieConsent": {
     "message": "This site uses cookies for session management. See our privacy policy for details.",
