@@ -746,64 +746,8 @@
     }
   },
   "sampleReport": {
-    "metaTitle": "サンプルレポート",
-    "metaDescription": "WebMoriの監査レポートのサンプルをご覧ください。セキュリティ、パフォーマンス、LINE API、国際化、保守性の5つの視点から分析します。",
-    "badge": "サンプル",
-    "title": "監査レポート サンプル",
-    "subtitle": "実際の監査レポートを匿名化したサンプルです。各プランでこのようなレポートをお届けします。",
-    "client": "クライアント",
-    "clientName": "株式会社サンプル",
-    "site": "対象サイト",
-    "date": "監査日",
-    "plan": "プラン",
-    "overviewTitle": "監査スコア概要",
-    "lens": {
-      "security": "セキュリティ",
-      "performance": "パフォーマンス",
-      "line": "LINE API",
-      "seo": "SEO",
-      "i18n": "国際化",
-      "maintainability": "保守性"
-    },
-    "findingsTitle": "検出された問題",
-    "severity": {
-      "critical": "Critical",
-      "high": "High",
-      "medium": "Medium",
-      "low": "Low"
-    },
-    "recommendedFix": "推奨対応:",
-    "findings": {
-      "finding1": {
-        "title": "Webhook署名検証の未実装",
-        "impact": "LINE Webhookのリクエスト署名が検証されていません。攻撃者が偽のWebhookリクエストを送信し、不正なデータ処理が発生する可能性があります。",
-        "fix": "X-Line-Signature ヘッダーを検証するミドルウェアを追加してください。line-bot-sdk の validateSignature 関数を使用します。"
-      },
-      "finding2": {
-        "title": "未圧縮の画像アセット（合計4.2MB）",
-        "impact": "LCPスコアが3.8秒（目標: 2.5秒以下）。モバイルユーザーの離脱率に直接影響します。日本のモバイル回線では特に顕著です。",
-        "fix": "next/image コンポーネントで WebP 変換と適切なサイズ指定を行ってください。画像CDNの利用も検討してください。"
-      },
-      "finding3": {
-        "title": "日付フォーマットの不統一",
-        "impact": "一部のページで「2026/03/15」、他のページで「March 15, 2026」が混在。日本のユーザーに違和感を与えます。",
-        "fix": "toLocaleDateString('ja-JP') を使用して「2026年3月15日」に統一してください。"
-      },
-      "finding4": {
-        "title": "未使用の依存パッケージ（3件）",
-        "impact": "バンドルサイズが不必要に増加しています。ビルド時間にも影響します。",
-        "fix": "package.json から未使用パッケージを削除してください。"
-      }
-    },
-    "prioritiesTitle": "今月の優先対応",
-    "priorities": [
-      "Webhook署名検証の実装 — セキュリティ上の最重要課題",
-      "画像最適化によるLCPスコア改善 — コンバージョン率に直結",
-      "日付フォーマットの統一 — ユーザー信頼性の向上"
-    ],
-    "ctaTitle": "あなたのサイトも診断してみませんか？",
-    "ctaDescription": "無料の初回診断で、改善の第一歩を踏み出しましょう。",
-    "ctaButton": "無料診断を始める"
+    "metaTitle": "サンプルレポート | WebMori（ウェブ守り）",
+    "metaDescription": "WebMoriの月次ウェブ監査レポートのサンプルです。セキュリティ・パフォーマンス・SEO・LINE API・保守性の5つの視点から分析した、実際のクライアント様へのお届け形式をご確認いただけます。"
   },
   "implementation": {
     "badge": "実装代行",
