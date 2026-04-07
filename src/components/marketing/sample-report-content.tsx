@@ -211,7 +211,7 @@ export function SampleReportContent() {
   return (
     <>
       {/* ── Demo banner ── */}
-      <div className="border-b border-amber-200 bg-amber-50 px-6 py-3 text-center text-sm text-amber-800">
+      <div className="mt-20 border-b border-amber-200 bg-amber-50 px-6 py-3 text-center text-sm text-amber-800">
         これはサンプルレポートです。実際のレポートは毎月ご契約のサイトに対して生成されます。
       </div>
 
