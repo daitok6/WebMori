@@ -61,7 +61,8 @@ export function HeroSection() {
             className="text-[clamp(26px,2.8vw,36px)] font-black leading-[1.12] tracking-[-0.04em] text-ink mb-5"
           >
             {t("title1")}
-            <span className="text-primary">{t("titleHighlight")}</span>
+            <br />
+            <span className="text-primary whitespace-nowrap">{t("titleHighlight")}</span>
             <br />
             <span className="whitespace-nowrap">{t("title2")}</span>
           </motion.h1>
