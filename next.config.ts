@@ -29,6 +29,13 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    return [
+      // Non-locale URLs that Google has indexed — redirect to Japanese default
+      { source: "/sample-report", destination: "/ja/sample-report", permanent: true },
+      { source: "/blog/env-vars-best-practices", destination: "/ja/blog/env-vars-best-practices", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

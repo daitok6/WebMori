@@ -178,7 +178,7 @@ export default function PricingPage() {
                   <span className="text-xs font-bold uppercase tracking-wider text-green-600">Tier A</span>
                 </div>
                 <h3 className="text-lg font-semibold text-ink mb-1">完全代行</h3>
-                <p className="text-2xl font-bold text-ink mb-1">¥7,500<span className="text-sm font-normal text-ink-muted">/時</span></p>
+                <p className="text-2xl font-bold text-ink mb-1">¥7,500<span className="text-sm font-normal text-ink-muted">／時</span></p>
                 <p className="text-xs text-ink-muted mb-4">PR適用: ¥2,000固定</p>
                 <p className="text-sm text-ink-muted flex-1">画像最適化、フォント自ホスト化、設定変更など低リスクの修正を直接実装します。</p>
               </div>
@@ -191,7 +191,7 @@ export default function PricingPage() {
                   <span className="text-xs font-bold uppercase tracking-wider text-orange-500">Tier B</span>
                 </div>
                 <h3 className="text-lg font-semibold text-ink mb-1">ステージング確認</h3>
-                <p className="text-2xl font-bold text-ink mb-1">¥9,000<span className="text-sm font-normal text-ink-muted">/時</span></p>
+                <p className="text-2xl font-bold text-ink mb-1">¥9,000<span className="text-sm font-normal text-ink-muted">／時</span></p>
                 <p className="text-xs text-ink-muted mb-4"> </p>
                 <p className="text-sm text-ink-muted flex-1">認証、外部API連携、依存関係更新などをステージング環境で確認のうえ実装します。</p>
               </div>
