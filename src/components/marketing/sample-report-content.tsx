@@ -565,7 +565,7 @@ export function SampleReportContent() {
                 <div className="border-b border-border bg-[#0F1923] px-4 py-3">
                   <p className="text-xs font-bold text-amber-400 uppercase tracking-wider">Tier A</p>
                   <p className="text-sm font-bold text-white mt-0.5">WebMori代行</p>
-                  <p className="text-xs text-white/50 mt-0.5">¥7,500/hr（PRは¥5,000均一）</p>
+                  <p className="text-xs text-white/50 mt-0.5">¥7,500（時間）・PRは¥5,000均一</p>
                 </div>
                 <div className="p-4">
                   <table className="w-full text-xs">
@@ -601,7 +601,7 @@ export function SampleReportContent() {
                 <div className="border-b border-border px-4 py-3 bg-[#1a2d3e]">
                   <p className="text-xs font-bold text-blue-300 uppercase tracking-wider">Tier B</p>
                   <p className="text-sm font-bold text-white mt-0.5">ステージング確認あり</p>
-                  <p className="text-xs text-white/50 mt-0.5">¥9,000/hr</p>
+                  <p className="text-xs text-white/50 mt-0.5">¥9,000（時間）</p>
                 </div>
                 <div className="p-4">
                   <table className="w-full text-xs">

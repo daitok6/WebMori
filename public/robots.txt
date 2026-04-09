@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Internal Next.js routes — not web pages
+Disallow: /opengraph-image
+Disallow: /cdn-cgi/
+
+Sitemap: https://www.webmori.jp/sitemap.xml
