@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 import { routing } from "@/i18n/routing";
 import { MarketingShell } from "@/components/layout/marketing-shell";
 import "../globals.css";
@@ -82,6 +83,11 @@ export default async function LocaleLayout({
         </NextIntlClientProvider>
         <Analytics />
         <SpeedInsights />
+        <Script
+          src="https://umami.zeroen.dev/script.js"
+          data-website-id="1f2865e4-c090-4bc3-b83d-1865e12b6c23"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
