@@ -1,5 +1,25 @@
 import { z } from "zod";
 
+/**
+ * Optional env var: an absent, empty, or whitespace-only value is treated as
+ * unset. Vercel injects declared-but-blank vars as "", which `.optional()`
+ * alone rejects because it only accepts `undefined`.
+ */
+const optional = <T extends z.ZodType>(schema: T) =>
+  z.preprocess((v) => {
+    if (typeof v !== "string") return v;
+    const trimmed = v.trim();
+    return trimmed === "" ? undefined : trimmed;
+  }, schema.optional());
+
+/** Same blank-string tolerance as `optional`, but keeps a fallback value. */
+const withDefault = (schema: z.ZodString, fallback: string) =>
+  z.preprocess((v) => {
+    if (typeof v !== "string") return v;
+    const trimmed = v.trim();
+    return trimmed === "" ? undefined : trimmed;
+  }, schema.default(fallback));
+
 const serverSchema = z.object({
   DATABASE_URL: z.url(),
 
@@ -13,44 +33,44 @@ const serverSchema = z.object({
   ADMIN_EMAIL: z.string().min(1),
 
   // Stripe (optional at build time — validated at runtime in stripe.ts)
-  STRIPE_SECRET_KEY: z.string().startsWith("sk_").optional(),
-  STRIPE_WEBHOOK_SECRET: z.string().startsWith("whsec_").optional(),
-  STRIPE_PRICE_STARTER_MONTHLY: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_STARTER_ANNUAL: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_GROWTH_MONTHLY: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_GROWTH_ANNUAL: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_PRO_MONTHLY: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_PRO_ANNUAL: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_ONBOARDING_GROWTH: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_ONBOARDING_PRO: z.string().startsWith("price_").optional(),
+  STRIPE_SECRET_KEY: optional(z.string().startsWith("sk_")),
+  STRIPE_WEBHOOK_SECRET: optional(z.string().startsWith("whsec_")),
+  STRIPE_PRICE_STARTER_MONTHLY: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_STARTER_ANNUAL: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_GROWTH_MONTHLY: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_GROWTH_ANNUAL: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_PRO_MONTHLY: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_PRO_ANNUAL: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_ONBOARDING_GROWTH: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_ONBOARDING_PRO: optional(z.string().startsWith("price_")),
   // Add-on one-time prices
-  STRIPE_PRICE_ADDON_QUICK_WIN: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_ADDON_MODERATE: z.string().startsWith("price_").optional(),
-  STRIPE_PRICE_ADDON_LARGE: z.string().startsWith("price_").optional(),
+  STRIPE_PRICE_ADDON_QUICK_WIN: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_ADDON_MODERATE: optional(z.string().startsWith("price_")),
+  STRIPE_PRICE_ADDON_LARGE: optional(z.string().startsWith("price_")),
 
   // Cloudflare R2
   R2_ACCOUNT_ID: z.string().min(1),
   R2_ACCESS_KEY_ID: z.string().min(1),
   R2_SECRET_ACCESS_KEY: z.string().min(1),
-  R2_BUCKET_NAME: z.string().default("webmori-reports"),
-  R2_PUBLIC_URL: z.string().default(""),
+  R2_BUCKET_NAME: withDefault(z.string(), "webmori-reports"),
+  R2_PUBLIC_URL: withDefault(z.string(), ""),
 
   // Cron
   CRON_SECRET: z.string().min(1),
 
   // LINE Messaging API (optional — required for Growth/Pro LINE delivery)
-  LINE_CHANNEL_ACCESS_TOKEN: z.string().min(1).optional(),
-  LINE_CHANNEL_SECRET: z.string().min(1).optional(),
+  LINE_CHANNEL_ACCESS_TOKEN: optional(z.string().min(1)),
+  LINE_CHANNEL_SECRET: optional(z.string().min(1)),
   // Operator's own LINE userId for self-notifications (optional)
-  OPERATOR_LINE_USER_ID: z.string().min(1).optional(),
+  OPERATOR_LINE_USER_ID: optional(z.string().min(1)),
 });
 
 const clientSchema = z.object({
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_").optional(),
-  NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
-  NEXT_PUBLIC_CALCOM_LINK: z.string().url().optional(),
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: optional(z.string().startsWith("pk_")),
+  NEXT_PUBLIC_SITE_URL: optional(z.string().url()),
+  NEXT_PUBLIC_CALCOM_LINK: optional(z.string().url()),
   // LINE Official Account friend-add URL (e.g. https://line.me/R/ti/p/@your-id)
-  NEXT_PUBLIC_LINE_FRIEND_URL: z.string().url().optional(),
+  NEXT_PUBLIC_LINE_FRIEND_URL: optional(z.string().url()),
 });
 
 export type ServerEnv = z.infer<typeof serverSchema>;
